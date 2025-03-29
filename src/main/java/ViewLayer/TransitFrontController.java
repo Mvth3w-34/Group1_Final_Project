@@ -96,9 +96,17 @@ public class TransitFrontController extends HttpServlet {
                 logicLayer = new TransitBusinessLayer();
                 if (logicLayer.validateCredentials(user, pass)) {
                     out.append( "<h1>Transit Application Menu</h1>"
-                            +   "<p>Welcome " + user + "</p>"
+                            +   "<p>Welcome " + user + "</p>");
+                    
+                    out.append(""     
+                            +   "<form action=''>"
+                            +       "<input type='submit' value='Register Vehicle'>"
+                            +   "</form>"
+                    );
+                    out.append(""
                             +   "<form action='/CST8288-JavaProject/TransitFrontController'>"
                             +       "<input type='submit' value='Logout'>"
+                            +   "</form>"
                     );
                 } else {
                     out.append("   <h1>Transit Application Login Failed</h1>")
