@@ -22,7 +22,13 @@ public class TransitBusinessLayer {
         vehicleDao = new VehicleDAOImpl();
         operatorDao = new OperatorDaoImpl();
     }
-    
+    /**
+     * Verifies if the credentials entered exists in the DB system
+     * @param userInput
+     * @param passInput
+     * @return
+     * @throws SQLException 
+     */
     public String validateCredentials(String userInput, String passInput) throws SQLException {
         // To be modified to select credentials being referenced in operators table
         for (int i = 0; i < operatorDao.getAllOperators().size(); i++) {
