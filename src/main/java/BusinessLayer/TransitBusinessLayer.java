@@ -5,8 +5,9 @@
 package BusinessLayer;
 
 import DataAccessLayer.VehicleData.*;
-import DataAccessLayer.LoginData.*;
-import TransferObjects.*;
+//import DataAccessLayer.LoginData.*;
+import DataAccessLayer.OperatorData.*;
+//import TransferObjects.*;
 import java.sql.*;
 
 /**
@@ -15,22 +16,22 @@ import java.sql.*;
  */
 public class TransitBusinessLayer {
     private final VehicleDAO vehicleDao;
-    private final LoginDao loginDao;
+    private final OperatorDao operatorDao;
     
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
-        loginDao = new LoginDaoImpl();
+        operatorDao = new OperatorDaoImpl();
     }
     
-    public boolean validateCredentials(String userInput, String passInput) throws SQLException {
+    public String validateCredentials(String userInput, String passInput) throws SQLException {
         // To be modified to select credentials being referenced in operators table
-        for (int i = 0; i < loginDao.getAllCredentials().size(); i++) {
-            if (userInput.equals(loginDao.getAllCredentials().get(i).getUsername()) && 
-                    passInput.equals(loginDao.getAllCredentials().get(i).getPassword())) {
-                return true;
+        for (int i = 0; i < operatorDao.getAllOperators().size(); i++) {
+            if (userInput.equals(operatorDao.getAllOperators().get(i).getLogin().getUsername()) && 
+                    passInput.equals(operatorDao.getAllOperators().get(i).getLogin().getPassword())) {
+                return operatorDao.getAllOperators().get(i).getName();
             }
         }
-        loginDao.closeConnection();
-        return false;
+        operatorDao.closeConnection();
+        return "Guest";
     }
 }

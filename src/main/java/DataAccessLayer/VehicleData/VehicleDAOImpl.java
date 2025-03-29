@@ -130,5 +130,10 @@ public class VehicleDAOImpl implements VehicleDAO {
             statement.executeUpdate();
         }
     }
+
+    @Override
+    public void closeConnection() {
+        instance.closeConnection();
+    }
     
 }
