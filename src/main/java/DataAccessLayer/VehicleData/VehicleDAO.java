@@ -6,12 +6,13 @@ package DataAccessLayer.VehicleData;
 import TransferObjects.*;
 import java.sql.SQLException;
 import java.util.*;
+import DataAccessLayer.TransitDaoInterface;
 
 /**
  *
  * @author johnt
  */
-public interface VehicleDAO {
+public interface VehicleDAO extends TransitDaoInterface {
     
     public List<VehicleDTO> getAllVehicles() throws SQLException;
     

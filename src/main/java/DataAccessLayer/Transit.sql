@@ -22,4 +22,13 @@ CREATE TABLE Credentials
     Password varchar(50) NOT NULL
 );
 
+CREATE TABLE Operators
+(
+    OperatorID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name varchar(50),
+    CredentialID int NOT NULL,
+    Type varchar(9) NOT NULL,
+    Email varchar(50),
+    FOREIGN KEY (CredentialID) REFERENCES Credentials(CredentialID)
+)
 INSERT INTO Credentials (UserName, Password) VALUES ('testUser', 'testPass');

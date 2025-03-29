@@ -23,6 +23,7 @@ public class TransitBusinessLayer {
     }
     
     public boolean validateCredentials(String userInput, String passInput) throws SQLException {
+        // To be modified to select credentials being referenced in operators table
         for (int i = 0; i < loginDao.getAllCredentials().size(); i++) {
             if (userInput.equals(loginDao.getAllCredentials().get(i).getUsername()) && 
                     passInput.equals(loginDao.getAllCredentials().get(i).getPassword())) {

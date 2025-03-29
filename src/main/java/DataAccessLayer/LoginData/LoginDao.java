@@ -7,12 +7,13 @@ package DataAccessLayer.LoginData;
 import TransferObjects.LoginDTO;
 import java.sql.SQLException;
 import java.util.List;
+import DataAccessLayer.TransitDaoInterface;
 
 /**
  *
  * @author johnt
  */
-public interface LoginDao {
+public interface LoginDao extends TransitDaoInterface {
     
     /**
      * Gets a list of all stored credentials in the DB
@@ -20,7 +21,5 @@ public interface LoginDao {
      * @throws SQLException 
      */
     public List<LoginDTO> getAllCredentials() throws SQLException;
-    
-    public void closeConnection();
     
 }
