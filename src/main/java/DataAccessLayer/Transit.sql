@@ -30,5 +30,9 @@ CREATE TABLE Operators
     Type varchar(9) NOT NULL,
     Email varchar(50),
     FOREIGN KEY (CredentialID) REFERENCES Credentials(CredentialID)
-)
+);
 INSERT INTO Credentials (UserName, Password) VALUES ('testUser', 'testPass');
+INSERT INTO Credentials (UserName, Password) VALUES ('myUser', 'myPass');
+
+INSERT INTO Operators (Name, CredentialID, Type, Email) VALUES ('Bob Smith', 1, 'MANAGER', '');
+INSERT INTO Operators (Name, CredentialID, Type, Email) VALUES ('Drew Anderson', 2, 'OPERATOR', '');

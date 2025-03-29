@@ -41,7 +41,7 @@ public class TransitFrontController extends HttpServlet {
             out.println("</head>");
             out.println("<body><center>");
             out.println("<h1>Enter Login Credentials for Transit DB</h1>"
-                    + "<form action='/CST8288-JavaProject/TransitFrontController' method='POST'>"
+                    + "<form action='/Group1_Final_Project_v1/TransitFrontController' method='POST'>"
                     + "<label for='username'>Username</label>"
                     + "<input type='text' id='username' name='username'><br>"
                     + "<label for='password'>Password</label>"
@@ -78,9 +78,10 @@ public class TransitFrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
+        String name;
         TransitBusinessLayer logicLayer;
         // If account matches login credentials in DB, access main menu
         try (PrintWriter out = response.getWriter()) {
@@ -94,9 +95,10 @@ public class TransitFrontController extends HttpServlet {
             
             try {
                 logicLayer = new TransitBusinessLayer();
-                if (logicLayer.validateCredentials(user, pass)) {
+                name = logicLayer.validateCredentials(user, pass);
+                if (!name.equals("")) {
                     out.append( "<h1>Transit Application Menu</h1>"
-                            +   "<p>Welcome " + user + "</p>");
+                            +   "<p>Welcome " + name + "</p>");
                     
                     out.append(""     
                             +   "<form action=''>"
@@ -104,23 +106,20 @@ public class TransitFrontController extends HttpServlet {
                             +   "</form>"
                     );
                     out.append(""
-                            +   "<form action='/CST8288-JavaProject/TransitFrontController'>"
+                            +   "<form action='/Group1_Final_Project_v1/TransitFrontController'>"
                             +       "<input type='submit' value='Logout'>"
                             +   "</form>"
                     );
                 } else {
                     out.append("   <h1>Transit Application Login Failed</h1>")
                        .append("   <p>Invalid credentials</p>")
-                       .append("   <form action='/CST8288-JavaProject/TransitFrontController'>")
+                       .append("   <form action='/Group1_Final_Project_v1/TransitFrontController'>")
                        .append("        <input type='submit' value='Return to Login'></form>");
                 }
             } catch (SQLException e) {
                 out.println("<h1>Database Error</h1>"
                         +   "<p>Unable to connect to the database</p>");
             }
-            
-            out.println("</center></body>");
-            out.println("</html>");
         }
     }
 
