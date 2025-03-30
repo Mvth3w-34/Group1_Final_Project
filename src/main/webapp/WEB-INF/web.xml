@@ -8,6 +8,10 @@
         <servlet-name>RegisterVehicle</servlet-name>
         <servlet-class>ViewLayer.RegisterVehicle</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TransitMenuView</servlet-name>
+        <servlet-class>ViewLayer.TransitMenuView</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>RegisterVehicle</servlet-name>
         <url-pattern>/RegisterVehicle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransitMenuView</servlet-name>
+        <url-pattern>/TransitMenuView</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

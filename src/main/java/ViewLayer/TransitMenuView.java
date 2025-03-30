@@ -4,22 +4,22 @@
  */
 package ViewLayer;
 
-import TransferObjects.*;
+import BusinessLayer.TransitBusinessLayer;
+import TransferObjects.OperatorDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import BusinessLayer.*;
-import java.sql.SQLException;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author johnt
  */
-public class TransitFrontController extends HttpServlet {
+public class TransitMenuView extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,7 +33,15 @@ public class TransitFrontController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getSession().invalidate(); // Clears out any existing sessions prior to login
+        TransitBusinessLayer logicLayer;
+        OperatorDTO op;
+        // Retrieve entered login information and save as a session
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user") == null && session.getAttribute("pass") == null) {
+            session.setAttribute("user", request.getParameter("username"));
+            session.setAttribute("pass", request.getParameter("password"));
+        }
+        // If account matches login credentials in DB, access main menu
         try (PrintWriter out = response.getWriter()) {
             // TODO: Have a user registration
             out.println("<!DOCTYPE html>");
@@ -42,15 +50,38 @@ public class TransitFrontController extends HttpServlet {
             out.println("<title>Transit Application</title>");
             out.println("</head>");
             out.println("<body><center>");
-            out.println("<h1>Enter Login Credentials for Transit DB</h1>"
-                    + "<form action='/Group1_Final_Project_v1/TransitMenuView' method='POST'>"
-                    + "<label for='username'>Username</label>"
-                    + "<input type='text' id='username' name='username'><br>"
-                    + "<label for='password'>Password</label>"
-                    + "<input type='text' id='password' name='password'><br>"
-                    + "<input type='submit' value='Login'></form>");
-            out.println("</center></body>");
-            out.println("</html>");
+            try {
+                logicLayer = new TransitBusinessLayer();
+                op = logicLayer.validateCredentials((String) session.getAttribute("user"), (String) session.getAttribute("pass"));
+                if (op != null) {
+                    // Retrieve the operator account whose 
+                    // credentials matches the entered login credentials
+                    session.setAttribute("operator", op);
+                    out.append( "<h1>Transit Application Menu</h1>"
+                            +   "<p>Welcome " + op.getName() + "</p>");
+                    
+                    out.append(""     
+                            +   "<form action='/Group1_Final_Project_v1/RegisterVehicle'>"
+                            +       "<input type='submit' value='Register Vehicle'"
+                    );
+                    if (op.getOperatorType().equals(OperatorDTO.UserType.OPERATOR)) {
+                        out.append(" disabled");
+                    }
+                    out.append("></form>");
+                    out.append(""
+                            +   "<form action='/Group1_Final_Project_v1/TransitFrontController'>"
+                            +       "<input type='submit' value='Logout'>"
+                            +   "</form>"
+                    );
+                } else {
+                    out.append("   <h1>Transit Application Login Failed</h1>")
+                       .append("   <p>Invalid credentials</p>")
+                       .append("   <a href='/Group1_Final_Project_v1/TransitFrontController'>Return to Login</a>");
+                }
+            } catch (SQLException e) {
+                out.println("<h1>Database Error</h1>"
+                        +   "<p>Unable to connect to the database</p>");
+            }
         }
     }
 
@@ -66,7 +97,6 @@ public class TransitFrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Clears out session prior to logging in
         processRequest(request, response);
     }
 
