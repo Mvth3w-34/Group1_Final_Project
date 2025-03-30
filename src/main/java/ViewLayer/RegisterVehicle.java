@@ -49,10 +49,7 @@ public class RegisterVehicle extends HttpServlet {
             } else {
                 out.append(op.getEmail());
             }
-            out.append("   <form action='/Group1_Final_Project_v1/TransitFrontController'>")
-               .append("        <input type='submit' value='Return to Login'></form>"
-            );
-            out.append("</p>");
+            out.println("   </p><a href='/Group1_Final_Project_v1/TransitMenuView'>Return to Menu</a>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -84,20 +81,7 @@ public class RegisterVehicle extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("username");
-        String pass = request.getParameter("password");
-        try (PrintWriter out = response.getWriter()) {
-            // TODO: Have a user registration
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Transit Application</title>");
-            out.println("</head>");
-            out.println("<body><center>");
-            out.println("<h1>" + user + "HELLO WORLD THIS IS MENU</h1>");
-            out.println("</center></body>");
-            out.println("</html>");
-        }
+        processRequest(request, response);
     }
 
     /**
