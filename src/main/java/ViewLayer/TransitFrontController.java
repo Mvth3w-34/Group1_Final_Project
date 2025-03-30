@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import BusinessLayer.*;
 import java.sql.SQLException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -64,6 +65,8 @@ public class TransitFrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Clears out session prior to logging in
+        request.getSession().removeAttribute("operator");
         processRequest(request, response);
     }
 
@@ -81,8 +84,9 @@ public class TransitFrontController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
-        String name;
         TransitBusinessLayer logicLayer;
+        OperatorDTO op;
+        HttpSession session = request.getSession();
         // If account matches login credentials in DB, access main menu
         try (PrintWriter out = response.getWriter()) {
             // TODO: Have a user registration
@@ -95,16 +99,21 @@ public class TransitFrontController extends HttpServlet {
             
             try {
                 logicLayer = new TransitBusinessLayer();
-                name = logicLayer.validateCredentials(user, pass);
-                if (!name.equals("")) {
+                
+                op = logicLayer.validateCredentials(user, pass);
+                if (op != null) {
+                    session.setAttribute("operator", op);
                     out.append( "<h1>Transit Application Menu</h1>"
-                            +   "<p>Welcome " + name + "</p>");
+                            +   "<p>Welcome " + op.getName() + "</p>");
                     
                     out.append(""     
-                            +   "<form action=''>"
-                            +       "<input type='submit' value='Register Vehicle'>"
-                            +   "</form>"
+                            +   "<form action='/Group1_Final_Project_v1/RegisterVehicle'>"
+                            +       "<input type='submit' value='Register Vehicle'"
                     );
+                    if (op.getOperatorType().equals(OperatorDTO.UserType.OPERATOR)) {
+                        out.append(" disabled");
+                    }
+                    out.append("></form>");
                     out.append(""
                             +   "<form action='/Group1_Final_Project_v1/TransitFrontController'>"
                             +       "<input type='submit' value='Logout'>"
@@ -114,7 +123,8 @@ public class TransitFrontController extends HttpServlet {
                     out.append("   <h1>Transit Application Login Failed</h1>")
                        .append("   <p>Invalid credentials</p>")
                        .append("   <form action='/Group1_Final_Project_v1/TransitFrontController'>")
-                       .append("        <input type='submit' value='Return to Login'></form>");
+                       .append("        <input type='submit' value='Return to Login'></form>"
+                    );
                 }
             } catch (SQLException e) {
                 out.println("<h1>Database Error</h1>"

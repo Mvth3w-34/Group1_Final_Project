@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import TransferObjects.*;
+
 /**
  *
  * @author johnt
  */
-public class MainMenu extends HttpServlet {
+public class RegisterVehicle extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,6 +31,7 @@ public class MainMenu extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        OperatorDTO op = (OperatorDTO) request.getSession().getAttribute("operator");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -38,6 +41,18 @@ public class MainMenu extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet MainMenu at " + request.getContextPath() + "</h1>");
+            out.println("<p>Hello</p>");
+            out.println("<p>Session Name: " + op.getName() + "<br>"
+                    + "Operator User: " + op.getOperatorType().name() + "<br>Email: ");
+            if (op.getEmail().equals("")) {
+                out.append("N/A");
+            } else {
+                out.append(op.getEmail());
+            }
+            out.append("   <form action='/Group1_Final_Project_v1/TransitFrontController'>")
+               .append("        <input type='submit' value='Return to Login'></form>"
+            );
+            out.append("</p>");
             out.println("</body>");
             out.println("</html>");
         }
