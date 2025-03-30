@@ -7,6 +7,7 @@ package BusinessLayer;
 import DataAccessLayer.VehicleData.*;
 //import DataAccessLayer.LoginData.*;
 import DataAccessLayer.OperatorData.*;
+import TransferObjects.OperatorDTO;
 //import TransferObjects.*;
 import java.sql.*;
 
@@ -29,15 +30,18 @@ public class TransitBusinessLayer {
      * @return
      * @throws SQLException 
      */
-    public String validateCredentials(String userInput, String passInput) throws SQLException {
+    public OperatorDTO validateCredentials(String userInput, String passInput) throws SQLException {
         // To be modified to select credentials being referenced in operators table
         for (int i = 0; i < operatorDao.getAllOperators().size(); i++) {
             if (userInput.equals(operatorDao.getAllOperators().get(i).getLogin().getUsername()) && 
                     passInput.equals(operatorDao.getAllOperators().get(i).getLogin().getPassword())) {
-                return operatorDao.getAllOperators().get(i).getName();
+                return operatorDao.getAllOperators().get(i);
             }
         }
         operatorDao.closeConnection();
-        return "Guest";
+        return null;
+    }
+    public void registerVehicle() {
+        
     }
 }
