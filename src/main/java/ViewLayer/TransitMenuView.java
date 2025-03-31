@@ -62,19 +62,17 @@ public class TransitMenuView extends HttpServlet {
                     session.setAttribute("operator", op);
                     out.append( "<h1>Transit Application Menu</h1>"
                             +   "<p>Welcome " + op.getName() + "</p>");
-                    out.append("<p>Session Name: " + op.getName() + "<br>"
-                            + "Operator User: " + op.getOperatorType().name() + "<br>Email: ");
-                    if (op.getEmail().equals("")) {
-                        out.append("N/A"+"</p>");
-                    } else {
-                        out.append(op.getEmail()+"</p>");
+//                    out.append("<p>Session Name: " + op.getName() + "<br>"
+//                            + "Operator User: " + op.getOperatorType().name() + "<br>Email: ");
+//                    if (op.getEmail().equals("")) {
+//                        out.append("N/A"+"</p>");
+//                    } else {
+//                        out.append(op.getEmail()+"</p>");
+//                    }
+                    if (op.getOperatorType().name().equals(OperatorDTO.UserType.MANAGER.name())) {
+                        out.append("<a href='/Group1_Final_Project_v1/RegisterVehicle'>Register Vehicle</a><br>");
                     }
-                    
-                    out.append("<br>"     
-                            +   "<a href='/Group1_Final_Project_v1/RegisterVehicle'>Register Vehicle</a><br>"
-                    );
-                    out.append("<a href='/Group1_Final_Project_v1/TransitFrontController'>Logout</a>"
-                    );
+                    out.append("<a href='/Group1_Final_Project_v1/TransitFrontController'>Logout</a>");
                 } else {
                     out.append("   <h1>Transit Application Login Failed</h1>")
                        .append("   <p>Invalid credentials</p>")
