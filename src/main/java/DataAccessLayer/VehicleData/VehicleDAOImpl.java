@@ -86,15 +86,19 @@ public class VehicleDAOImpl implements VehicleDAO {
     @Override
     public void registerVehicle(VehicleDTO vehicle) throws SQLException {
         String insertQuery = "INSERT INTO Vehicles (VehicleType, VehicleNumber, FuelType, "
-                + "FuelConsumptionRate, MaximumPassengers, CurrentAssignedRoute"
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "FuelConsumptionRate, MaximumPassengers, CurrentAssignedRoute)"
+                + " VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(insertQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setString(1, vehicle.getVehicleType().name());
             statement.setString(2, vehicle.getVIN());
             statement.setString(3, vehicle.getFuelType());
             statement.setFloat(4, vehicle.getFuelRate());
             statement.setInt(5, vehicle.getMaxPassengers());
-            statement.setString(6, vehicle.getRoute());
+            if (vehicle.getRoute() == null) {
+                statement.setNull(6, java.sql.Types.NULL);
+            } else {
+                statement.setString(6, vehicle.getRoute());
+            }
             statement.executeUpdate();
         }
     }

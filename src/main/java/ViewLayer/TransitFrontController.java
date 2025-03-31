@@ -33,7 +33,7 @@ public class TransitFrontController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        request.getSession().invalidate(); // Clears out any existing sessions prior to login
+        request.getSession().invalidate(); // Clears out any existing sessions prior to login by default
         try (PrintWriter out = response.getWriter()) {
             // TODO: Have a user registration
             out.println("<!DOCTYPE html>");
@@ -43,7 +43,7 @@ public class TransitFrontController extends HttpServlet {
             out.println("</head>");
             out.println("<body><center>");
             out.println("<h1>Enter Login Credentials for Transit DB</h1>"
-                    + "<form action='/Group1_Final_Project_v1/TransitMenuView' method='POST'>"
+                    + "<form method='POST'>"
                     + "<label for='username'>Username</label>"
                     + "<input type='text' id='username' name='username'><br>"
                     + "<label for='password'>Password</label>"
@@ -81,7 +81,12 @@ public class TransitFrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        if(request.getSession().getAttribute("user") == null && request.getSession().getAttribute("pass") == null) {
+            request.getSession().setAttribute("user", request.getParameter("username"));
+            request.getSession().setAttribute("pass", request.getParameter("password"));
+        }
+        request.getRequestDispatcher("/TransitMenuView").forward(request, response);
+//        processRequest(request, response);
     }
 
     /**

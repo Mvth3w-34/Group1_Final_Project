@@ -4,7 +4,7 @@
  */
 package TransferObjects;
 
-import DataAccessLayer.Builder.VehicleBuilder;
+import DataAccessLayer.VehicleData.VehicleBuilder;
 
 /**
  *
