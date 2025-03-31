@@ -101,6 +101,7 @@ public class RegisterVehicle extends HttpServlet {
 //        request.getParameter(string);
 //        processRequest(request, response);
         TransitBusinessLayer transitLayer;
+        OperatorDTO operator = (OperatorDTO) request.getSession().getAttribute("operator");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -111,6 +112,9 @@ public class RegisterVehicle extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Vehicle Registration Submitted</h1>");
             try {
+                if( operator. ) {
+                    
+                }
                 if(request.getSession().getAttribute("businessLayer") == null) {
                     transitLayer = new TransitBusinessLayer();
                 } else {
