@@ -7,7 +7,7 @@ package BusinessLayer;
 import DataAccessLayer.VehicleData.*;
 //import DataAccessLayer.LoginData.*;
 import DataAccessLayer.OperatorData.*;
-import TransferObjects.OperatorDTO;
+import TransferObjects.*;
 //import TransferObjects.*;
 import java.sql.*;
 
@@ -41,7 +41,22 @@ public class TransitBusinessLayer {
         operatorDao.closeConnection();
         return null;
     }
-    public void registerVehicle() {
-        
+    public void registerVehicle(String vType, 
+            String vin, String fuelType, float fuelRate, int maxPass) throws SQLException {
+        VehicleBuilder builder = new VehicleBuilder();
+        try {
+            vehicleDao.registerVehicle(builder
+                    .setVehicleType(VehicleDTO.VehicleType.valueOf(vType))
+                    .setVehicleNum(vin)
+                    .setFuelType(fuelType)
+                    .setConsumptionRate(fuelRate)
+                    .setMaxPassenger(maxPass)
+                    .setRoute(null)
+                    .registerVehicle()
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        VehicleDTO vehicle = new ;
     }
 }

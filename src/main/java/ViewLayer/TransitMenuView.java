@@ -52,6 +52,9 @@ public class TransitMenuView extends HttpServlet {
             out.println("<body><center>");
             try {
                 logicLayer = new TransitBusinessLayer();
+                if(session.getAttribute("businessLayer") == null) {
+                    session.setAttribute("businessLayer", logicLayer);
+                }
                 op = logicLayer.validateCredentials((String) session.getAttribute("user"), (String) session.getAttribute("pass"));
                 if (op != null) {
                     // Retrieve the operator account whose 
@@ -59,19 +62,18 @@ public class TransitMenuView extends HttpServlet {
                     session.setAttribute("operator", op);
                     out.append( "<h1>Transit Application Menu</h1>"
                             +   "<p>Welcome " + op.getName() + "</p>");
-                    
-                    out.append(""     
-                            +   "<form action='/Group1_Final_Project_v1/RegisterVehicle'>"
-                            +       "<input type='submit' value='Register Vehicle'"
-                    );
-                    if (op.getOperatorType().equals(OperatorDTO.UserType.OPERATOR)) {
-                        out.append(" disabled");
+                    out.append("<p>Session Name: " + op.getName() + "<br>"
+                            + "Operator User: " + op.getOperatorType().name() + "<br>Email: ");
+                    if (op.getEmail().equals("")) {
+                        out.append("N/A"+"</p>");
+                    } else {
+                        out.append(op.getEmail()+"</p>");
                     }
-                    out.append("></form>");
-                    out.append(""
-                            +   "<form action='/Group1_Final_Project_v1/TransitFrontController'>"
-                            +       "<input type='submit' value='Logout'>"
-                            +   "</form>"
+                    
+                    out.append("<br>"     
+                            +   "<a href='/Group1_Final_Project_v1/RegisterVehicle'>Register Vehicle</a><br>"
+                    );
+                    out.append("<a href='/Group1_Final_Project_v1/TransitFrontController'>Logout</a>"
                     );
                 } else {
                     out.append("   <h1>Transit Application Login Failed</h1>")
