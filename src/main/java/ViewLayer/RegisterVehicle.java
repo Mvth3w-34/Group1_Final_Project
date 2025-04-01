@@ -40,8 +40,9 @@ public class RegisterVehicle extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Transit Vehicle Registration</title>");
+            out.append("<link rel='stylesheet' href='style.css'>");
             out.println("</head>");
-            out.println("<body>");
+            out.println("<body><center>");
             out.println("<h1>Vehicle Registration</h1>");
             out.println("<p>Enter the vehicle details</p>");
             out.append("<form method='POST'>"
@@ -63,11 +64,11 @@ public class RegisterVehicle extends HttpServlet {
                     + "<input type='number' id='fuelrate' name='fuelrate' min='0' step='0.01'><br>"
                     
                     + "<label for='passengers'>Maximum Passengers</label>"
-                    + "<input type=number= id='passengers' name='passengers' min='0'><br>"
+                    + "<input type=number id='passengers' name='passengers' min='0'><br>"
                     + "<input type='submit'>"
                     + "</form>");
-            out.println("   </p><a href='/Group1_Final_Project_v1/TransitMenuView'>Return to Menu</a>");
-            out.println("</body>");
+            out.println("   </p><a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
+            out.println("</center></body>");
             out.println("</html>");
         }
     }
@@ -110,11 +111,7 @@ public class RegisterVehicle extends HttpServlet {
             out.println("<title>Transit Vehicle Registration</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Vehicle Registration Submitted</h1>");
             try {
-                if( operator. ) {
-                    
-                }
                 if(request.getSession().getAttribute("businessLayer") == null) {
                     transitLayer = new TransitBusinessLayer();
                 } else {
@@ -123,12 +120,16 @@ public class RegisterVehicle extends HttpServlet {
                 transitLayer.registerVehicle(request.getParameter("type"), request.getParameter("vin"),
                         request.getParameter("fueltype"), Float.parseFloat(request.getParameter("fuelrate")), 
                         Integer.parseInt(request.getParameter("passengers")));
-                out.println("<p>Vehicle Registration Submitted</p>");
+                out.println("<h1>Vehicle Registration Submitted</h1>");
+                out.println("<p>Vehicle successly registered</p>");
             } catch (SQLException e) {
-                out.println("<h1>Database Error</h1>"
+                out.append("<h1>Database Error</h1>"
                     +   "<p>Unable to connect to the database</p>");
+            } catch (IllegalArgumentException e) {
+                out.append("<h1>Vehicle Registration Error</h1>"
+                    +   "<p>Invalid vehicle details</p>");
             }
-            out.println("   </p><a href='/Group1_Final_Project_v1/TransitMenuView'>Return to Menu</a>");
+            out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
             out.println("</body>");
             out.println("</html>");
         }

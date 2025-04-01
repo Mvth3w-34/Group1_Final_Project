@@ -40,15 +40,16 @@ public class TransitFrontController extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Transit Application</title>");
+            out.append("<link rel='stylesheet' href='style.css'>");
             out.println("</head>");
             out.println("<body><center>");
             out.println("<h1>Enter Login Credentials for Transit DB</h1>"
-                    + "<form method='POST'>"
-                    + "<label for='username'>Username</label>"
+                    + "<div class='form-container'><form method='POST'>"
+                    + "<label for='username'>Username</label><br>"
                     + "<input type='text' id='username' name='username'><br>"
-                    + "<label for='password'>Password</label>"
+                    + "<label for='password'>Password</label><br>"
                     + "<input type='text' id='password' name='password'><br>"
-                    + "<input type='submit' value='Login'></form>");
+                    + "<input type='submit' value='Login'></form></div>");
             out.println("</center></body>");
             out.println("</html>");
         }

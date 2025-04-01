@@ -10,6 +10,7 @@ import DataAccessLayer.OperatorData.*;
 import TransferObjects.*;
 //import TransferObjects.*;
 import java.sql.*;
+import java.util.*;
 
 /**
  *
@@ -44,19 +45,21 @@ public class TransitBusinessLayer {
     public void registerVehicle(String vType, 
             String vin, String fuelType, float fuelRate, int maxPass) throws SQLException {
         VehicleBuilder builder = new VehicleBuilder();
-        try {
-            vehicleDao.registerVehicle(builder
-                    .setVehicleType(VehicleDTO.VehicleType.valueOf(vType))
-                    .setVehicleNum(vin)
-                    .setFuelType(fuelType)
-                    .setConsumptionRate(fuelRate)
-                    .setMaxPassenger(maxPass)
-                    .setRoute(null)
-                    .registerVehicle()
-            );
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        vehicleDao.registerVehicle(builder
+                .setVehicleType(VehicleDTO.VehicleType.valueOf(vType))
+                .setVehicleNum(vin)
+                .setFuelType(fuelType)
+                .setConsumptionRate(fuelRate)
+                .setMaxPassenger(maxPass)
+                .setRoute(null)
+                .registerVehicle()
+        );
 //        VehicleDTO vehicle = new ;
+    }
+    public void updateVehicle(String fuel, String route, VehicleDTO vehicle) throws SQLException {
+        vehicleDao.updateVehicle(fuel, route, vehicle);
+    }
+    public List<VehicleDTO> getVehicles() throws SQLException {
+        return vehicleDao.getAllVehicles();
     }
 }

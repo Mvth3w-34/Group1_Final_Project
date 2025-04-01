@@ -5,22 +5,23 @@
 package ViewLayer;
 
 import BusinessLayer.TransitBusinessLayer;
-import TransferObjects.OperatorDTO;
+import TransferObjects.VehicleDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author johnt
  */
-public class TransitMenuView extends HttpServlet {
+public class AssignRoutes extends HttpServlet {
 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,56 +33,44 @@ public class TransitMenuView extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        TransitBusinessLayer transitLayer;
+        List<VehicleDTO> vehicles;
         response.setContentType("text/html;charset=UTF-8");
-        TransitBusinessLayer logicLayer;
-        OperatorDTO op;
-        // Retrieve entered login information and save as a session
-        HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null && session.getAttribute("pass") == null) {
-            session.setAttribute("user", request.getParameter("username"));
-            session.setAttribute("pass", request.getParameter("password"));
-        }
-        // If account matches login credentials in DB, access main menu
         try (PrintWriter out = response.getWriter()) {
-            // TODO: Have a user registration
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Transit Application</title>");
+            out.println("<title>Servlet AssignRoutes</title>");
             out.append("<link rel='stylesheet' href='style.css'>");
             out.println("</head>");
             out.println("<body><center>");
+            out.println("<h1>Assign a Route</h1>");
+            
             try {
-                logicLayer = new TransitBusinessLayer();
-                if(session.getAttribute("businessLayer") == null) {
-                    session.setAttribute("businessLayer", logicLayer);
+                transitLayer = new TransitBusinessLayer();
+                vehicles = transitLayer.getVehicles();
+                out.append("<form method='POST'>"
+                        + "<label for='vehicleid'>Vehicle ID</label><br>"
+                        + "<select id='vehicleid' name='vehicleid'>");
+                out.append("<option value=''>Select a vehicle ID</option>");
+                for (int i = 0; i < vehicles.size(); i++) {
+                    out.println("<option value='" + vehicles.get(i).getVehicleID() + "'>" + vehicles.get(i).getVehicleID()+"</option>");
                 }
-                op = logicLayer.validateCredentials((String) session.getAttribute("user"), (String) session.getAttribute("pass"));
-                if (op != null) {
-                    // Retrieve the operator account whose 
-                    // credentials matches the entered login credentials
-                    session.setAttribute("operator", op);
-                    out.append( "<h1>Transit Application Menu</h1>"
-                            +   "<p>Welcome " + op.getName() + "</p>");
-                    // Only managers can see
-                    if (op.getOperatorType().name().equals(OperatorDTO.UserType.MANAGER.name())) {
-                        out.append("<a href='/Group1_Final_Project_v1/RegisterVehicle'><button>Register Vehicle</button></a><br>")
-                           .append("<a href='/Group1_Final_Project_v1/AssignRoutes'><button>Assign Routes</button></a><br>");
-                    }
-                    // All operators can see
-                    out.append("<a href='#'><button>Log Time</button></a><br>");
-                    
-                    out.append("<a href='/Group1_Final_Project_v1/TransitFrontController'><button class='logout'>Logout</button></a>");
-                } else {
-                    out.append("   <h1>Transit Application Login Failed</h1>")
-                       .append("   <p>Invalid credentials</p>")
-                       .append("   <a href='/Group1_Final_Project_v1/TransitFrontController'><button>Return to Login</button></a>");
-                }
+                out.append("</select><br>")
+                    .append("<label for='route'>Route</label><br>")
+                    .append("<input type='text' id='route' name='route'><br>")
+                    .append("<label for='fuel'>Fuel Type</label><br>")
+                    .append("<input type='text' id='fuel' name='fuel'><br>")
+                    .append("<input type='submit'></form>"
+                );
             } catch (SQLException e) {
-                out.append("<h1>Database Error</h1>")
-                    .append("<p>Unable to connect to the database</p>")
-                    .append("   <a href='/Group1_Final_Project_v1/TransitFrontController'><button>Return to Login</button></a>");
+                e.printStackTrace();
+//                out.append("<p>Database Error: Could not load existing vehicles</p>");
             }
+            out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
+
+            out.println("</center></body>");
+            out.println("</html>");
         }
     }
 
@@ -111,6 +100,23 @@ public class TransitMenuView extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        TransitBusinessLayer transitLayer;
+        int vehId = Integer.parseInt(request.getParameter("vehicleid"));
+        try {
+            if(request.getSession().getAttribute("businessLayer") == null) {
+                transitLayer = new TransitBusinessLayer();
+            } else {
+                transitLayer = (TransitBusinessLayer) request.getSession().getAttribute("businessLayer");
+            }
+            for (int i = 0; i < transitLayer.getVehicles().size(); i++) {
+                if (transitLayer.getVehicles().get(i).getVehicleID() == vehId) {
+                    transitLayer.updateVehicle(request.getParameter("fuel"), request.getParameter("route"), transitLayer.getVehicles().get(i));
+                }
+            }
+        } catch (SQLException e) {
+            // No error upon failure
+        }
+//        request.getRequestDispatcher("/TransitMenuView");
         processRequest(request, response);
     }
 
