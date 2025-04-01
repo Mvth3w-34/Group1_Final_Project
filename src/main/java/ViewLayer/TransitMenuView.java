@@ -69,7 +69,7 @@ public class TransitMenuView extends HttpServlet {
                            .append("<a href='/Group1_Final_Project_v1/AssignRoutes'><button>Assign Routes</button></a><br>");
                     }
                     // All operators can see
-                    out.append("<a href='#'><button>Log Time</button></a><br>");
+                    out.append("<a href='/Group1_Final_Project_v1/LogTime'><button>Log Time</button></a><br>");
                     
                     out.append("<a href='/Group1_Final_Project_v1/TransitFrontController'><button class='logout'>Logout</button></a>");
                 } else {
