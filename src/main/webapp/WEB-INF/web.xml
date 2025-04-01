@@ -16,6 +16,10 @@
         <servlet-name>AssignRoutes</servlet-name>
         <servlet-class>ViewLayer.AssignRoutes</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogTime</servlet-name>
+        <servlet-class>ViewLayer.LogTime</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>AssignRoutes</servlet-name>
         <url-pattern>/AssignRoutes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogTime</servlet-name>
+        <url-pattern>/LogTime</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
