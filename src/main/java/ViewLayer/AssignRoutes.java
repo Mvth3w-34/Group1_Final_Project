@@ -102,6 +102,7 @@ public class AssignRoutes extends HttpServlet {
             throws ServletException, IOException {
         TransitBusinessLayer transitLayer;
         int vehId = Integer.parseInt(request.getParameter("vehicleid"));
+        String route = request.getParameter("route").equals("") ? null : request.getParameter("route");
         try {
             if(request.getSession().getAttribute("businessLayer") == null) {
                 transitLayer = new TransitBusinessLayer();
@@ -110,7 +111,7 @@ public class AssignRoutes extends HttpServlet {
             }
             for (int i = 0; i < transitLayer.getVehicles().size(); i++) {
                 if (transitLayer.getVehicles().get(i).getVehicleID() == vehId) {
-                    transitLayer.updateVehicle(request.getParameter("fuel"), request.getParameter("route"), transitLayer.getVehicles().get(i));
+                    transitLayer.updateVehicle(request.getParameter("fuel"), route, transitLayer.getVehicles().get(i));
                 }
             }
         } catch (SQLException e) {
