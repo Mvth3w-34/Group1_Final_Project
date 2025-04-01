@@ -35,7 +35,7 @@ public class VehicleDAOImpl implements VehicleDAO {
         List<VehicleDTO> vehiclesList = new ArrayList<>();
         String query = "SELECT * FROM Vehicles";
         try {
-            getVehiclesQuery(query);
+            vehiclesList = getVehiclesQuery(query);
         } catch (SQLException e) {
             throw e;
         }
