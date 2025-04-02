@@ -4,12 +4,13 @@ package TransferObjects;
 import java.util.Date;
 
 /**
- * This class will act a DTO for a maintenance request ticket. 
+ * This class will act a DTO for a maintenance request 
  * 
  * @author Mathew Chebet
  */
 public class MaintenanceRequestTicketDTO
 {
+    private int requestID;
     private Date requestDate; //Date of a request
     private double quotedCost; //Estimated cost for a request
     private int operatorID; //id of the operator who submitted the request 
@@ -21,6 +22,25 @@ public class MaintenanceRequestTicketDTO
      * No argument constructor.
      */
     public MaintenanceRequestTicketDTO(){}
+    
+    /**
+     * This method will set the ID of a maintenance request.
+     * 
+     * @param id, the ID of a maintenance request.
+     */
+    public void setRequestID(int id){
+        this.requestID = id;
+    }
+    
+    /**
+     * This method will get the ID of a maintenance request.
+     * 
+     * @return requestID, the ID of a maintenance request.
+     */
+    public int getRequestID(){
+        return requestID;
+    } 
+    
     
     /**
      * This method will set the a maintenance request was submitted.
