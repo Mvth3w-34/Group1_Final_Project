@@ -7,10 +7,12 @@ package BusinessLayer;
 import DataAccessLayer.VehicleData.*;
 //import DataAccessLayer.LoginData.*;
 import DataAccessLayer.OperatorData.*;
+import DataAccessLayer.TimestampData.*;
 import TransferObjects.*;
 //import TransferObjects.*;
 import java.sql.*;
 import java.util.*;
+import java.time.*;
 
 /**
  *
@@ -19,10 +21,12 @@ import java.util.*;
 public class TransitBusinessLayer {
     private final VehicleDAO vehicleDao;
     private final OperatorDao operatorDao;
+    private final TimestampDAO timestampDao;
     
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
         operatorDao = new OperatorDaoImpl();
+        timestampDao = new TimestampDAOImpl();
     }
     /**
      * Verifies if the credentials entered exists in the DB system
@@ -61,5 +65,17 @@ public class TransitBusinessLayer {
     }
     public List<VehicleDTO> getVehicles() throws SQLException {
         return vehicleDao.getAllVehicles();
+    }
+    public List<String> getVehicleHeaders() throws SQLException {
+        return vehicleDao.getVehicleHeaders();
+    }
+    public void logTime(int opId, String start, String end, String type) throws SQLException {
+        TimeStamp time = new TimeStamp();
+        LocalDate date = LocalDate.now();
+        time.setOperatorId(opId);
+        time.setStartTime(Timestamp.valueOf(date.toString() + " " + start + ":00"));
+        time.setEndTime(Timestamp.valueOf(date.toString() + " " + end + ":00"));
+        time.setTimestampType(type);
+        timestampDao.addTimestamp(time);
     }
 }
