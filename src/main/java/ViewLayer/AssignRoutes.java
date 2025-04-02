@@ -56,9 +56,12 @@ public class AssignRoutes extends HttpServlet {
                 for (int i = 0; i < vehicles.size(); i++) {
                     out.println("<option value='" + vehicles.get(i).getVehicleID() + "'>" + vehicles.get(i).getVehicleID()+"</option>");
                 }
-                out.append("</select><br>")
-                    .append("<label for='route'>Route</label><br>")
-                    .append("<input type='text' id='route' name='route'><br>")
+                out
+                    .append("</select><br>")
+                    .append("<label for='route'>Route</label><br>");
+//                for(int i = 0; i < )
+                out
+                    .append("<input type='number' id='route' name='route'><br>")
                     .append("<label for='fuel'>Fuel Type</label><br>")
                     .append("<input type='text' id='fuel' name='fuel'><br>")
                     .append("<input type='submit'></form>"

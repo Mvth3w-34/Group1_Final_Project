@@ -13,9 +13,9 @@ import DataAccessLayer.VehicleData.VehicleBuilder;
 public class VehicleDTO {
 
     public enum VehicleType {
-        DIESEL_BUS,
-        ELECTRIC_LIGHT_RAIL,
-        DIESEL_ELECTRIC_TRAIN
+        BUS,
+        ELECTRIC_TRAIN,
+        DIESEL_TRAIN
     }
     private VehicleType vehicleType;
     private int vehicleId;

@@ -60,17 +60,22 @@ public class ViewVehicles extends HttpServlet {
                     // Print table headers
                     // TODO: Need to include arrival/departure times
                     for (int i = 0; i < logicLayer.getVehicleHeaders().size(); i++) {
-                        out.append("<th>" + logicLayer.getVehicleHeaders().get(i) + "</th>");
+                        out.append("<th");
+                        if (i > 0 && i < logicLayer.getVehicleHeaders().size()) {
+                            out.append(" class='middle'");
+                        }
+                        out.append(">" + logicLayer.getVehicleHeaders().get(i) + "</th>");
                     }
                     out.append("</tr>");
                     for (int i = 0; i < vehiclesList.size(); i++) {
-                        out.append("<tr><td>" + vehiclesList.get(i).getVehicleID() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getVehicleType().name() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getVIN() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getFuelType() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getFuelRate() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getMaxPassengers() + "</td>")
-                        .append("<td>" + vehiclesList.get(i).getRoute() + "</td>")
+                        out.append("<tr><td>" + vehiclesList.get(i).getVehicleID()  
+                                + "'></td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getVehicleType().name() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getVIN() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getFuelType() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getFuelRate() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getMaxPassengers() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getRoute() + "</td>")
                         .append("</tr>");
                     }
                     out.append("</table>");
@@ -113,6 +118,7 @@ public class ViewVehicles extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
     }
 
     /**

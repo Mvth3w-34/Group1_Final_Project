@@ -78,4 +78,20 @@ public class TransitBusinessLayer {
         time.setTimestampType(type);
         timestampDao.addTimestamp(time);
     }
+    public void registerAccount(String name, String email, String username, String password, String userType) throws SQLException, IllegalArgumentException {
+        LoginDTO login = new LoginDTO();
+        login.setUsername(username);
+        login.setPassword(password);
+        
+        try {
+            OperatorDTO operator = new OperatorDTO();
+            operator.setName(name);
+            operator.setEmail(email);
+            operator.setUserType(OperatorDTO.UserType.valueOf(userType));
+            operator.assignLogin(login);
+            operatorDao.registerOperator(operator);
+        } catch (IllegalArgumentException | SQLException e) {
+            throw e;
+        }
+    }
 }

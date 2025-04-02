@@ -24,6 +24,14 @@
         <servlet-name>ViewVehicles</servlet-name>
         <servlet-class>ViewLayer.ViewVehicles</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserRegistration</servlet-name>
+        <servlet-class>ViewLayer.UserRegistration</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewVehicleTimestamp</servlet-name>
+        <servlet-class>ViewLayer.ViewVehicleTimestamp</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>ViewVehicles</servlet-name>
         <url-pattern>/ViewVehicles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserRegistration</servlet-name>
+        <url-pattern>/UserRegistration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewVehicleTimestamp</servlet-name>
+        <url-pattern>/ViewVehicleTimestamp</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
