@@ -4,6 +4,7 @@
  */
 package ViewLayer;
 
+import TransferObjects.OperatorDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -29,6 +30,7 @@ public class LogTime extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        OperatorDTO operator = (OperatorDTO) request.getSession().getAttribute("operator");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -40,12 +42,14 @@ public class LogTime extends HttpServlet {
             out.println("<body><center>");
             out.println("<h1>Servlet LogTime at " + request.getContextPath() + "</h1>");
             out.append("<form method='POST'>")
+                .append("<label for='operatorid'>Operator ID</label><br>")
+                .append("<input type='number' readonly id='operatorid' style='background-color: lightgray;' name='operatorid' value='" + operator.getOperatorID() + "'><br>")
                 .append("<label for='starttime'>Start Time</label><br>")
                 .append("<input type='time' id='starttime' name='starttime'><br>")
                 .append("<label for='endtime'>End Time</label><br>")
                 .append("<input type='time' id='endtime' name='endtime'><br>")
-                .append("<p>Select the punch type: </p>")
-                .append("<input type='radio' value='break' id='break' name='punchtype'><label id='punchlabel' for='break'>Break</label>")
+                .append("<p>Select the punch-out reason: </p>")
+                .append("<input type='radio' value='break' id='break' name='punchtype'><label class='punchlabelseperator' id='punchlabel' for='break'>Break</label>")
                 .append("<input type='radio' value='finish' id='finish' name='punchtype'><label for='finish'>End Shift</label><br>")
                 .append("<input type='submit'>")
                 .append("</form>")
@@ -82,6 +86,7 @@ public class LogTime extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("operatorid"));
         String start = request.getParameter("starttime"); // Start time
         String end = request.getParameter("endtime"); // Endtime
         String punch = request.getParameter("punchtype"); // Punchout type
@@ -97,7 +102,11 @@ public class LogTime extends HttpServlet {
             out.println("</head>");
             out.println("<body><center>");
             out.println("<h1>Servlet LogTime at " + request.getContextPath() + "</h1>");
-            out.append("<p>Start: " + start + "<br>End: " + end + "<br>Punch Type: " + punch + "</p>");
+            if (start.equals("") && end.equals("") && punch == null) {
+                out.append("<p>Invalid log times entered</p>");
+            } else {
+                out.append("<p>ID: " + id + "<br>Start: " + start + "<br>End: " + end + "<br>Punch Type: " + punch + "</p>");
+            }
             out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
             out.println("</center></body>");
             out.println("</html>");
