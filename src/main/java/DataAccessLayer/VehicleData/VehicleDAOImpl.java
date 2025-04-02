@@ -33,7 +33,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     @Override
     public List<VehicleDTO> getAllVehicles() throws SQLException {
         List<VehicleDTO> vehiclesList = new ArrayList<>();
-        String query = "SELECT * FROM Vehicles";
+        String query = "SELECT * FROM VEHICLES";
         try {
             vehiclesList = getVehiclesQuery(query);
         } catch (SQLException e) {
@@ -58,13 +58,13 @@ public class VehicleDAOImpl implements VehicleDAO {
                     try {
                         // Add the vehicle from the DB to the list to be printed to HTML
                         vehicle = VehicleDTO.setupVehicle()
-                                .setID(set.getInt("VehicleID"))
-                                .setVehicleType(VehicleDTO.VehicleType.valueOf(set.getString("VehicleType")))
-                                .setVehicleNum(set.getString("VehicleNumber"))
-                                .setFuelType(set.getString("FuelType"))
-                                .setConsumptionRate(set.getFloat("FuelConsumptionRate"))
-                                .setMaxPassenger(set.getInt("MaximumPassengers"))
-                                .setRoute(set.getString("CurrentAssignedRoute"))
+                                .setID(set.getInt("VEHICLE_ID"))
+                                .setVehicleType(VehicleDTO.VehicleType.valueOf(set.getString("VEHICLE_TYPE")))
+                                .setVehicleNum(set.getString("VEHICLE_NUMBER"))
+                                .setFuelType(set.getString("FUEL_TYPE"))
+                                .setConsumptionRate(set.getFloat("FUEL_CONSUMPTION_RATE"))
+                                .setMaxPassenger(set.getInt("MAXIMUM_PASSENGERS"))
+                                .setRoute(set.getString("CURRENT_ROUTE"))
                                 .registerVehicle();
                         vehiclesList.add(vehicle);
                     } catch (IllegalArgumentException e) {
@@ -85,8 +85,8 @@ public class VehicleDAOImpl implements VehicleDAO {
      */
     @Override
     public void registerVehicle(VehicleDTO vehicle) throws SQLException {
-        String insertQuery = "INSERT INTO Vehicles (VehicleType, VehicleNumber, FuelType, "
-                + "FuelConsumptionRate, MaximumPassengers, CurrentAssignedRoute)"
+        String insertQuery = "INSERT INTO VEHICLES (VEHICLE_TYPE, VEHICLE_NUMBER, FUEL_TYPE, "
+                + "FUEL_CONSUMPTION_RATE, MAXIMUM_PASSENGERS, CURRENT_ROUTE)"
                 + " VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(insertQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setString(1, vehicle.getVehicleType().name());
@@ -113,7 +113,7 @@ public class VehicleDAOImpl implements VehicleDAO {
      */
     @Override
     public void updateVehicle(String newFuel, String newRoute, VehicleDTO vehicle) throws SQLException {
-        String updateQuery = "UPDATE Vehicles SET FuelType = ?, CurrentAssignedRoute = ? WHERE VehicleID = ?";
+        String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ROUTE = ? WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(updateQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setString(1, newFuel);
             statement.setString(2, newRoute);
@@ -128,7 +128,7 @@ public class VehicleDAOImpl implements VehicleDAO {
      */
     @Override
     public void removeVehicle(int vehicleID) throws SQLException {
-        String deleteQuery = "DELETE FROM Vehicles WHERE VehicleID = ?";
+        String deleteQuery = "DELETE FROM VEHICLES WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(deleteQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setInt(1, vehicleID);
             statement.executeUpdate();
@@ -139,5 +139,27 @@ public class VehicleDAOImpl implements VehicleDAO {
     public void closeConnection() {
         instance.closeConnection();
     }
-    
+    /**
+     * Returns a lit of headers metadata from vehicles table
+     * @return
+     * @throws SQLException 
+     */
+    @Override
+    public List<String> getVehicleHeaders() throws SQLException {
+        List<String> vHeaders = new ArrayList<>();
+        ResultSet set;
+        ResultSetMetaData sqlHeaders;
+        try (
+            PreparedStatement statement = instance.getConnection().prepareStatement(
+                "SELECT * FROM VEHICLES", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
+            );
+        ) {
+            set = statement.executeQuery();
+            sqlHeaders = set.getMetaData();
+            for (int col = 1; col <= sqlHeaders.getColumnCount(); col++) {
+                vHeaders.add(sqlHeaders.getColumnName(col));
+            }
+        }
+        return vHeaders;
+    }
 }

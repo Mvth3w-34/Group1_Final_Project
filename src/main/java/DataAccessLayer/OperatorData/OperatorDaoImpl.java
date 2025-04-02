@@ -31,7 +31,7 @@ public class OperatorDaoImpl implements OperatorDao {
         ResultSet set;
         OperatorDTO operator;
         LoginDTO login;
-        String joinQuery = "SELECT * FROM Operators INNER JOIN Credentials ON Operators.CredentialID = Credentials.CredentialID";
+        String joinQuery = "SELECT * FROM OPERATORS INNER JOIN CREDENTIALS ON OPERATORS.CREDENTIAL_ID = CREDENTIALS.CREDENTIAL_ID";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(joinQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY))
         {
             set = statement.executeQuery();
@@ -42,16 +42,16 @@ public class OperatorDaoImpl implements OperatorDao {
                     try {
                         // Add the vehicle from the DB to the list to validate the operator
                         login = new LoginDTO();
-                        login.setLoginID(set.getInt("CredentialID"));
-                        login.setUsername(set.getString("UserName"));
-                        login.setPassword(set.getString("Password"));
+                        login.setLoginID(set.getInt("CREDENTIAL_ID"));
+                        login.setUsername(set.getString("USERNAME"));
+                        login.setPassword(set.getString("PASSWORD"));
 
                         operator = new OperatorDTO();
-                        operator.setOperatorID(set.getInt("OperatorID"));
-                        operator.setName(set.getString("Name"));
+                        operator.setOperatorID(set.getInt("OPERATOR_ID"));
+                        operator.setName(set.getString("OPERATOR_NAME"));
                         operator.assignLogin(login);
-                        operator.setUserType(OperatorDTO.UserType.valueOf(set.getString("Type")));
-                        operator.setEmail(set.getString("Email"));
+                        operator.setUserType(OperatorDTO.UserType.valueOf(set.getString("OPERATOR_USER")));
+                        operator.setEmail(set.getString("EMAIL"));
                         operatorList.add(operator);
                     } catch (IllegalArgumentException e) {
                         // Skip the operator with an invalid user type

@@ -22,4 +22,6 @@ public interface VehicleDAO extends TransitDaoInterface {
     
     public void removeVehicle(int vehicleID) throws SQLException;
     
+    public List<String> getVehicleHeaders() throws SQLException;
+    
 }

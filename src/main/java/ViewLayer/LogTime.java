@@ -4,9 +4,11 @@
  */
 package ViewLayer;
 
+import BusinessLayer.TransitBusinessLayer;
 import TransferObjects.OperatorDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -90,6 +92,7 @@ public class LogTime extends HttpServlet {
         String start = request.getParameter("starttime"); // Start time
         String end = request.getParameter("endtime"); // Endtime
         String punch = request.getParameter("punchtype"); // Punchout type
+        TransitBusinessLayer logicLayer = (TransitBusinessLayer)request.getSession().getAttribute("businessLayer");
 //        processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -105,7 +108,14 @@ public class LogTime extends HttpServlet {
             if (start.equals("") && end.equals("") && punch == null) {
                 out.append("<p>Invalid log times entered</p>");
             } else {
-                out.append("<p>ID: " + id + "<br>Start: " + start + "<br>End: " + end + "<br>Punch Type: " + punch + "</p>");
+                try {
+                    logicLayer.logTime(id, start, end, punch);
+                    out.append("<p>Timestamp successfully added</p>");
+                } catch (SQLException e) {
+                    out.append("<p>Unable to log timestamp</p>");
+                } catch (IllegalArgumentException e) {
+                    out.append("<p>Bad data inputs</p>");
+                }
             }
             out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
             out.println("</center></body>");
