@@ -68,8 +68,10 @@ public class ViewVehicles extends HttpServlet {
                     }
                     out.append("</tr>");
                     for (int i = 0; i < vehiclesList.size(); i++) {
-                        out.append("<tr><td>" + vehiclesList.get(i).getVehicleID()  
-                                + "'></td>")
+                        out.append("<tr><td><form action='/Group1_Final_Project_v1/ViewVehicleTimestamp' method='GET'>"
+                                + "<input type='submit' class='reportlink' value='" + vehiclesList.get(i).getVehicleID()  
+                                + "'><input type='hidden' name='vehicleID' value='" + vehiclesList.get(i).getVehicleID()
+                                + "'></form></td>")
                         .append("<td class='middle'>" + vehiclesList.get(i).getVehicleType().name() + "</td>")
                         .append("<td class='middle'>" + vehiclesList.get(i).getVIN() + "</td>")
                         .append("<td class='middle'>" + vehiclesList.get(i).getFuelType() + "</td>")
