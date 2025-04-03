@@ -5,6 +5,8 @@
 package DataAccessLayer;
 import TransferObjects.LoginDTO;
 import java.sql.*;
+import java.io.*;
+import java.util.Properties;
 
 /**
  *
@@ -35,10 +37,18 @@ public class TransitDataSource {
      * @throws SQLException 
      */
     public synchronized Connection getConnection() throws SQLException {
+        Properties prop = new Properties();
+        String url, dbUser, dbPass;
         // Store the database property information to log into the database server
-        String url = "jdbc:mysql://localhost:3306/transit";
-        String dbUser = "root";
-        String dbPass = "tieu0012";
+        try (InputStream in = getClass().getResourceAsStream("/database.properties")){
+            prop.load(in);
+            in.close();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+        }
+        url = prop.getProperty("jdbc.url");
+        dbUser = prop.getProperty("jdbc.username");
+        dbPass = prop.getProperty("jdbc.password");
 
         // Create a connection to the database with the saved login information
         try {
