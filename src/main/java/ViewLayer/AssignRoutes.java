@@ -52,8 +52,8 @@ public class AssignRoutes extends HttpServlet {
                 vehicles = transitLayer.getVehicles();
                 out.append("<form method='POST'>"
                         + "<label for='vehicleid'>Vehicle ID</label><br>"
-                        + "<select id='vehicleid' name='vehicleid'>");
-                out.append("<option value=''>Select a vehicle ID</option>");
+                        + "<select id='vehicleid' name='vehicleid' required>");
+                out.append("<option value='0'>Select a vehicle ID</option>");
                 for (int i = 0; i < vehicles.size(); i++) {
                     out.println("<option value='" + vehicles.get(i).getVehicleID() + "'>" + vehicles.get(i).getVehicleID()+"</option>");
                 }
@@ -61,7 +61,7 @@ public class AssignRoutes extends HttpServlet {
                     .append("</select><br>")
                     .append("<label for='route'>Route</label><br>");
                 out.append("<select id='route' name='route'>")
-                    .append("<option value=''>Select a Route</option>")
+                    .append("<option value='0'>Select a Route</option>")
                 ;
                 routesSchedules = transitLayer.getRoutes();
                 for(int i = 0; i < routesSchedules.size(); i++) {
@@ -110,45 +110,36 @@ public class AssignRoutes extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         TransitBusinessLayer transitLayer;
-        String vehIdInput;
-        
-        if (request.getParameter("vehicleid").equals("")) {
-            vehIdInput = "0";
-        } else {
-            vehIdInput = request.getParameter("vehicleid");
-        }
-        int vehId = Integer.parseInt(vehIdInput);
-        String route = request.getParameter("route").equals("") ? null : request.getParameter("route");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AssignRoutes</title>");
-            out.append("<link rel='stylesheet' href='style.css'>");
-//            out.append("<meta http-equiv='refresh' content='0; url = /Group1_Final_Project_v1/TransitMenuView''>");
-            out.println("</head>");
-            out.append("<body><center>");
-        
-            try {
-                if (vehId == 0) {
-                    throw new SQLException();
-                }
-                if(request.getSession().getAttribute("businessLayer") == null) {
-                    transitLayer = new TransitBusinessLayer();
-                } else {
-                    transitLayer = (TransitBusinessLayer) request.getSession().getAttribute("businessLayer");
-                }
-                for (int i = 0; i < transitLayer.getVehicles().size(); i++) {
-                    if (transitLayer.getVehicles().get(i).getVehicleID() == vehId) {
-                        transitLayer.updateVehicle(request.getParameter("fuel"), route, transitLayer.getVehicles().get(i));
+        try {
+            String vehIdInput = request.getParameter("vehicleid");
+            String route = request.getParameter("route").equals("0") ? null : request.getParameter("route");
+            try (PrintWriter out = response.getWriter()) {
+                out.println("<!DOCTYPE html>");
+                out.println("<html>");
+                out.println("<head>");
+                out.println("<title>Servlet AssignRoutes</title>");
+                out.append("<link rel='stylesheet' href='style.css'>");
+    //            out.append("<meta http-equiv='refresh' content='0; url = /Group1_Final_Project_v1/TransitMenuView''>");
+                out.println("</head>");
+                out.append("<body><center>");
+
+                try {
+                    if(request.getSession().getAttribute("businessLayer") == null) {
+                        transitLayer = new TransitBusinessLayer();
+                    } else {
+                        transitLayer = (TransitBusinessLayer) request.getSession().getAttribute("businessLayer");
                     }
+                    transitLayer.updateVehicle(request.getParameter("fuel"), route, vehIdInput);
+                    out.append("<p>Vehicle successfully updated</p>");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    out.append("<p>Database Error: Unable to update a vehicle</p>");
                 }
-                out.append("<p>Vehicle successfully updated</p>");
-            } catch (SQLException e) {
-                out.append("<p>Database Error: Unable to update a vehicle</p>");
+                out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
+                out.append("</center></body></html>");
             }
-            out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
-            out.append("</center></body></html>");
+        } catch (NumberFormatException e) {
+//            e.printStackTrace();
         }
 //        request.getRequestDispatcher("/TransitMenuView");
 //        processRequest(request, response);

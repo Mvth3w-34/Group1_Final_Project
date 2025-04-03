@@ -76,8 +76,37 @@ public class TransitBusinessLayer {
         return routesTripsDao.getRoutes();
     }
     
-    public void updateVehicle(String fuel, String route, VehicleDTO vehicle) throws SQLException {
-        vehicleDao.updateVehicle(fuel, route, vehicle);
+    public void updateVehicle(String fuel, String route, String id) throws SQLException {
+        String newFuel;
+        int routeUpdate;
+        try {
+            if (route.isBlank() || route.isEmpty() || route.equals("0")) {
+                routeUpdate = 1;
+            } else {
+                routeUpdate = Integer.parseInt(route);
+            }
+        } catch (NullPointerException e) {
+            routeUpdate = 1;
+        }
+        try {
+            if (fuel.isBlank() || fuel.isEmpty()) {
+                newFuel = null;
+            } else {
+                newFuel = fuel;
+            }
+        } catch (NullPointerException e) {
+            newFuel = null;
+        }
+        if(id.equals("0")) {
+            throw new SQLException();
+        } else {
+            int vehicleID = Integer.parseInt(id);
+            for (int i = 0; i < getVehicles().size(); i++) {
+                if (getVehicles().get(i).getVehicleID() == vehicleID) {
+                    vehicleDao.updateVehicle(newFuel, routeUpdate, getVehicles().get(i));
+                }
+            }
+        }
     }
     public List<VehicleDTO> getVehicles() throws SQLException {
         return vehicleDao.getAllVehicles();
