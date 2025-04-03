@@ -15,6 +15,6 @@ public interface MaintenanceRequestDAO
 {
     List<MaintenanceRequestTicketDTO> getAllMaintenanceRequests();
     void insertMaintenanceRequest(MaintenanceRequestTicketDTO request);
-    MaintenanceRequestTicketDTO getMaintenanceRequestByStatus(int id);
+    MaintenanceRequestTicketDTO getMaintenanceRequestById(int id);
     void updateMaintenanceRequest(MaintenanceRequestTicketDTO request);
 }
