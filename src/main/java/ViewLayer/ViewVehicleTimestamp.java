@@ -9,11 +9,14 @@ import TransferObjects.VehicleStationTimetable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  *
@@ -60,23 +63,34 @@ public class ViewVehicleTimestamp extends HttpServlet {
                     out.append("<p>No timetable available for the vehicle</p>");
                 } else {
                     out.append("<table><tr>");
-                    for (int i = 0; i < logicLayer.getHeaders("vehicleroutes").size(); i++) {
+                    for (int i = 1; i < logicLayer.getHeaders("vehicleroutes").size(); i++) {
+                        if (i == 0 || i == 2) {
+                            continue;
+                        } else {
                         out.append("<th");
-                        if (i > 0 && i < logicLayer.getHeaders("vehicleroutes").size()) {
-                            out.append(" class='middle'");
+                            if (i > 1 && i < logicLayer.getHeaders("vehicleroutes").size()) {
+                                out.append(" class='middle'");
+                            }
+                            out.append(">" + logicLayer.getHeaders("vehicleroutes").get(i) + "</th>");
                         }
-                        out.append(">" + logicLayer.getHeaders("vehicleroutes").get(i) + "</th>");
                     }
                     out.append("</tr>");
                     for (int i = 0; i < vehicleTimetables.size(); i++) {
-                    String departureTime = vehicleTimetables.get(i).getDepartureTime() == null ? "N/A" : vehicleTimetables.get(i).getDepartureTime().toString();
-                    out
-                        .append("<tr><td>" + vehicleTimetables.get(i).getVehicleID() + "</td>") // Remove column
-                        .append("<td class='middle'>" + vehicleTimetables.get(i).getStationName() + "</td>")
-                        .append("<td class='middle'>" + vehicleTimetables.get(i).checkStation() + "</td>") // Remove column
-                        .append("<td class='middle'>" + vehicleTimetables.get(i).getArrivalTime() + "</td>")
-                        .append("<td class='middle'>" + departureTime + "</td>")
-                        .append("</tr>");
+                        String arrivalDT = vehicleTimetables.get(i)
+                                .getArrivalTime()
+                                .toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_TIME);
+                        out.append("<tr><td>" + vehicleTimetables.get(i).getStationName() + "</td>")
+                            .append("<td class='middle'>" + arrivalDT + "</td>");
+                        if (vehicleTimetables.get(i).getDepartureTime() != null) {
+                            String departDT = vehicleTimetables.get(i)
+                                .getDepartureTime()
+                                .toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_TIME);
+                            out.append("<td class='middle'>" + departDT + "</td>");
+                        } else {
+                            out.append("<td class='middle'>N/A</td>");
+                        }
+                        out
+                            .append("</tr>");
                     }
                     out.append("</table>");
                 }

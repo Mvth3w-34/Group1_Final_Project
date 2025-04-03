@@ -35,6 +35,7 @@ public class AssignRoutes extends HttpServlet {
             throws ServletException, IOException {
         TransitBusinessLayer transitLayer;
         List<VehicleDTO> vehicles;
+        List<Integer> routesSchedules;
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             out.println("<!DOCTYPE html>");
@@ -59,9 +60,15 @@ public class AssignRoutes extends HttpServlet {
                 out
                     .append("</select><br>")
                     .append("<label for='route'>Route</label><br>");
-//                for(int i = 0; i < )
+                out.append("<select id='route' name='route'>")
+                    .append("<option value=''>Select a Route</option>")
+                ;
+                routesSchedules = transitLayer.getRoutes();
+                for(int i = 0; i < routesSchedules.size(); i++) {
+                    out.println("<option value='" + routesSchedules.get(i) + "'>" + routesSchedules.get(i) + "</option>");
+                }
+                out.append("</select><br>");
                 out
-                    .append("<input type='number' id='route' name='route'><br>")
                     .append("<label for='fuel'>Fuel Type</label><br>")
                     .append("<input type='text' id='fuel' name='fuel'><br>")
                     .append("<input type='submit'></form>"
@@ -118,6 +125,7 @@ public class AssignRoutes extends HttpServlet {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             // No error upon failure
         }
 //        request.getRequestDispatcher("/TransitMenuView");

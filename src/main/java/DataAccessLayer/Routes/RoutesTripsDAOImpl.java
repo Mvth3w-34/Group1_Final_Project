@@ -42,6 +42,7 @@ public class RoutesTripsDAOImpl implements RoutesTripsDAO {
                 // Reset the pointer location to prevent row skips before printing table
                 set.beforeFirst();
                 while (set.next()) {
+//                    Timestamp arrival = set.getTimestamp("ARRIVAL").;
                     vehicleTimetable = new VehicleStationTimetable();
                     vehicleTimetable.setVehicleId(set.getInt("VEHICLE_ID"));
                     vehicleTimetable.setStationName(set.getString("STOP_NAME"));
@@ -56,14 +57,7 @@ public class RoutesTripsDAOImpl implements RoutesTripsDAO {
     }
     @Override
     public List<String> getHeaders() throws SQLException {
-        String query = "SELECT VEHICLES.VEHICLE_ID, STOPS.STOP_NAME, STOPS.IS_STATION, SCHEDULED_STOP_TIMES.ARRIVAL, SCHEDULED_STOP_TIMES.DEPARTURE "
-                + "FROM SCHEDULED_STOP_TIMES "
-                + "INNER JOIN TRIP_SCHEDULES ON TRIP_SCHEDULES.ID = SCHEDULED_STOP_TIMES.TRIP_SCHEDULE_ID "
-                + "INNER JOIN VEHICLES ON VEHICLES.CURRENT_ASSIGNED_TRIP = TRIP_SCHEDULES.ID "
-                + "INNER JOIN ROUTES ON ROUTES.ID = TRIP_SCHEDULES.ROUTE_ID "
-                + "INNER JOIN ROUTE_STOPS ON route_stops.ID = SCHEDULED_STOP_TIMES.SEQ_STOP_ID " 
-                + "AND route_stops.ROUTE_ID = ROUTES.ID "
-                + "INNER JOIN STOPS ON STOPS.ID = ROUTE_STOPS.STOP_ID";
+        String query = "SELECT * FROM VEHICLE_TIMETABLES";
         List<String> headers = new ArrayList<>();
         ResultSet set;
         ResultSetMetaData sqlHeaders;
@@ -77,6 +71,26 @@ public class RoutesTripsDAOImpl implements RoutesTripsDAO {
             }
         }
         return headers;
+    }
+    
+    @Override
+    public List<Integer> getRoutes() throws SQLException {
+        List<Integer> routesList = new ArrayList<>();
+        String query = "SELECT ID FROM TRIP_SCHEDULES";
+        ResultSet set;
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY))
+        {
+            set = statement.executeQuery();
+            if (set.next()) {
+                // Reset the pointer location to prevent row skips before printing table
+                set.beforeFirst();
+                while (set.next()) {
+//                    Timestamp arrival = set.getTimestamp("ARRIVAL").;
+                    routesList.add(set.getInt("ID"));
+                }
+            }
+        }
+        return routesList;
     }
     
 }

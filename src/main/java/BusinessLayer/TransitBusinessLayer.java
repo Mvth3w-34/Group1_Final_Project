@@ -72,6 +72,10 @@ public class TransitBusinessLayer {
         throw new SQLException();
     }
     
+    public List<Integer> getRoutes() throws SQLException {
+        return routesTripsDao.getRoutes();
+    }
+    
     public void updateVehicle(String fuel, String route, VehicleDTO vehicle) throws SQLException {
         vehicleDao.updateVehicle(fuel, route, vehicle);
     }
