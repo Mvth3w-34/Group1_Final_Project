@@ -33,6 +33,10 @@ public class ViewVehicles extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        if(request.getSession().getAttribute("user") == null && request.getSession().getAttribute("pass") == null) {
+            request.getSession().setAttribute("user", request.getParameter("username"));
+            request.getSession().setAttribute("pass", request.getParameter("password"));
+        }
         TransitBusinessLayer logicLayer;
         List<VehicleDTO> vehiclesList;
         try (PrintWriter out = response.getWriter()) {

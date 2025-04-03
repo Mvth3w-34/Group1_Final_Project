@@ -46,10 +46,10 @@ public class RegisterVehicle extends HttpServlet {
             out.println("<h1>Vehicle Registration</h1>");
             out.println("<p>Enter the vehicle details</p>");
             out.append("<form method='POST'>"
-                    + "<label for='vin'>Vehicle Number</label>"
+                    + "<label for='vin'>Vehicle Number</label><br>"
                     + "<input type='text' id='vin' name='vin'><br>"
                     
-                    + "<label for='type'>Vehicle Type</label>"
+                    + "<label for='type'>Vehicle Type</label><br>"
                     + "<select id='type' name='type'>"
                     + " <option value=''>Select a Vehicle Type</option>"
                     + " <option value='BUS'>Bus</option>"
@@ -57,13 +57,13 @@ public class RegisterVehicle extends HttpServlet {
                     + " <option value='DIESEL_TRAIN'>Diesel Train</option>"
                     + "</select><br>"
                     
-                    + "<label for='fueltype'>Fuel Type</label>"
+                    + "<label for='fueltype'>Fuel Type</label><br>"
                     + "<input type='text' id='fueltype' name='fueltype'><br>"
                     
-                    + "<label for='fuelrate'>Fuel Consumption Rate</label>"
+                    + "<label for='fuelrate'>Fuel Consumption Rate</label><br>"
                     + "<input type='number' id='fuelrate' name='fuelrate' min='0' step='0.01'><br>"
                     
-                    + "<label for='passengers'>Maximum Passengers</label>"
+                    + "<label for='passengers'>Maximum Passengers</label><br>"
                     + "<input type=number id='passengers' name='passengers' min='0'><br>"
                     + "<input type='submit'>"
                     + "</form>");

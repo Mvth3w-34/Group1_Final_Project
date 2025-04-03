@@ -40,7 +40,7 @@ public class TransitDataSource {
         Properties prop = new Properties();
         String url, dbUser, dbPass;
         // Store the database property information to log into the database server
-        try (InputStream in = getClass().getResourceAsStream("/database.properties")){
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("database.properties")){
             prop.load(in);
             in.close();
         } catch (NullPointerException | IOException e) {

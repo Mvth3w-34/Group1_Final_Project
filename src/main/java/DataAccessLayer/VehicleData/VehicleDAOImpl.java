@@ -124,6 +124,8 @@ public class VehicleDAOImpl implements VehicleDAO {
             statement.setString(2, newRoute);
             statement.setInt(3, vehicle.getVehicleID());
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
     }
     /**
