@@ -59,12 +59,12 @@ public class ViewVehicles extends HttpServlet {
                     out.append("<table><tr>");
                     // Print table headers
                     // TODO: Need to include arrival/departure times
-                    for (int i = 0; i < logicLayer.getVehicleHeaders().size(); i++) {
+                    for (int i = 0; i < logicLayer.getHeaders("vehicle").size(); i++) {
                         out.append("<th");
-                        if (i > 0 && i < logicLayer.getVehicleHeaders().size()) {
+                        if (i > 0 && i < logicLayer.getHeaders("vehicle").size()) {
                             out.append(" class='middle'");
                         }
-                        out.append(">" + logicLayer.getVehicleHeaders().get(i) + "</th>");
+                        out.append(">" + logicLayer.getHeaders("vehicle").get(i) + "</th>");
                     }
                     out.append("</tr>");
                     for (int i = 0; i < vehiclesList.size(); i++) {

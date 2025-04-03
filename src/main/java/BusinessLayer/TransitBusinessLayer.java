@@ -5,11 +5,10 @@
 package BusinessLayer;
 
 import DataAccessLayer.VehicleData.*;
-//import DataAccessLayer.LoginData.*;
 import DataAccessLayer.OperatorData.*;
+import DataAccessLayer.Routes.*;
 import DataAccessLayer.TimestampData.*;
 import TransferObjects.*;
-//import TransferObjects.*;
 import java.sql.*;
 import java.util.*;
 import java.time.*;
@@ -22,11 +21,14 @@ public class TransitBusinessLayer {
     private final VehicleDAO vehicleDao;
     private final OperatorDao operatorDao;
     private final TimestampDAO timestampDao;
+    private final RoutesTripsDAO routesTripsDao;
     
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
         operatorDao = new OperatorDaoImpl();
         timestampDao = new TimestampDAOImpl();
+        routesTripsDao = new RoutesTripsDAOImpl();
+        
     }
     /**
      * Verifies if the credentials entered exists in the DB system
@@ -60,14 +62,21 @@ public class TransitBusinessLayer {
         );
 //        VehicleDTO vehicle = new ;
     }
+    
+    public List<String> getHeaders(String tblName) throws SQLException {
+        if (tblName.toLowerCase().equals("vehicle")) {
+            return vehicleDao.getVehicleHeaders();
+        } else if (tblName.toLowerCase().equals("vehicleroutes")) {
+            return routesTripsDao.getHeaders();
+        }
+        throw new SQLException();
+    }
+    
     public void updateVehicle(String fuel, String route, VehicleDTO vehicle) throws SQLException {
         vehicleDao.updateVehicle(fuel, route, vehicle);
     }
     public List<VehicleDTO> getVehicles() throws SQLException {
         return vehicleDao.getAllVehicles();
-    }
-    public List<String> getVehicleHeaders() throws SQLException {
-        return vehicleDao.getVehicleHeaders();
     }
     public void logTime(int opId, String start, String end, String type) throws SQLException {
         TimeStamp time = new TimeStamp();
@@ -93,5 +102,8 @@ public class TransitBusinessLayer {
         } catch (IllegalArgumentException | SQLException e) {
             throw e;
         }
+    }
+    public List<VehicleStationTimetable> getRoutes(int vehicleID) throws SQLException {
+        return routesTripsDao.getAllVehicleStationTimes(vehicleID);
     }
 }
