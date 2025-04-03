@@ -1,17 +1,17 @@
 
 package TransferObjects;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
- * This class will act a DTO for a maintenance request 
+ * This class will act as a DTO for a maintenance request 
  * 
  * @author Mathew Chebet
  */
 public class MaintenanceRequestTicketDTO
 {
     private int requestID;
-    private Date requestDate; //Date of a request
+    private LocalDateTime requestDate; //Date of a request
     private double quotedCost; //Estimated cost for a request
     private int operatorID; //id of the operator who submitted the request 
     private int vehicleComponentID; //id of the component that will be serviced  
@@ -47,7 +47,7 @@ public class MaintenanceRequestTicketDTO
      * 
      * @param date, the date a request is submitted in a format of yyyy-mm-dd.
      */
-    public void setRequestDate(Date date){
+    public void setRequestDate(LocalDateTime date){
         this.requestDate = date;
     } 
     
@@ -56,7 +56,7 @@ public class MaintenanceRequestTicketDTO
      * 
      * @return requestDate, the date a request is submitted in a format of yyyy-mm-dd.
      */
-    public Date getRequestDate(){
+    public LocalDateTime getRequestDate(){
         return requestDate;
     } 
     
