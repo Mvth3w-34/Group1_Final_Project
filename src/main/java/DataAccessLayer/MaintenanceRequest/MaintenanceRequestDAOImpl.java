@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * This class is an implementation of the MaintenanceRequest DAO interface.
+ * 
  * @author Mathew Chebet
  */
 public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
@@ -23,7 +24,8 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     private final TransitDataSource connection;
     
     /**
-     * A single argument constructor 
+     * A single argument constructor. 
+     * 
      */
     public MaintenanceRequestDAOImpl(TransitDataSource connection){
         this.connection=connection;
@@ -57,11 +59,11 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                     
                     requests.add(request);
                 } catch (IllegalArgumentException e) {
-                    // Skip the operator with an invalid user type
+                    e.printStackTrace();
                 }
             }
         } catch (SQLException e) {
-            
+            e.printStackTrace();
         }
         
         return requests;
