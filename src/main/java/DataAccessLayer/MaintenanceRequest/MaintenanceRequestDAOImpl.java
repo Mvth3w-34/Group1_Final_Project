@@ -5,17 +5,13 @@
 package DataAccessLayer.MaintenanceRequest;
 
 import DataAccessLayer.TransitDataSource;
-import TransferObjects.LoginDTO;
 import TransferObjects.MaintenanceRequestTicketDTO;
-import TransferObjects.OperatorDTO;
-import static java.lang.reflect.Array.set;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static sun.security.jgss.GSSUtil.login;
 
 /**
  *
@@ -27,7 +23,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     private final TransitDataSource connection;
     
     /**
-     * A no argument constructor 
+     * A single argument constructor 
      */
     public MaintenanceRequestDAOImpl(TransitDataSource connection){
         this.connection=connection;
@@ -51,7 +47,8 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                 try {
                     MaintenanceRequestTicketDTO request = new MaintenanceRequestTicketDTO();
                     
-                    request.setRequestDate(results.getDate("REQUEST_DATE"));
+                    request.setRequestID(results.getInt("REQUEST_ID"));
+                    request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
                     request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
                     request.setOperatorID(results.getInt("OPERATOR_ID"));
                     request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
@@ -81,9 +78,9 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
         String query = "INSERT INTO MAINTENANCE_REQUESTS(REQUEST_DATE,QUOTED_COST, OPERATOR_ID,VEHICLE_COMPONENT_ID, SERVICE_DESCRIPTION, IS_COMPLETED)"
                 + "VALUES(?,?,?,?,?,?)";
         
-        ResultSet  results;
+        ResultSet results;
         try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
-            statement.setDate(1, (Date) request.getRequestDate());
+            statement.setDate(1, Date.valueOf(request.getRequestDate().toLocalDate()));
             statement.setDouble(2, request.getQuotedCost());
             statement.setInt(3, request.getOperatorID());
             statement.setInt(4, request.getVehicleComponentID());
@@ -117,7 +114,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                     statement.setInt(1, id);
                     request = new MaintenanceRequestTicketDTO();
                     
-                    request.setRequestDate(results.getDate("REQUEST_DATE"));
+                    request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
                     request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
                     request.setOperatorID(results.getInt("OPERATOR_ID"));
                     request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
