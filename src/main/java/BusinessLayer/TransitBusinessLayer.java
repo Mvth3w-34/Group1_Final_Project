@@ -78,15 +78,15 @@ public class TransitBusinessLayer {
     
     public void updateVehicle(String fuel, String route, String id) throws SQLException {
         String newFuel;
-        int routeUpdate;
+        String routeUpdate;
         try {
             if (route.isBlank() || route.isEmpty() || route.equals("0")) {
-                routeUpdate = 1;
+                routeUpdate = null;
             } else {
-                routeUpdate = Integer.parseInt(route);
+                routeUpdate = route;
             }
         } catch (NullPointerException e) {
-            routeUpdate = 1;
+            routeUpdate = null;
         }
         try {
             if (fuel.isBlank() || fuel.isEmpty()) {

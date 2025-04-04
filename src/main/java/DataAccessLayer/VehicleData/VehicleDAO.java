@@ -18,7 +18,7 @@ public interface VehicleDAO extends TransitDaoInterface {
     
     public void registerVehicle(VehicleDTO vehicle) throws SQLException;
     
-    public void updateVehicle(String newFuel, int newRoute, VehicleDTO vehicle) throws SQLException;
+    public void updateVehicle(String newFuel, String newRoute, VehicleDTO vehicle) throws SQLException;
     
     public void removeVehicle(int vehicleID) throws SQLException;
     

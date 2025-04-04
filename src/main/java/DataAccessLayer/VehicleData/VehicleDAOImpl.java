@@ -113,7 +113,7 @@ public class VehicleDAOImpl implements VehicleDAO {
      * @throws SQLException on invalid login credentials
      */
     @Override
-    public void updateVehicle(String newFuel, int newRoute, VehicleDTO vehicle) throws SQLException {
+    public void updateVehicle(String newFuel, String newRoute, VehicleDTO vehicle) throws SQLException {
         String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ASSIGNED_TRIP = ? WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(updateQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             if (newFuel == null) {
@@ -121,7 +121,11 @@ public class VehicleDAOImpl implements VehicleDAO {
             } else {
                 statement.setString(1, newFuel);
             }
-            statement.setInt(2, newRoute);
+            if (newRoute == null) {
+                statement.setNull(2, java.sql.Types.NULL);
+            } else {
+                statement.setInt(2, Integer.parseInt(newRoute));
+            }
             statement.setInt(3, vehicle.getVehicleID());
             statement.executeUpdate();
         } catch (SQLException e) {
