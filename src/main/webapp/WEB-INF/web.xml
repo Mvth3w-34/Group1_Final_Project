@@ -81,10 +81,6 @@
         <url-pattern>/MaintenanceRequest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MaintenanceRequest</servlet-name>
-        <url-pattern>/MaintenanceRequest</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>AddMaintenanceRequest</servlet-name>
         <url-pattern>/AddMaintenanceRequest</url-pattern>
     </servlet-mapping>
