@@ -21,14 +21,14 @@ import java.util.List;
 public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
 {
     
-    private final TransitDataSource connection;
+    private final TransitDataSource instance;
     
     /**
-     * A single argument constructor. 
+     * A no argument constructor. 
      * 
      */
-    public MaintenanceRequestDAOImpl(TransitDataSource connection){
-        this.connection=connection;
+    public MaintenanceRequestDAOImpl (){
+        this.instance = TransitDataSource.getDataInstance();
     }    
     
     /**
@@ -42,7 +42,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
         ArrayList<MaintenanceRequestTicketDTO> requests =new ArrayList<>();
         String query = "SELECT * FROM MAINTENANCE_REQUESTS";
         ResultSet  results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
             results = statement.executeQuery();
             while (results.next()) {
@@ -81,7 +81,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                 + "VALUES(?,?,?,?,?,?)";
         
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setDate(1, Date.valueOf(request.getRequestDate().toLocalDate()));
             statement.setDouble(2, request.getQuotedCost());
             statement.setInt(3, request.getOperatorID());
@@ -108,7 +108,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
         MaintenanceRequestTicketDTO request = null;
         String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE REQUEST_ID = ? AND IS_COMPLETE=FALSE";
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
             results = statement.executeQuery();
             while (results.next()) {
@@ -143,7 +143,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     public void updateMaintenanceRequest(MaintenanceRequestTicketDTO request){
         String query = "UPDATE MAINTENANCE_REQUESTS SET IS_COMPLETED = 'YES' WHERE REQUEST_ID = ? ";
         
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setInt(1, request.getRequestID());
             statement.executeUpdate();
             

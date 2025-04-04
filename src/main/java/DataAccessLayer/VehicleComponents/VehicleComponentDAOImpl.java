@@ -21,14 +21,14 @@ import java.util.List;
  */
 public class VehicleComponentDAOImpl implements VehicleComponentDAO
 {
-    private final TransitDataSource connection;
+    private final TransitDataSource instance;
     
     /**
-     * A single argument constructor. 
+     * A no argument constructor. 
      * 
      */
-    public VehicleComponentDAOImpl(TransitDataSource connection){
-        this.connection = connection;
+    public VehicleComponentDAOImpl (){
+        instance = TransitDataSource.getDataInstance();
     }
     
     /**
@@ -41,7 +41,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
         ArrayList<VehicleComponentDTO> components =new ArrayList<>();
         String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ?";
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
             statement.setInt(1, id);
             
@@ -77,7 +77,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
                 + "VALUES(?,?,?)";
         
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setDouble(1, component.getHoursUsed());
             statement.setInt(2, component.getVehicleID());
             statement.setInt(3, component.getComponentID());
@@ -98,7 +98,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
     public void updateVehicleComponent(VehicleComponentDTO component){
         String query = "UPDATE VEHICLE_COMPONENTS SET HOURS_USED = ? WHERE VEHICLE_COMPONENT_ID = ?";
         
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setDouble(1, component.getHoursUsed());
             statement.setInt(2, component.getVehicleComponentID());
             statement.executeUpdate();
