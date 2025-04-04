@@ -1,7 +1,7 @@
 /* filename: TransitDtb_TableCreation.sql
  * authors: Stephanie Prystupa-Maule, John Tieu, Mathew Chebet
  * description: SQL script for Transit Dtb creation
- * last modified: 04/02/2025
+ * last modified: 04/04/2025
  */
 
 DROP DATABASE IF EXISTS TRANSIT;
@@ -256,7 +256,7 @@ CREATE TABLE OPERATORS (
 	);
 
 -- author: Mathew Chebet
-CREATE TABLE OPERATOR_TIMESTAMP (
+CREATE TABLE OPERATOR_TIMESTAMPS (
     TIMESTAMP_ID INT PRIMARY KEY AUTO_INCREMENT,
     PUNCH_TIME_START TIMESTAMP NOT NULL,
     PUNCH_TIME_STOP TIMESTAMP NOT NULL,
@@ -264,48 +264,35 @@ CREATE TABLE OPERATOR_TIMESTAMP (
     OPERATOR_ID INT NOT NULL, 
     FOREIGN KEY(OPERATOR_ID) REFERENCES OPERATORS(OPERATOR_ID)   
 	);
-
--- Make a temporary table with inner joins by John Tieu
-CREATE OR REPLACE VIEW VEHICLE_TIMETABLES AS 
-SELECT VEHICLES.VEHICLE_ID, STOPS.STOP_NAME, STOPS.IS_STATION, SCHEDULED_STOP_TIMES.ARRIVAL, SCHEDULED_STOP_TIMES.DEPARTURE 
-FROM SCHEDULED_STOP_TIMES
-INNER JOIN TRIP_SCHEDULES ON TRIP_SCHEDULES.ID = SCHEDULED_STOP_TIMES.TRIP_SCHEDULE_ID
-INNER JOIN VEHICLES ON VEHICLES.CURRENT_ASSIGNED_TRIP = TRIP_SCHEDULES.ID
-INNER JOIN ROUTES ON ROUTES.ID = TRIP_SCHEDULES.ROUTE_ID
-INNER JOIN ROUTE_STOPS ON route_stops.ID = SCHEDULED_STOP_TIMES.SEQ_STOP_ID
-    AND route_stops.ROUTE_ID = ROUTES.ID
-INNER JOIN STOPS ON STOPS.ID = ROUTE_STOPS.STOP_ID;
     
 -- -------------------------------------------------------------------------------
 /* SECTION 5: SETUP MAINTENANCE */
 /* author: Mathew Chebet */ 
 
-CREATE TABLE COMPONENT_TYPE (
+CREATE TABLE COMPONENT_TYPES (
     COMPONENT_ID INT PRIMARY KEY AUTO_INCREMENT,
-    COMPONENT_NAME VARCHAR(25) NOT NULL,
-    COMPONENT_ID INT NOT NULL,
-    FOREIGN KEY (VEHICLE_ID) REFERENCES VEHICLES(VEHICLE_ID)
+    COMPONENT_NAME VARCHAR(25) NOT NULL
 	);   
 
-CREATE TABLE VEHICLE_COMPONENT ( 
+CREATE TABLE VEHICLE_COMPONENTS( 
     VEHICLE_COMPONENT_ID INT AUTO_INCREMENT PRIMARY KEY,
-    HOURS_USED DECIMAL(4,2) DEFAULT 0,
+    HOURS_USED DECIMAL(6,2) DEFAULT 0,
     VEHICLE_ID INT NOT NULL, 
     COMPONENT_ID INT NOT NULL,
     FOREIGN KEY (VEHICLE_ID) REFERENCES VEHICLES(VEHICLE_ID),
-    FOREIGN KEY (COMPONENT_ID) REFERENCES COMPONENT_TYPE(COMPONENT_ID)
+    FOREIGN KEY (COMPONENT_ID) REFERENCES COMPONENT_TYPES(COMPONENT_ID)
 	);
 
-CREATE TABLE MAINTENANCE_REQUEST (
+CREATE TABLE MAINTENANCE_REQUESTS (
     REQUEST_ID INT AUTO_INCREMENT PRIMARY KEY,
     REQUEST_DATE DATE NOT NULL,
     QUOTED_COST DECIMAL(10,2) NOT NULL,
     OPERATOR_ID INT NOT NULL,
     VEHICLE_COMPONENT_ID INT NOT NULL,
     SERVICE_DESCRIPTION VARCHAR(50) NOT NULL,
-    IS_COMPLETED BOOLEAN NOT NULL DEFAULT FALSE, -- changed varchar to boolean, see previous line for old version
+    IS_COMPLETED BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY(OPERATOR_ID) REFERENCES OPERATORS(OPERATOR_ID),
-    FOREIGN KEY(VEHICLE_COMPONENT_ID) REFERENCES VEHICLE_COMPONENT(VEHICLE_COMPONENT_ID)
+    FOREIGN KEY(VEHICLE_COMPONENT_ID) REFERENCES VEHICLE_COMPONENTS(VEHICLE_COMPONENT_ID)
 	);
     
 CREATE TABLE FUEL_CONSUMPTION_ALERTS (
@@ -314,3 +301,242 @@ CREATE TABLE FUEL_CONSUMPTION_ALERTS (
     VEHICLE_ID INT NOT NULL, 
     FOREIGN KEY (VEHICLE_ID) REFERENCES VEHICLES(VEHICLE_ID)
 	);    
+
+-- -------------------------------------------------------------------------------
+/* SECTION 6: SETUP ACTUAL TRIPS*/
+/* author: Stephanie Prystupa-Maule */ 
+-- Table to store actual trip execution data
+CREATE TABLE ACTUAL_TRIPS (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    SCHEDULED_TRIP_ID INT NOT NULL,
+    OPERATOR_ID INT NOT NULL,
+    VEHICLE_ID INT NOT NULL,
+    TRIP_DATE DATE NOT NULL,
+    TRIP_STATUS ENUM('COMPLETED', 'CANCELLED', 'PARTIAL', 'IN_PROGRESS') NOT NULL,
+    FOREIGN KEY (SCHEDULED_TRIP_ID) REFERENCES TRIP_SCHEDULES(ID),
+    FOREIGN KEY (OPERATOR_ID) REFERENCES OPERATORS(OPERATOR_ID),
+    FOREIGN KEY (VEHICLE_ID) REFERENCES VEHICLES(VEHICLE_ID),
+    INDEX (TRIP_DATE),
+    INDEX (OPERATOR_ID),
+    INDEX (VEHICLE_ID)
+);
+
+-- Table to store actual stop times during a trip
+CREATE TABLE ACTUAL_STOP_TIMES (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    ACTUAL_TRIP_ID INT NOT NULL,
+    SEQ_STOP_ID INT NOT NULL,
+    SCHEDULED_ARRIVAL TIME,
+    SCHEDULED_DEPARTURE TIME,
+    ACTUAL_ARRIVAL TIME,
+    ACTUAL_DEPARTURE TIME,
+    ARRIVAL_VARIANCE INT, -- in seconds, positive means late, negative means early
+    DEPARTURE_VARIANCE INT, -- in seconds, positive means late, negative means early
+    FOREIGN KEY (ACTUAL_TRIP_ID) REFERENCES ACTUAL_TRIPS(ID) ON DELETE CASCADE,
+    FOREIGN KEY (SEQ_STOP_ID) REFERENCES ROUTE_STOPS(ID),
+    INDEX (SEQ_STOP_ID)
+);
+
+/* Helper procedures for inserting Actual Trip Data */
+DELIMITER //
+-- Actual Trip helper procedure
+-- does not include individual stops, returns new actual_trip_id for use by other procedures
+CREATE PROCEDURE INSERT_ACTUAL_TRIP(
+    IN p_scheduled_trip_id INT,
+    IN p_operator_id INT,
+    IN p_vehicle_id INT,
+    IN p_trip_date DATE,
+    IN p_trip_status ENUM('COMPLETED', 'CANCELLED', 'PARTIAL', 'IN_PROGRESS')
+)
+BEGIN
+    DECLARE v_actual_trip_id INT;
+    
+    -- Insert the actual trip
+    INSERT INTO ACTUAL_TRIPS (
+        SCHEDULED_TRIP_ID,
+        OPERATOR_ID,
+        VEHICLE_ID,
+        TRIP_DATE,
+        TRIP_STATUS
+    ) VALUES (
+        p_scheduled_trip_id,
+        p_operator_id,
+        p_vehicle_id,
+        p_trip_date,
+        p_trip_status
+    );
+    
+    -- Get the newly inserted trip ID
+    SET v_actual_trip_id = LAST_INSERT_ID();
+    
+    -- Return the new actual trip ID
+    SELECT v_actual_trip_id AS actual_trip_id;
+END //
+
+-- Actual Stop helper procedure
+-- individual stops, could be used with real-time GPS to track an in-progress route
+CREATE PROCEDURE INSERT_ACTUAL_STOP_TIME(
+    IN p_actual_trip_id INT,
+    IN p_seq_stop_id INT,
+    IN p_actual_arrival TIME,
+    IN p_actual_departure TIME
+)
+BEGIN
+    DECLARE v_scheduled_arrival TIME;
+    DECLARE v_scheduled_departure TIME;
+    DECLARE v_arrival_variance INT;
+    DECLARE v_departure_variance INT;
+    DECLARE v_scheduled_trip_id INT;
+    
+    -- Get the scheduled trip ID associated with this actual trip
+    SELECT SCHEDULED_TRIP_ID INTO v_scheduled_trip_id 
+    FROM ACTUAL_TRIPS 
+    WHERE ID = p_actual_trip_id;
+    
+    -- Get scheduled arrival and departure times
+    SELECT 
+        sst.ARRIVAL, 
+        sst.DEPARTURE
+    INTO 
+        v_scheduled_arrival, 
+        v_scheduled_departure
+    FROM 
+        SCHEDULED_STOP_TIMES sst
+    WHERE 
+        sst.TRIP_SCHEDULE_ID = v_scheduled_trip_id
+        AND sst.SEQ_STOP_ID = p_seq_stop_id;
+    
+    -- Calculate variances in seconds
+    SET v_arrival_variance = TIME_TO_SEC(TIMEDIFF(p_actual_arrival, v_scheduled_arrival));
+    SET v_departure_variance = TIME_TO_SEC(TIMEDIFF(p_actual_departure, v_scheduled_departure));
+    
+    -- Insert stop time
+    INSERT INTO ACTUAL_STOP_TIMES (
+        ACTUAL_TRIP_ID,
+        SEQ_STOP_ID,
+        SCHEDULED_ARRIVAL,
+        SCHEDULED_DEPARTURE,
+        ACTUAL_ARRIVAL,
+        ACTUAL_DEPARTURE,
+        ARRIVAL_VARIANCE,
+        DEPARTURE_VARIANCE
+    ) VALUES (
+        p_actual_trip_id,
+        p_seq_stop_id,
+        v_scheduled_arrival,
+        v_scheduled_departure,
+        p_actual_arrival,
+        p_actual_departure,
+        v_arrival_variance,
+        v_departure_variance
+    );
+END //
+
+-- Generate Test Data procedure
+-- used to simulate actual trips with variations in stop times
+CREATE PROCEDURE GENERATE_TEST_TRIP(
+    IN p_scheduled_trip_id INT,
+    IN p_operator_id INT,
+    IN p_vehicle_id INT,
+    IN p_trip_date DATE,
+    IN p_min_variance INT, -- Minimum variance in seconds (can be negative for early)
+    IN p_max_variance INT  -- Maximum variance in seconds (positive for late)
+)
+BEGIN
+    DECLARE v_actual_trip_id INT;
+    DECLARE v_seq_stop_id INT;
+    DECLARE v_scheduled_arrival TIME;
+    DECLARE v_scheduled_departure TIME;
+    DECLARE v_actual_arrival TIME;
+    DECLARE v_actual_departure TIME;
+    DECLARE v_done BOOLEAN DEFAULT FALSE;
+    
+    DECLARE v_stop_cursor CURSOR FOR
+        SELECT 
+            sst.SEQ_STOP_ID,
+            sst.ARRIVAL,
+            sst.DEPARTURE
+        FROM 
+            SCHEDULED_STOP_TIMES sst
+        JOIN 
+            ROUTE_STOPS rs ON rs.ID = sst.SEQ_STOP_ID
+        WHERE 
+            sst.TRIP_SCHEDULE_ID = p_scheduled_trip_id
+        ORDER BY 
+            rs.STOP_SEQUENCE;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;
+    
+    -- Insert the actual trip
+    CALL INSERT_ACTUAL_TRIP(
+        p_scheduled_trip_id,
+        p_operator_id,
+        p_vehicle_id,
+        p_trip_date,
+        'COMPLETED'
+    );
+    
+    -- Get the newly inserted trip ID
+    SET v_actual_trip_id = LAST_INSERT_ID();
+    
+    -- Open cursor and loop through all stops
+    OPEN v_stop_cursor;
+    
+    read_loop: LOOP
+        FETCH v_stop_cursor INTO v_seq_stop_id, v_scheduled_arrival, v_scheduled_departure;
+        
+        IF v_done THEN
+            LEAVE read_loop;
+        END IF;
+        
+        -- Generate random variance within the specified range
+        SET v_actual_arrival = ADDTIME(
+            v_scheduled_arrival, 
+            SEC_TO_TIME(
+                FLOOR(
+                    p_min_variance + RAND() * (p_max_variance - p_min_variance)
+                )
+            )
+        );
+        
+        SET v_actual_departure = ADDTIME(
+            v_scheduled_departure, 
+            SEC_TO_TIME(
+                FLOOR(
+                    p_min_variance + RAND() * (p_max_variance - p_min_variance)
+                )
+            )
+        );
+        
+        -- Insert stop time
+        CALL INSERT_ACTUAL_STOP_TIME(
+            v_actual_trip_id,
+            v_seq_stop_id,
+            v_actual_arrival,
+            v_actual_departure
+        );
+    END LOOP;
+    
+    CLOSE v_stop_cursor;
+    
+    /* don't need return value yet
+    -- Return the new actual trip ID
+    SELECT v_actual_trip_id AS actual_trip_id;
+    */
+END //
+
+DELIMITER ;
+
+/* Example Usage 
+-- Insert a trip and its stops separately
+CALL INSERT_ACTUAL_TRIP(123, 45, 67, '2025-04-03', 'COMPLETED');
+-- (returns actual_trip_id, e.g. 789)
+
+-- Then add individual stop times
+CALL INSERT_ACTUAL_STOP_TIMES(789, 101, '08:05:00', '08:06:30');
+CALL INSERT_ACTUAL_STOP_TIMES(789, 102, '08:15:45', '08:17:20');
+-- etc.
+
+-- Generate test data with variances between -5 and +15 minutes
+CALL GENERATE_TEST_TRIP(123, 45, 67, '2025-04-03', -300, 900);
+*/
