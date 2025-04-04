@@ -86,6 +86,7 @@ public class TransitFrontController extends HttpServlet {
             throws ServletException, IOException {
 //        request.getRequestDispatcher("/TransitMenuView");
         processRequest(request, response);
+
     }
 
     /**

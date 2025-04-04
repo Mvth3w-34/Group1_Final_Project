@@ -99,7 +99,7 @@ public class OperatorDaoImpl implements OperatorDao {
             return 0;
         }   
     }
-    
+
     @Override
     public void closeConnection() {
         instance.closeConnection();

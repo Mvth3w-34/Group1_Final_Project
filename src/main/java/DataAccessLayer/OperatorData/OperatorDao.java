@@ -15,4 +15,5 @@ import DataAccessLayer.TransitDaoInterface;
 public interface OperatorDao extends TransitDaoInterface {
     public List<OperatorDTO> getAllOperators() throws SQLException;
     public void registerOperator(OperatorDTO operator) throws SQLException;
+
 }

@@ -31,6 +31,8 @@
     <servlet>
         <servlet-name>ViewVehicleTimestamp</servlet-name>
         <servlet-class>ViewLayer.ViewVehicleTimestamp</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>MaintenanceRequest</servlet-name>
         <servlet-class>ViewLayer.MaintenanceRequest</servlet-class>
     </servlet>
@@ -73,6 +75,8 @@
     <servlet-mapping>
         <servlet-name>ViewVehicleTimestamp</servlet-name>
         <url-pattern>/ViewVehicleTimestamp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>MaintenanceRequest</servlet-name>
         <url-pattern>/MaintenanceRequest</url-pattern>
     </servlet-mapping>
