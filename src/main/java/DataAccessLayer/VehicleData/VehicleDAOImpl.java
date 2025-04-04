@@ -74,7 +74,7 @@ public class VehicleDAOImpl implements VehicleDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             throw e;
         }
         return vehiclesList;
