@@ -79,6 +79,7 @@ public class TransitBusinessLayer {
     public void updateVehicle(String fuel, String route, String id) throws SQLException {
         String newFuel;
         String routeUpdate;
+        // Clear the current trip from a vehicle if default option is selected
         try {
             if (route.isBlank() || route.isEmpty() || route.equals("0")) {
                 routeUpdate = null;
@@ -88,6 +89,7 @@ public class TransitBusinessLayer {
         } catch (NullPointerException e) {
             routeUpdate = null;
         }
+        // Check if the fuel textbox input is empty
         try {
             if (fuel.isBlank() || fuel.isEmpty()) {
                 newFuel = null;
