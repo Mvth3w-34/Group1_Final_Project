@@ -127,20 +127,23 @@ public class MaintenanceRequest extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter())
         {
-            String requestType = request.getParameter("rType");
-            String vehicleType = request.getParameter("vTypes");
+            
             try{
+                
+                String requestType = request.getParameter("rType");
+                String vehicleType = request.getParameter("vTypes");
+                
                 if (requestType.equals("new")){
                     if (vehicleType != null){
                         switch (vehicleType){
                             case "bus":
-                                response.sendRedirect("AddMaintenanceRequest");
+                                response.sendRedirect("AddMaintenanceRequest?type=bus");
                                 break;
                             case "eTrain":
-                                response.sendRedirect("AddMaintenanceRequest");
+                                response.sendRedirect("AddMaintenanceRequest?type=eTrain");
                                 break;
                             case "dTrain":
-                                response.sendRedirect("AddMaintenanceRequest");
+                                response.sendRedirect("AddMaintenanceRequest?type=dTrain");
                                 break;
                             default:
                                 response.sendRedirect("MaintenanceRequest?valid=false");
@@ -152,13 +155,13 @@ public class MaintenanceRequest extends HttpServlet
                     if (vehicleType != null){
                         switch (vehicleType){
                             case "bus":
-                                response.sendRedirect("UpdateMaintenanceRequest");;
+                                response.sendRedirect("UpdateMaintenanceRequest?type=bus");;
                                 break;
                             case "eTrain":
-                                response.sendRedirect("UpdateMaintenanceRequest");
+                                response.sendRedirect("UpdateMaintenanceRequest?type=eTrain");
                                 break;
                             case "dTrain":
-                                response.sendRedirect("UpdateMaintenanceRequest");
+                                response.sendRedirect("UpdateMaintenanceRequest?type=dTrain");
                                 break;
                             default:
                                 response.sendRedirect("MaintenanceRequest?valid=false");

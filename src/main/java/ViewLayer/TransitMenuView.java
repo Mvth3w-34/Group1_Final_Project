@@ -67,9 +67,11 @@ public class TransitMenuView extends HttpServlet {
                             +   "<p>Welcome " + op.getName() + "</p>");
                     // Buttons that only managers can see
                     if (op.getOperatorType().name().equals(OperatorDTO.UserType.MANAGER.name())) {
-                        out.append("<a href='/Group1_Final_Project_v1/RegisterVehicle'><button>Register Vehicle</button></a><br>")
+                        out.append("<a href='/Group1_Final_Project_v1/MaintenanceRequest'><button>Perform Maintenance Request</button></a><br>")
+                            .append("<a href='/Group1_Final_Project_v1/RegisterVehicle'><button>Register Vehicle</button></a><br>")
                             .append("<a href='/Group1_Final_Project_v1/AssignRoutes'><button>Assign Routes</button></a><br>")
-                            .append("<a href='/Group1_Final_Project_v1/ViewVehicles'><button>View Fleet</button></a><br>");
+                            .append("<a href='/Group1_Final_Project_v1/ViewVehicles'><button>View Fleet</button></a><br>")
+                            ;
                     }
                     // All operators can see
                     out.append("<a href='/Group1_Final_Project_v1/LogTime'><button>Log Time</button></a><br>");
