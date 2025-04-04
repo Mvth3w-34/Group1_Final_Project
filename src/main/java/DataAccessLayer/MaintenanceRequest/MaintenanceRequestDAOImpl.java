@@ -70,12 +70,50 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     }
     
     /**
+     * This method returns a list of all of the incomplete maintenance requests.
+     * 
+     * @return requests, an array list of maintenance requests
+     */
+    @Override
+    public List<MaintenanceRequestTicketDTO> getAllIncompleteMaintenanceRequests(){
+        
+        ArrayList<MaintenanceRequestTicketDTO> requests =new ArrayList<>();
+        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE IS_COMPLETE = FALSE";
+        ResultSet  results;
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
+        {
+            results = statement.executeQuery();
+            while (results.next()) {
+                try {
+                    MaintenanceRequestTicketDTO request = new MaintenanceRequestTicketDTO();
+                    
+                    request.setRequestID(results.getInt("REQUEST_ID"));
+                    request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
+                    request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
+                    request.setOperatorID(results.getInt("OPERATOR_ID"));
+                    request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
+                    request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
+                    request.setIsComplete(results.getBoolean("IS_COMPLETED"));
+                    
+                    requests.add(request);
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return requests;
+    }
+    
+    /**
      * This method will insert a maintenance request entry into the database.
      * 
      * @param request, the maintenance request object
      */
     @Override
-    public void insertMaintenanceRequest(MaintenanceRequestTicketDTO request){
+    public void addMaintenanceRequest(MaintenanceRequestTicketDTO request){
 
         String query = "INSERT INTO MAINTENANCE_REQUESTS(REQUEST_DATE,QUOTED_COST, OPERATOR_ID,VEHICLE_COMPONENT_ID, SERVICE_DESCRIPTION, IS_COMPLETED)"
                 + "VALUES(?,?,?,?,?,?)";
@@ -141,7 +179,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
      */
     @Override
     public void updateMaintenanceRequest(MaintenanceRequestTicketDTO request){
-        String query = "UPDATE MAINTENANCE_REQUESTS SET IS_COMPLETED = 'YES' WHERE REQUEST_ID = ? ";
+        String query = "UPDATE MAINTENANCE_REQUESTS SET IS_COMPLETED = FALSE WHERE REQUEST_ID = ? ";
         
         try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setInt(1, request.getRequestID());

@@ -14,7 +14,8 @@ import java.util.List;
 public interface MaintenanceRequestDAO
 {
     List<MaintenanceRequestTicketDTO> getAllMaintenanceRequests();
-    void insertMaintenanceRequest(MaintenanceRequestTicketDTO request);
+    List<MaintenanceRequestTicketDTO> getAllIncompleteMaintenanceRequests();
+    void addMaintenanceRequest(MaintenanceRequestTicketDTO request);
     MaintenanceRequestTicketDTO getMaintenanceRequestById(int id);
     void updateMaintenanceRequest(MaintenanceRequestTicketDTO request);
 }
