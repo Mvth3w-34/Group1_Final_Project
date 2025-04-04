@@ -122,5 +122,6 @@ public class TransitBusinessLayer {
     }
     public List<VehicleStationTimetable> getRoutes(int vehicleID) throws SQLException {
         return routesTripsDao.getAllVehicleStationTimes(vehicleID);
+
     }
 }

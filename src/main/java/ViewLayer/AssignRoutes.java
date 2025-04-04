@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AssignRoutes extends HttpServlet {
 
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
