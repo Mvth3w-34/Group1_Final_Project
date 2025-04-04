@@ -53,11 +53,14 @@ public class TransitDataSource {
         // Create a connection to the database with the saved login information
         try {
             if (connection == null || connection.isClosed()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(url, dbUser, dbPass);
 //                connection = DriverManager.getConnection(url, login.getUsername(), login.getPassword());
             }
         } catch (SQLException e) {
             throw e;
+        } catch (ClassNotFoundException e) {
+            
         }
         return connection;
     }

@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author johnt
  */
-public interface RoutesTripsDAO extends TransitDaoInterface {
+public interface RoutesTripsDAO {
     public List<VehicleStationTimetable> getAllVehicleStationTimes(int vehicleID) throws SQLException;
     public List<String> getHeaders() throws SQLException;
     public List<Integer> getRoutes() throws SQLException;

@@ -4,7 +4,7 @@
  */
 package DataAccessLayer.TimestampData;
 
-import DataAccessLayer.TransitDaoInterface;
+//import DataAccessLayer.TransitDaoInterface;
 import TransferObjects.TimeStamp;
 import java.sql.SQLException;
 
@@ -12,6 +12,6 @@ import java.sql.SQLException;
  *
  * @author johnt
  */
-public interface TimestampDAO extends TransitDaoInterface {
+public interface TimestampDAO {
     public void addTimestamp(TimeStamp timestamp) throws SQLException;
 }

@@ -114,13 +114,15 @@ public class TransitBusinessLayer {
         return vehicleDao.getAllVehicles();
     }
     public void logTime(int opId, String start, String end, String type) throws SQLException {
-        TimeStamp time = new TimeStamp();
-        LocalDate date = LocalDate.now();
-        time.setOperatorId(opId);
-        time.setStartTime(Timestamp.valueOf(date.toString() + " " + start + ":00"));
-        time.setEndTime(Timestamp.valueOf(date.toString() + " " + end + ":00"));
-        time.setTimestampType(type);
-        timestampDao.addTimestamp(time);
+        if (start != null || end != null || !start.isEmpty()) {
+            TimeStamp time = new TimeStamp();
+            LocalDate date = LocalDate.now();
+            time.setOperatorId(opId);
+            time.setStartTime(Timestamp.valueOf(date.toString() + " " + start + ":00"));
+            time.setEndTime(Timestamp.valueOf(date.toString() + " " + end + ":00"));
+            time.setTimestampType(type);
+            timestampDao.addTimestamp(time);
+        }
     }
     public void registerAccount(String name, String email, String username, String password, String userType) throws SQLException, IllegalArgumentException {
         LoginDTO login = new LoginDTO();
