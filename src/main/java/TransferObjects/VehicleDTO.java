@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package TransferObjects;
 
 import DataAccessLayer.VehicleData.VehicleBuilder;
@@ -10,20 +7,22 @@ import DataAccessLayer.VehicleData.VehicleBuilder;
  *
  * @author johnt
  */
+
+// steph's version
 public class VehicleDTO {
 
     public enum VehicleType {
-        DIESEL_BUS,
-        ELECTRIC_LIGHT_RAIL,
-        DIESEL_ELECTRIC_TRAIN
+        BUS,
+        ELECTRIC_TRAIN,
+        DIESEL_TRAIN
     }
     private VehicleType vehicleType;
-    private int vehicleId;
+    private int vehicleID;
     private String vehicleNumber; // VIN
     private String fuelType;
     private float fuelConsumptionRate;
     private int maxPassengers;
-    private String assignedRoute;
+    private Integer assignedTripID = null; // null default value
     
     /**
      * Creates the vehicles
@@ -33,17 +32,17 @@ public class VehicleDTO {
      * @param fuelType
      * @param fuelRate
      * @param maxPass
-     * @param route 
+     * @param tripId
      */
     public VehicleDTO(VehicleType type, int ID, String num, String fuelType,
-float fuelRate, int maxPass, String route) {
+float fuelRate, int maxPass, int tripID) {
         this.vehicleType = type;
-        this.vehicleId = ID;
+        this.vehicleID = ID;
         this.vehicleNumber = num;
         this.fuelType = fuelType;
         this.fuelConsumptionRate = fuelRate;
         this.maxPassengers = maxPass;
-        this.assignedRoute = route;
+        this.assignedTripID = tripID;
     }
     public static VehicleBuilder setupVehicle() {
         return new VehicleBuilder();
@@ -52,7 +51,7 @@ float fuelRate, int maxPass, String route) {
         return this.vehicleType;
     }
     public int getVehicleID() {
-        return this.vehicleId;
+        return this.vehicleID;
     }
     public String getVIN() {
         return this.vehicleNumber;
@@ -63,13 +62,19 @@ float fuelRate, int maxPass, String route) {
     public float getFuelRate() {
         return this.fuelConsumptionRate;
     }
+    // setter for fuel rate, as the value is updated regularly
+    public void setFuelRate(float fuelRate) {
+        this.fuelConsumptionRate = fuelRate;
+    }
     public int getMaxPassengers() {
         return this.maxPassengers;
     }
-    public String getRoute() {
-        return this.assignedRoute;
+    public Integer getTripID() {
+        return this.assignedTripID;
     }
-    public void setRoute(String route) {
-        this.assignedRoute = route;
+    // setter for assigned trip, as the value is updated regularly
+    public void setTripID(int tripID) {
+        this.assignedTripID = tripID;
     }
+
 }

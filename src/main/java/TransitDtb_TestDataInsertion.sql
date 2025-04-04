@@ -194,10 +194,10 @@ CALL CREATE_SCHEDULE_FROM_TEMPLATE(6, '11:30:00');
 -- NOTE: may want to revisit after Fuel Tracking is implemented 
 INSERT INTO VEHICLES (VEHICLE_TYPE, VEHICLE_NUMBER, FUEL_TYPE, FUEL_CONSUMPTION_RATE, MAX_PASSENGERS, CURRENT_ASSIGNED_TRIP)
 VALUES
-	("BUS", "001", "DEISEL", 10.0, 75, NULL), 
+    ("BUS", "001", "DIESEL", 10.0, 75, NULL), 
     ("BUS", "002", "CNG", 9.0, 60, NULL),
-    ("ELECTRIC TRAIN", "T100", "ELECTRICITY", 1000.0, 300, NULL), 
-    ("DEISEL TRAIN", "T200", "DEISEL", 30.0, 240, NULL)
+    ("ELECTRIC_TRAIN", "T100", "ELECTRICITY", 1000.0, 300, NULL), 
+    ("DIESEL_TRAIN", "T200", "DIESEL", 30.0, 240, NULL)
     ;
 
 -- ----------------------------------------------------------------------------------------------------------
