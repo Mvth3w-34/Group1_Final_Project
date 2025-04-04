@@ -1,0 +1,66 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package DataAccessLayer;
+import TransferObjects.LoginDTO;
+import java.sql.*;
+
+/**
+ *
+ * @author johnt
+ */
+public class TransitDataSource {
+    private static Connection connection = null;
+//    private static LoginDTO login;
+    private static TransitDataSource ds = null;
+    
+    private TransitDataSource() {
+//        this.login = login;
+    }
+    /**
+     * Opens a new login instance
+     * @return
+     */
+    public static synchronized TransitDataSource getDataInstance() {
+        if (ds == null) {
+//            ds = new TransitDataSource(login);
+            ds = new TransitDataSource();
+        }
+        return ds;
+    }
+    /**
+     * Opens a connection if there is no instance
+     * @return The connection to the DB
+     * @throws SQLException 
+     */
+    public synchronized Connection getConnection() throws SQLException {
+        // Store the database property information to log into the database server
+        String url = "jdbc:mysql://localhost:3306/transit";
+        String dbUser = "root";
+        String dbPass = "tieu0012";
+
+        // Create a connection to the database with the saved login information
+        try {
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(url, dbUser, dbPass);
+//                connection = DriverManager.getConnection(url, login.getUsername(), login.getPassword());
+            }
+        } catch (SQLException e) {
+            throw e;
+        }
+        return connection;
+    }
+    /**
+     * Manually closes the DB connection
+     */
+    public synchronized void closeConnection() {
+        try {
+            if (connection != null || !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            
+        }
+    }
+}
