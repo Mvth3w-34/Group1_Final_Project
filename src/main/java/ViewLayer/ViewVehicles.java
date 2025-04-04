@@ -80,6 +80,13 @@ public class ViewVehicles extends HttpServlet {
             
             out.println("<h1>Vehicle List</h1>");
             
+            // Navigation Menu
+            out.println("<div style='margin-bottom:20px;'>");
+            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a>");
+            out.println("</div>");            
+            
             // Display all vehicles if found
             if (vehicles!= null && !vehicles.isEmpty()) {
                 out.println("<h3>All Vehicles:</h3>");

@@ -23,7 +23,6 @@ import TransferObjects.VehicleDTO;
 /**
  * Servlet for viewing a single vehicle by ID using session-based authentication
  * 
- * @author johnt
  * @author Stephanie Prystupa-Maule
  */
 public class ViewVehicle extends HttpServlet {
@@ -97,6 +96,13 @@ public class ViewVehicle extends HttpServlet {
             out.println("<body>");
             
             out.println("<h1>Vehicle Details</h1>");
+            
+            // Navigation Menu
+            out.println("<div style='margin-bottom:20px;'>");
+            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a>");
+            out.println("</div>"); 
             
             // Display search form
             out.println("<form action=\"ViewVehicle-URL\" method=\"get\">");

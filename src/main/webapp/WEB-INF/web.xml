@@ -45,6 +45,17 @@
         <url-pattern>/ViewVehicle-URL</url-pattern>
     </servlet-mapping>
     
+    <!-- Register (add) Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>RegisterVehicle</servlet-name>
+        <servlet-class>ViewLayer.RegisterVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Register Vehicle -->
+    <servlet-mapping>
+        <servlet-name>RegisterVehicle</servlet-name>
+        <url-pattern>/RegisterVehicle-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
