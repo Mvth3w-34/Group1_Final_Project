@@ -39,7 +39,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
     @Override
     public List<VehicleComponentDTO> getComponentsByVehicleID(int id){
         ArrayList<VehicleComponentDTO> components =new ArrayList<>();
-        String query = "SELECT * FROM VEHICLE_COMPONENT WHERE VEHICLE_ID = ?";
+        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ?";
         ResultSet results;
         try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
         {
@@ -73,7 +73,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
      */
     @Override
     public void addVehicleComponent(VehicleComponentDTO component){
-        String query = "INSERT INTO VEHICLE_COMPONENT(HOURS_USED,VEHICLE_ID,COMPONENT_ID,VEHICLE_COMPONENT_ID)"
+        String query = "INSERT INTO VEHICLE_COMPONENTS(HOURS_USED,VEHICLE_ID,COMPONENT_ID,VEHICLE_COMPONENT_ID)"
                 + "VALUES(?,?,?)";
         
         ResultSet results;
@@ -96,7 +96,7 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
      */
     @Override
     public void updateVehicleComponent(VehicleComponentDTO component){
-        String query = "UPDATE VEHICLE_COMPONENT SET HOURS_USED = ? WHERE VEHICLE_COMPONENT_ID = ?";
+        String query = "UPDATE VEHICLE_COMPONENTS SET HOURS_USED = ? WHERE VEHICLE_COMPONENT_ID = ?";
         
         try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
             statement.setDouble(1, component.getHoursUsed());
