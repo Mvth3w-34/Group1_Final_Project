@@ -31,6 +31,16 @@
     <servlet>
         <servlet-name>ViewVehicleTimestamp</servlet-name>
         <servlet-class>ViewLayer.ViewVehicleTimestamp</servlet-class>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddMaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.AddMaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateMaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.UpdateMaintenanceRequest</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
@@ -63,6 +73,16 @@
     <servlet-mapping>
         <servlet-name>ViewVehicleTimestamp</servlet-name>
         <url-pattern>/ViewVehicleTimestamp</url-pattern>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <url-pattern>/MaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddMaintenanceRequest</servlet-name>
+        <url-pattern>/AddMaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateMaintenanceRequest</servlet-name>
+        <url-pattern>/UpdateMaintenanceRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
