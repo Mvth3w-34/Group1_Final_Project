@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DataAccessLayer;
-import TransferObjects.LoginDTO;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
@@ -53,11 +52,15 @@ public class TransitDataSource {
         // Create a connection to the database with the saved login information
         try {
             if (connection == null || connection.isClosed()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(url, dbUser, dbPass);
 //                connection = DriverManager.getConnection(url, login.getUsername(), login.getPassword());
             }
         } catch (SQLException e) {
             throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
         }
         return connection;
     }
