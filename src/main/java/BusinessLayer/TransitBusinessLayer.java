@@ -4,6 +4,8 @@
  */
 package BusinessLayer;
 
+import DataAccessLayer.MaintenanceRequest.MaintenanceRequestDAO;
+import DataAccessLayer.MaintenanceRequest.MaintenanceRequestDAOImpl;
 import DataAccessLayer.Routes.RoutesTripsDAO;
 import DataAccessLayer.Routes.RoutesTripsDAOImpl;
 import DataAccessLayer.TimestampData.TimestampDAO;
@@ -19,12 +21,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import DataAccessLayer.OperatorData.*;
-import DataAccessLayer.Routes.*;
-import DataAccessLayer.TimestampData.*;
-import TransferObjects.*;
-import java.sql.*;
-import java.util.*;
-import java.time.*;
+import DataAccessLayer.VehicleComponents.VehicleComponentDAO;
+import DataAccessLayer.VehicleComponents.VehicleComponentDAOImpl;
+import TransferObjects.MaintenanceRequestTicketDTO;
+import TransferObjects.VehicleComponentDTO;
 
 /**
  *
@@ -35,13 +35,16 @@ public class TransitBusinessLayer {
     private final OperatorDao operatorDao;
     private final TimestampDAO timestampDao;
     private final RoutesTripsDAO routesTripsDao;
+    private final VehicleComponentDAO vehicleComponentDao;
+    private final MaintenanceRequestDAO maintenanceRequestDao;
     
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
         operatorDao = new OperatorDaoImpl();
         timestampDao = new TimestampDAOImpl();
         routesTripsDao = new RoutesTripsDAOImpl();
-        
+        vehicleComponentDao = new VehicleComponentDAOImpl();
+        maintenanceRequestDao = new MaintenanceRequestDAOImpl();
     }
     /**
      * Verifies if the credentials entered exists in the DB system
@@ -123,5 +126,81 @@ public class TransitBusinessLayer {
     public List<VehicleStationTimetable> getRoutes(int vehicleID) throws SQLException {
         return routesTripsDao.getAllVehicleStationTimes(vehicleID);
 
+    }
+    
+    //The following code was written by Mathew Chebet
+    
+    /**
+     * This method will retrieve all of the maintenance requests.
+     * 
+     * @return maintenanceRequestDao.getAllMaintenanceRequests(), an array list
+     *  of MaintenanceRequestTicketDTO objects
+     */
+    public List<MaintenanceRequestTicketDTO> getAllMaintenanceRequests(){
+        return maintenanceRequestDao.getAllMaintenanceRequests();
+    }
+    
+    /**
+     * This method will retrieve all of the incomplete maintenance requests.
+     * 
+     * @return maintenanceRequestDao.getAllIncomplete MaintenanceRequests(), 
+     *  an array list of MaintenanceRequestTicketDTO objects
+     */
+    public List<MaintenanceRequestTicketDTO> getAllIncompleteMaintenanceRequests(){
+        return maintenanceRequestDao.getAllIncompleteMaintenanceRequests();
+    }
+    
+    /**
+     * This method will retrieve all of the incomplete maintenance requests.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public void addMaintenanceRequest(MaintenanceRequestTicketDTO request){
+        maintenanceRequestDao.addMaintenanceRequest(request);
+    }
+    
+    /**
+     * This method will retrieve all of the incomplete maintenance requests.
+     * 
+     * @param id, a maintenance request id
+     */
+    public MaintenanceRequestTicketDTO getMaintenanceRequestById(int id){
+        return maintenanceRequestDao.getMaintenanceRequestById(id);
+    }
+    
+    /**
+     * This method will update the status of an incomplete request to complete.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public void updateMaintenanceRequest(MaintenanceRequestTicketDTO request){
+        maintenanceRequestDao.updateMaintenanceRequest(request);
+    }
+    
+    /**
+     * This method returns a list of all of the known vehicle components for a specific vehicle.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public List<VehicleComponentDTO> getComponentsByVehicleID(int id){
+        return vehicleComponentDao.getComponentsByVehicleID(id);
+    }
+    
+    /**
+     * This method will add a vehicle component to the database.
+     * 
+     * @param component, a VehicleComponentDTO object
+     */
+    public void addVehicleComponent(VehicleComponentDTO component){
+        vehicleComponentDao.addVehicleComponent(component);
+    }
+    
+    /**
+     * This method will update the hours used for a vehicle component.
+     * 
+     * @param component, a VehicleComponentDTO object
+     */
+    public void updateVehicleComponent(VehicleComponentDTO component){
+        vehicleComponentDao.updateVehicleComponent(component);
     }
 }
