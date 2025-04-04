@@ -55,7 +55,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                     request.setOperatorID(results.getInt("OPERATOR_ID"));
                     request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
                     request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
-                    request.setIsComplete(results.getString("IS_COMPLETED").equalsIgnoreCase("YES"));
+                    request.setIsComplete(results.getBoolean("IS_COMPLETED"));
                     
                     requests.add(request);
                 } catch (IllegalArgumentException e) {
@@ -87,7 +87,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
             statement.setInt(3, request.getOperatorID());
             statement.setInt(4, request.getVehicleComponentID());
             statement.setString(5, request.getServiceDescription());
-            statement.setString(6,request.getIsComplete() ? "YES": "NO"); 
+            statement.setBoolean(6,request.getIsComplete()); 
             
             statement.executeUpdate();
             
@@ -106,7 +106,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     @Override
     public MaintenanceRequestTicketDTO getMaintenanceRequestById(int id){
         MaintenanceRequestTicketDTO request = null;
-        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE REQUEST_ID = ? AND IS_COMPLETE='NO'";
+        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE REQUEST_ID = ? AND IS_COMPLETE=FALSE";
         ResultSet results;
         try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
         {
@@ -121,7 +121,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
                     request.setOperatorID(results.getInt("OPERATOR_ID"));
                     request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
                     request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
-                    request.setIsComplete(results.getString("IS_COMPLETED").equalsIgnoreCase("YES"));
+                    request.setIsComplete(results.getBoolean("IS_COMPLETED"));
                     
                 } catch (IllegalArgumentException e) {
                     // Skip the operator with an invalid user type
