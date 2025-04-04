@@ -32,14 +32,51 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
     }
     
     /**
+     * This method returns a vehicle component based on the vehicle id and component id.
+     * 
+     * @param vehicleID, a vehicle ID
+     * @param componentID, a componentID
+     * @return component, a VehicleComponentDTO object
+     */
+    @Override
+    public VehicleComponentDTO getComponentByIDs(int vehicleID,int componentID){
+        VehicleComponentDTO component = new VehicleComponentDTO();
+        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ? AND COMPONENT_ID = ?";
+        ResultSet results;
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
+        {
+            statement.setInt(1, vehicleID);
+            statement.setInt(2, componentID);
+            
+            results = statement.executeQuery();
+            while (results.next()) {
+                try {
+                    component.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
+                    component.setHoursUsed(results.getInt("HOURS_USED"));
+                    component.setVehicleID(results.getInt("VEHICLE_ID"));
+                    component.setComponentID(results.getInt("COMPONENT_ID"));
+                    
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return component;
+    }
+    
+    /**
      * This method returns a list of all of the known vehicle components for a specific vehicle.
      * 
+     * @param id, a vehicle ID
      * @return components, an array list of components
      */
     @Override
     public List<VehicleComponentDTO> getComponentsByVehicleID(int id){
         ArrayList<VehicleComponentDTO> components =new ArrayList<>();
-        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ?";
+        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ? ";
         ResultSet results;
         try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {

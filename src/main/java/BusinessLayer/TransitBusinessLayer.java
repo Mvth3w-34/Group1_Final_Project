@@ -187,6 +187,17 @@ public class TransitBusinessLayer {
     }
     
     /**
+     * This method returns a vehicle component based on the vehicle ID and component ID.
+     * 
+     * @param vehicleID, a vehicleID
+     * @param componentID, a componentID
+     * @return vehicleComponentDao.getComponentByIDs(vehicleID, componentID), a VehicleComponentDTO object
+     */
+    public VehicleComponentDTO getComponentByIDs(int vehicleID, int componentID){
+        return vehicleComponentDao.getComponentByIDs(vehicleID, componentID);
+    }
+    
+    /**
      * This method will add a vehicle component to the database.
      * 
      * @param component, a VehicleComponentDTO object
