@@ -23,7 +23,7 @@
         <url-pattern>/LoginServlet-URL</url-pattern>
     </servlet-mapping>
     
-    <!-- View Vehicles Servlet Configuration -->
+    <!-- View Vehicles (all) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewVehicles</servlet-name>
         <servlet-class>ViewLayer.ViewVehicles</servlet-class>
@@ -32,6 +32,17 @@
     <servlet-mapping>
         <servlet-name>ViewVehicles</servlet-name>
         <url-pattern>/ViewVehicles-URL</url-pattern>
+    </servlet-mapping>
+    
+    <!-- View Vehicle (single) Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewVehicle</servlet-name>
+        <servlet-class>ViewLayer.ViewVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Vehicle -->
+    <servlet-mapping>
+        <servlet-name>ViewVehicle</servlet-name>
+        <url-pattern>/ViewVehicle-URL</url-pattern>
     </servlet-mapping>
     
     <!-- Welcome File List -->

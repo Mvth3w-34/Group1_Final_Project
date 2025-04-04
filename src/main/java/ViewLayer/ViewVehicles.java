@@ -1,3 +1,11 @@
+/* filename: ViewVehicles.java
+ * date: Apr. 4th, 2025
+ * authors: Stephanie Prystupa-Maule, John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
+ */
+
 package ViewLayer;
         
 import BusinessLayer.VehiclesBusinessLogic;
@@ -83,7 +91,9 @@ public class ViewVehicles extends HttpServlet {
                 out.println("<th>Fuel Type</th>");
                 out.println("<th>Fuel Consumption Rate</th>");
                 out.println("<th>Maximum Passengers</th>"); 
-                out.println("<th>Current Assigned Trip</th>");                
+                out.println("<th>Current Assigned Trip</th>");
+                // links to actions that can be performed on a record
+                out.println("<th>Actions</th>");
                 out.println("</tr>");
                 
                 for (VehicleDTO vehicle : vehicles) {
@@ -96,10 +106,11 @@ public class ViewVehicles extends HttpServlet {
                             + "<td>%.2f</td>" // fuel rate (2 decimal point float)
                             + "<td>%d</td>" // max passengers (int)
                             + "<td>%d</td>" // trip ID (int)
+                            + "<td><a href=\"ViewVehicle-URL?vehicleID=%d\">View Details</a></td>" // actions
                             + "</tr>",
                         vehicle.getVehicleID(), vehicle.getVehicleType().name(),
                         vehicle.getVIN(), vehicle.getFuelType(), vehicle.getFuelRate(),
-                        vehicle.getMaxPassengers(), vehicle.getTripID());
+                        vehicle.getMaxPassengers(), vehicle.getTripID(), vehicle.getVehicleID());
                 }
                 out.println("</table>");
                 
