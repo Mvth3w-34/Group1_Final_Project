@@ -24,6 +24,18 @@
         <servlet-name>ViewVehicles</servlet-name>
         <servlet-class>ViewLayer.ViewVehicles</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddMaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.AddMaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateMaintenanceRequest</servlet-name>
+        <servlet-class>ViewLayer.UpdateMaintenanceRequest</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>ViewVehicles</servlet-name>
         <url-pattern>/ViewVehicles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequest</servlet-name>
+        <url-pattern>/MaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddMaintenanceRequest</servlet-name>
+        <url-pattern>/AddMaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateMaintenanceRequest</servlet-name>
+        <url-pattern>/UpdateMaintenanceRequest</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
