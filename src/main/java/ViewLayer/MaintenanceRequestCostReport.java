@@ -16,8 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author kipro
+ * This class models a servlet to display maintenance requests by their cost from low to high.
+ * 
+ * @author Mathew Chebet
+ * @version 1.0
+ * @since 21
  */
 @WebServlet(name = "MaintenanceRequestCostReport", urlPatterns =
 {

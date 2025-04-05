@@ -20,8 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author kipro
+ * This class models a servlet to add maintenance request.
+ * 
+ * @author Mathew Chebet
+ * @version 1.0
+ * @since 21
  */
 @WebServlet(name = "AddMaintenanceRequest", urlPatterns =
 {
