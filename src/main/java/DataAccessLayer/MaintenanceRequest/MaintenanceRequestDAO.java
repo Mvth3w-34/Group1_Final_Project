@@ -5,7 +5,7 @@
 package DataAccessLayer.MaintenanceRequest;
 
 import TransferObjects.MaintenanceRequestTicketDTO;
-import java.sql.ResultSet;
+import TransferObjects.MaintenanceRequestTicketDTO;
 import java.util.List;
 
 /**
@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface MaintenanceRequestDAO
 {
-    List<MaintenanceRequestTicketDTO> getAllMaintenanceRequests();
-    ResultSet getAllIncompleteMaintenanceRequests();
+    List<Object[]> getAllMaintenanceRequests();
+    List<Object[]> getMaintenanceRequestsByCompletion();
     void addMaintenanceRequest(MaintenanceRequestTicketDTO request);
     MaintenanceRequestTicketDTO getMaintenanceRequestById(int id);
     void updateMaintenanceRequest(MaintenanceRequestTicketDTO request);

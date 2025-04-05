@@ -44,6 +44,18 @@
         <servlet-name>UpdateMaintenanceRequest</servlet-name>
         <servlet-class>ViewLayer.UpdateMaintenanceRequest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestDashboard</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestCostReport</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestCostReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestCompletionReport</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -87,6 +99,18 @@
     <servlet-mapping>
         <servlet-name>UpdateMaintenanceRequest</servlet-name>
         <url-pattern>/UpdateMaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestDashboard</servlet-name>
+        <url-pattern>/MaintenanceRequestDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestCostReport</servlet-name>
+        <url-pattern>/MaintenanceRequestCostReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
+        <url-pattern>/MaintenanceRequestCompletionReport</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

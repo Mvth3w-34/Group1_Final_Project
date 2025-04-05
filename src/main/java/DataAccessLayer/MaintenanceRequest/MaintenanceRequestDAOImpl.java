@@ -6,6 +6,7 @@ package DataAccessLayer.MaintenanceRequest;
 
 import DataAccessLayer.TransitDataSource;
 import TransferObjects.MaintenanceRequestTicketDTO;
+import TransferObjects.VehicleComponentDTO;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,68 +33,88 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     }    
     
     /**
-     * This method returns a list of all of the known maintenance requests.
+     * This method returns a list of objects representing rows of needed data
+     * need to show a dashboard of all of maintenance requests based on their completion status.
      * 
-     * @return requests, an array list of maintenance requests
+     * @return results, a list of objects representing the data for a row
      */
     @Override
-    public List<MaintenanceRequestTicketDTO> getAllMaintenanceRequests(){
-        
-        ArrayList<MaintenanceRequestTicketDTO> requests =new ArrayList<>();
-        String query = "SELECT * FROM MAINTENANCE_REQUESTS";
-        ResultSet  results;
-        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
-        {
-            results = statement.executeQuery();
-            while (results.next()) {
-                try {
-                    MaintenanceRequestTicketDTO request = new MaintenanceRequestTicketDTO();
-                    
-                    request.setRequestID(results.getInt("REQUEST_ID"));
-                    request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
-                    request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
-                    request.setOperatorID(results.getInt("OPERATOR_ID"));
-                    request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
-                    request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
-                    request.setIsComplete(results.getBoolean("IS_COMPLETED"));
-                    
-                    requests.add(request);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return requests;
-    }
-    
-    /**
-     * This method returns a result set of all of the incomplete maintenance requests.
-     * 
-     * @return results, a ResultSet of incomplete maintenance requests
-     */
-    @Override
-    public ResultSet getAllIncompleteMaintenanceRequests(){
-        
+    public List<Object[]> getAllMaintenanceRequests(){
+        ArrayList<Object[]> resultList = new ArrayList<>();
         String query = "SELECT MR.REQUEST_ID, MR.REQUEST_DATE, MR.OPERATOR_ID,"
-                + "VC.VEHICLE_ID, MR.SERVICE_DESCRIPTION"
+                + "V.VEHICLE_NUMBER, V.VEHICLE_TYPE, MR.SERVICE_DESCRIPTION, "
+                + "MR.QUOTED_COST, MR.IS_COMPLETED "
                 + "FROM MAINTENANCE_REQUESTS MR "
                 + "INNER JOIN VEHICLE_COMPONENTS VC "
                 + "ON MR.VEHICLE_COMPONENT_ID = VC.VEHICLE_COMPONENT_ID "
-                + "WHERE IS_COMPLETE = FALSE";
+                + "INNER JOIN VEHICLES V "
+                + "ON V.VEHICLE_ID = VC.VEHICLE_ID "
+                + "ORDER BY MR.QUOTED_COST ";
+        
         ResultSet results = null;
         
-        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
-        {
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
+            
             results = statement.executeQuery();
-       
-        } catch (SQLException e) {
+            
+            while (results.next()) {
+                int columnCount = results.getMetaData().getColumnCount();
+                Object[] row = new Object[columnCount];
+                
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = results.getObject(i); 
+                }
+                
+                resultList.add(row);
+                
+            } 
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
         
-        return results;
+        return resultList;
+    }
+    
+    /**
+     * This method returns a result set of all of maintenance requests based on completion.
+     * 
+     * @return results, a list of objects representing the data for a row
+     */
+    @Override
+    public List<Object[]> getMaintenanceRequestsByCompletion(){
+        ArrayList<Object[]> resultList = new ArrayList<>();
+        String query = "SELECT MR.REQUEST_ID, MR.REQUEST_DATE, MR.OPERATOR_ID,"
+                + "V.VEHICLE_NUMBER, V.VEHICLE_TYPE, MR.SERVICE_DESCRIPTION, "
+                + "MR.QUOTED_COST, MR.IS_COMPLETED "
+                + "FROM MAINTENANCE_REQUESTS MR "
+                + "INNER JOIN VEHICLE_COMPONENTS VC "
+                + "ON MR.VEHICLE_COMPONENT_ID = VC.VEHICLE_COMPONENT_ID "
+                + "INNER JOIN VEHICLES V "
+                + "ON V.VEHICLE_ID = VC.VEHICLE_ID "
+                + "ORDER BY MR.IS_COMPLETED";
+        
+        ResultSet results = null;
+        
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
+            results = statement.executeQuery();
+            while (results.next()) {
+                int columnCount = results.getMetaData().getColumnCount();
+                Object[] row = new Object[columnCount];
+                
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = results.getObject(i); 
+                }
+                
+                resultList.add(row);
+                
+            } 
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return resultList;
     }
     
     /**
