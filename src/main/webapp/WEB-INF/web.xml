@@ -111,6 +111,38 @@
         <servlet-name>ViewAllTripSchedules</servlet-name>
         <url-pattern>/ViewAllTripSchedules-URL</url-pattern>
     </servlet-mapping>
+    <!-- View Trip Schedule (single) Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewTripSchedule</servlet-name>
+        <servlet-class>ViewLayer.Trips.ViewTripSchedule</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Trip Schedule -->
+    <servlet-mapping>
+        <servlet-name>ViewTripSchedule</servlet-name>
+        <url-pattern>/ViewTripSchedule-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Trip Schedules by Route Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewTripSchedulesByRoute</servlet-name>
+        <servlet-class>ViewLayer.Trips.ViewTripSchedulesByRoute</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Trip Schedules by Route-->
+    <servlet-mapping>
+        <servlet-name>ViewTripSchedulesByRoute</servlet-name>
+        <url-pattern>/ViewTripSchedulesByRoute-URL</url-pattern>
+    </servlet-mapping>
+    
+    <!-- View Unassigned Trips Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewUnassignedTrips</servlet-name>
+        <servlet-class>ViewLayer.Trips.ViewUnassignedTrips</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Unassigned Trips-->
+    <servlet-mapping>
+        <servlet-name>ViewUnassignedTrips</servlet-name>
+        <url-pattern>/ViewUnassignedTrips-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
