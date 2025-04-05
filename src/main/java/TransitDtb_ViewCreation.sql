@@ -77,9 +77,10 @@ SELECT VEHICLE_ID AS "Vehicle ID",
 FROM VEHICLES;
 
  -- -------------------------------------------------------------------------------
-/* SECTION 3: OTHER */
-/* author: John Tieu */
+/* SECTION 3: TRIP REPORT VIEWS */
+/* authors: John Tieu and Stephanie Prystupa-Maule */
 
+-- author John Tieu
 CREATE OR REPLACE VIEW VEHICLE_TIMETABLES AS 
 SELECT VEHICLES.VEHICLE_ID, STOPS.STOP_NAME AS "STATION", STOPS.IS_STATION, SCHEDULED_STOP_TIMES.ARRIVAL AS "ARRIVAL TIME", SCHEDULED_STOP_TIMES.DEPARTURE AS "DEPARTURE TIME"
 FROM SCHEDULED_STOP_TIMES
@@ -89,3 +90,61 @@ INNER JOIN ROUTES ON ROUTES.ID = TRIP_SCHEDULES.ROUTE_ID
 INNER JOIN ROUTE_STOPS ON route_stops.ID = SCHEDULED_STOP_TIMES.SEQ_STOP_ID
     AND route_stops.ROUTE_ID = ROUTES.ID
 INNER JOIN STOPS ON STOPS.ID = ROUTE_STOPS.STOP_ID;
+
+-- author Stephanie Prystupa-Maule
+-- View of all vehicles assigned to trips, with route details and expected arrival/departure times
+-- different version of VEHICLE_TIMETABLES view above
+CREATE OR REPLACE VIEW VW_VEHICLE_ASSIGNMENTS AS
+SELECT 
+    v.VEHICLE_ID,
+    v.VEHICLE_TYPE,
+    v.VEHICLE_NUMBER,
+    ts.ID AS TRIP_SCHEDULE_ID,
+    r.ROUTE_NAME,
+    r.DIR AS DIRECTION,
+    s.STOP_NAME,
+    rs.STOP_SEQUENCE,
+    sst.ARRIVAL AS EXPECTED_ARRIVAL,
+    sst.DEPARTURE AS EXPECTED_DEPARTURE,
+    s.IS_STATION
+FROM 
+    VEHICLES v
+JOIN 
+    TRIP_SCHEDULES ts ON v.CURRENT_ASSIGNED_TRIP = ts.ID
+JOIN 
+    ROUTES r ON ts.ROUTE_ID = r.ID
+JOIN 
+    ROUTE_STOPS rs ON r.ID = rs.ROUTE_ID
+JOIN 
+    STOPS s ON rs.STOP_ID = s.ID
+JOIN 
+    SCHEDULED_STOP_TIMES sst ON (ts.ID = sst.TRIP_SCHEDULE_ID AND rs.ID = sst.SEQ_STOP_ID)
+ORDER BY 
+    v.VEHICLE_ID, rs.STOP_SEQUENCE;
+
+-- example filter by vehicle
+-- SELECT * FROM VW_VEHICLE_ASSIGNMENTS WHERE VEHICLE_ID = 123;
+
+-- author Stephanie Prystupa-Maule
+-- View of all trip schedules, with route detials and assigned vehicle (if any)
+CREATE OR REPLACE VIEW VW_TRIP_SCHEDULES AS
+SELECT 
+    ts.ID AS TRIP_SCHEDULE_ID,
+    ts.START_TIME,
+    r.ID AS ROUTE_ID,
+    r.ROUTE_NAME,
+    r.DIR AS DIRECTION,
+    v.VEHICLE_ID,
+    v.VEHICLE_TYPE,
+    v.VEHICLE_NUMBER
+FROM 
+    TRIP_SCHEDULES ts
+JOIN 
+    ROUTES r ON ts.ROUTE_ID = r.ID
+LEFT JOIN 
+    VEHICLES v ON ts.ID = v.CURRENT_ASSIGNED_TRIP
+ORDER BY 
+    ts.START_TIME, r.ROUTE_NAME, r.DIR;
+
+-- example filter by route
+-- SELECT * FROM VW_TRIP_SCHEDULES WHERE ROUTE_NAME = 'Route 5';

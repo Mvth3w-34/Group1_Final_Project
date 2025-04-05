@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
  * Data Access Object interface for Vehicles
  * Defines the contract for database operations on vehicles table.
  * 
@@ -25,6 +24,7 @@ public interface VehicleDAO {
     /**
      * Retrieves a vehicle from the database, by its ID.
      * 
+     * @param vehicleID Integer value of the vehicle ID
      * @return VehicleDTO The VehicleDTO object matching the vehicleID
      * @throws SQLException 
      */    
