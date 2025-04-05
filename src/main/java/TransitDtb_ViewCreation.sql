@@ -127,6 +127,9 @@ ORDER BY
 
 -- author Stephanie Prystupa-Maule
 -- View of all trip schedules, with route detials and assigned vehicle (if any)
+/* All vehicle details are included, so that a query on this view could fully populate
+ * a VehicleDTO without needing to requery a database. A report in the presentation layer likely
+ * will not show all columns */
 CREATE OR REPLACE VIEW VW_TRIP_SCHEDULES AS
 SELECT 
     ts.ID AS TRIP_SCHEDULE_ID,
@@ -136,7 +139,11 @@ SELECT
     r.DIR AS DIRECTION,
     v.VEHICLE_ID,
     v.VEHICLE_TYPE,
-    v.VEHICLE_NUMBER
+    v.VEHICLE_NUMBER,
+    v.FUEL_TYPE,
+    v.FUEL_CONSUMPTION_RATE,
+    v.MAX_PASSENGERS,
+    v.CURRENT_ASSIGNED_TRIP 
 FROM 
     TRIP_SCHEDULES ts
 JOIN 

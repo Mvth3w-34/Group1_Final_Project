@@ -34,16 +34,7 @@ import java.util.logging.Logger;
  * @see BaseDAOImpl
  * @see TripScheduleDAO
  */
-public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO {
-    
-    // VehicleDAO to populate VehicleDTO within TripScheduleDTO
-    private final VehicleDAO vehicleDAO;
-    
-    // Initialize the VehicleDAO
-    public TripScheduleDAOImpl() {
-        this.vehicleDAO = new VehicleDAOImpl();
-    }    
-    
+public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO {   
     /**
      * Retrieves a trip schedule from the database by Trip Schedule ID.
      * Executes a SELECT query on the vw_trip_schedules view and returns the record that
@@ -62,7 +53,8 @@ public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO 
                 TripScheduleDTO tripSchedule = null;
                 pstmt = conn.prepareStatement(
                         "SELECT trip_schedule_id, start_time, route_id, route_name, "
-                        + "direction, vehicle_id, vehicle_type, vehicle_number "
+                        + "direction, vehicle_id, vehicle_type, vehicle_number, "
+                        + "fuel_type, fuel_consumption_rate, max_passengers, current_assigned_trip "
                         + "FROM vw_trip_schedules WHERE trip_schedule_id = ?");
                 pstmt.setInt(1, scheduleID);
                 rs = pstmt.executeQuery();
@@ -98,9 +90,10 @@ public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO 
             
                 pstmt = conn.prepareStatement(
                     "SELECT trip_schedule_id, start_time, route_id, route_name, "
-                    + "direction, vehicle_id, vehicle_type, vehicle_number "
+                    + "direction, vehicle_id, vehicle_type, vehicle_number, "
+                    + "fuel_type, fuel_consumption_rate, max_passengers, current_assigned_trip "
                     + "FROM vw_trip_schedules ORDER BY start_time, route_name, direction");
-            
+                
                 rs = pstmt.executeQuery();
             
                 while (rs.next()) {
@@ -137,7 +130,8 @@ public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO 
             
                 pstmt = conn.prepareStatement(
                     "SELECT trip_schedule_id, start_time, route_id, route_name, "
-                    + "direction, vehicle_id, vehicle_type, vehicle_number "
+                    + "direction, vehicle_id, vehicle_type, vehicle_number, "
+                    + "fuel_type, fuel_consumption_rate, max_passengers, current_assigned_trip "                            
                     + "FROM vw_trip_schedules WHERE route_name = ? "
                     + "ORDER BY start_time, direction");
                 
@@ -174,24 +168,24 @@ public class TripScheduleDAOImpl extends BaseDAOImpl implements TripScheduleDAO 
             .setRouteId(rs.getInt("route_id"))
             .setRouteName(rs.getString("route_name"))
             .setDirection(rs.getString("direction"));
-        
+
         // Check if vehicle_id is not null before creating the VehicleDTO
         Integer vehicleId = rs.getInt("vehicle_id");
         if (!rs.wasNull()) {
-            try {
-                // Use VehicleDAO to get full vehicle details
-                VehicleDTO vehicle = vehicleDAO.getVehicleByID(vehicleId);
+            // Create the associated VehicleDTO from the result set
+            VehicleDTO vehicle = VehicleDTO.setupVehicle()
+                .setID(vehicleId)
+                .setVehicleType(VehicleDTO.VehicleType.valueOf(rs.getString("vehicle_type")))
+                .setVehicleNum(rs.getString("vehicle_number"))
+                .setFuelType(rs.getString("fuel_type"))
+                .setConsumptionRate(rs.getFloat("fuel_consumption_rate"))
+                .setMaxPassenger(rs.getInt("max_passengers"))
+                .setTripID(rs.getInt("current_assigned_trip"))
+                .buildVehicle();
 
-                // If search did not return a vehicle, don't set the VehicleDTO
-                if (vehicle != null) {
-                    builder.setVehicle(vehicle);
-                }
-            } catch (SQLException e) {
-                // If vehicle not found, log the error but continue with a partially populated DTO
-                Logger.getLogger(TripScheduleDAOImpl.class.getName())
-                      .log(Level.WARNING, "Error retrieving complete vehicle data for ID: " + vehicleId, e);
-            }
+            builder.setVehicle(vehicle);
         }
+
         return builder.build();
     }
 }

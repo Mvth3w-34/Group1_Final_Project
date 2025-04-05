@@ -5,7 +5,7 @@
  * professor: Samira Ouaaz
  * coursework: Final Project - Public Transit Management System
  */
-package ViewLayer;
+package ViewLayer.Vehicles;
         
 import BusinessLayer.VehiclesBusinessLogic;
 import java.io.IOException;

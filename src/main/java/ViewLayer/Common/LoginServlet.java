@@ -1,12 +1,12 @@
 /* filename: LoginServlet.java
- * date: Apr. 3rd, 2025
+ * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule, John Tieu
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
  * coursework: Final Project - Public Transit Management System
  */
 
-package ViewLayer;
+package ViewLayer.Common;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -39,8 +39,6 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         
-        String action = request.getParameter("action");
-        
         // Validate credentials
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             // Display login form again with error
@@ -61,30 +59,9 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession(true);
             session.setAttribute("credentials", credentials);
             
-            // Redirect based on the requested action
-            if (action == null || action.isEmpty()) {
-                action = "view_all"; // Default action
-            }
+            // Always redirect to LandingServlet after successful login
+            response.sendRedirect("LandingServlet-URL");
             
-            // Redirect to appropriate servlet
-            switch (action) {
-                case "register":
-                    response.sendRedirect("RegisterVehicle-URL");
-                    break;
-                case "remove":
-                    response.sendRedirect("RemoveVehicle-URL");
-                    break;
-                case "view":
-                    response.sendRedirect("ViewVehicle-URL");
-                    break;
-                case "update":
-                    response.sendRedirect("UpdateVehicle-URL");
-                    break;
-                case "view_all":
-                default:
-                    response.sendRedirect("FrontController-URL?action=view_all");
-                    break;
-            }
         } catch (Exception e) {
             // Failed to connect to database or other error
             displayLoginForm(request, response, "invalid");
@@ -109,7 +86,7 @@ public class LoginServlet extends HttpServlet {
         out.println("</HEAD>");
         out.println("<BODY BGCOLOR=\"#FDF5E6\">");
         out.println("<CENTER>");
-        out.println("<H2>Enter DBMS Credentials (update me: need user credentials instead?)</H2>");
+        out.println("<H2>Enter DBMS Credentials</H2>");
         
         // Display error message if applicable
         if (errorType != null) {
@@ -124,18 +101,13 @@ public class LoginServlet extends HttpServlet {
             out.println("<div id=\"error-message\" class=\"error\"></div>");
         }
         
-        // The form now submits to this same servlet
+        // Login Form
         out.println("<FORM ACTION=\"LoginServlet-URL\" METHOD=\"POST\">");
         out.println("  username:");
         out.println("  <INPUT TYPE=\"TEXT\" NAME=\"username\"><BR>");
         out.println("  password:");
         out.println("  <INPUT TYPE=\"PASSWORD\" NAME=\"password\"><P>");
-        out.println("  <!-- Submit buttons with different actions -->");
-        out.println("  <INPUT TYPE=\"SUBMIT\" NAME=\"action\" VALUE=\"view_all\">");
-        out.println("  <INPUT TYPE=\"SUBMIT\" NAME=\"action\" VALUE=\"view\">");
-        out.println("  <INPUT TYPE=\"SUBMIT\" NAME=\"action\" VALUE=\"register\">");
-        out.println("  <INPUT TYPE=\"SUBMIT\" NAME=\"action\" VALUE=\"update\">");
-        out.println("  <INPUT TYPE=\"SUBMIT\" NAME=\"action\" VALUE=\"remove\">");
+        out.println("  <INPUT TYPE=\"SUBMIT\" VALUE=\"Login\">");
         out.println("</FORM>");
         out.println("</CENTER>");
         out.println("</BODY>");

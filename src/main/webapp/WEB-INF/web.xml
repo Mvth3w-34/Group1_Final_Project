@@ -4,80 +4,113 @@
     <!-- Front Controller Servlet Configuration -->
     <servlet>
         <servlet-name>FrontController</servlet-name>
-        <servlet-class>ViewLayer.FrontController</servlet-class>
+        <servlet-class>ViewLayer.Controllers.FrontController</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Front Controller -->
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/FrontController-URL</url-pattern>
     </servlet-mapping>
-
+    <!-- Vehicle Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>VehicleFrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.VehicleFrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Vehicle Front Controller -->
+    <servlet-mapping>
+        <servlet-name>VehicleFrontController</servlet-name>
+        <url-pattern>/VehicleFrontController-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Trip Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>TripFrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.TripFrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Trip Front Controller -->
+    <servlet-mapping>
+        <servlet-name>TripFrontController</servlet-name>
+        <url-pattern>/TripFrontController-URL</url-pattern>
+    </servlet-mapping>
     <!-- Login Servlet Configuration -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>ViewLayer.LoginServlet</servlet-class>
+        <servlet-class>ViewLayer.Common.LoginServlet</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Login -->
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet-URL</url-pattern>
     </servlet-mapping>
-    
+    <!-- Landing PAgeServlet Configuration -->
+    <servlet>
+        <servlet-name>LandingServlet</servlet-name>
+        <servlet-class>ViewLayer.Common.LandingServlet</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Landing Page -->
+    <servlet-mapping>
+        <servlet-name>LandingServlet</servlet-name>
+        <url-pattern>/LandingServlet-URL</url-pattern>
+    </servlet-mapping>
     <!-- View Vehicles (all) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewVehicles</servlet-name>
-        <servlet-class>ViewLayer.ViewVehicles</servlet-class>
+        <servlet-class>ViewLayer.Vehicles.ViewVehicles</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Vehicles -->
     <servlet-mapping>
         <servlet-name>ViewVehicles</servlet-name>
         <url-pattern>/ViewVehicles-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- View Vehicle (single) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewVehicle</servlet-name>
-        <servlet-class>ViewLayer.ViewVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicles.ViewVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Vehicle -->
     <servlet-mapping>
         <servlet-name>ViewVehicle</servlet-name>
         <url-pattern>/ViewVehicle-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Register (add) Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>RegisterVehicle</servlet-name>
-        <servlet-class>ViewLayer.RegisterVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicles.RegisterVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Register Vehicle -->
     <servlet-mapping>
         <servlet-name>RegisterVehicle</servlet-name>
         <url-pattern>/RegisterVehicle-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Remove (delete) Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>RemoveVehicle</servlet-name>
-        <servlet-class>ViewLayer.RemoveVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicles.RemoveVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Remove Vehicle -->
     <servlet-mapping>
         <servlet-name>RemoveVehicle</servlet-name>
         <url-pattern>/RemoveVehicle-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Update Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>UpdateVehicle</servlet-name>
-        <servlet-class>ViewLayer.UpdateVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicles.UpdateVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Update Vehicle -->
     <servlet-mapping>
         <servlet-name>UpdateVehicle</servlet-name>
         <url-pattern>/UpdateVehicle-URL</url-pattern>
     </servlet-mapping>
-    
+    <!-- View All Trip Schedules Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewAllTripSchedules</servlet-name>
+        <servlet-class>ViewLayer.Trips.ViewAllTripSchedules</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View All Trip Schedules -->
+    <servlet-mapping>
+        <servlet-name>ViewAllTripSchedules</servlet-name>
+        <url-pattern>/ViewAllTripSchedules-URL</url-pattern>
+    </servlet-mapping>
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
