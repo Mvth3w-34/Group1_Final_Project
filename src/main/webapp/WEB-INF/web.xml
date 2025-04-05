@@ -67,6 +67,17 @@
         <url-pattern>/RemoveVehicle-URL</url-pattern>
     </servlet-mapping>
     
+    <!-- Update Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>UpdateVehicle</servlet-name>
+        <servlet-class>ViewLayer.UpdateVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Update Vehicle -->
+    <servlet-mapping>
+        <servlet-name>UpdateVehicle</servlet-name>
+        <url-pattern>/UpdateVehicle-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
