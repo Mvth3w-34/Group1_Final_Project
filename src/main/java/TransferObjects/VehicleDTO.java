@@ -32,10 +32,10 @@ public class VehicleDTO {
      * @param fuelType
      * @param fuelRate
      * @param maxPass
-     * @param tripId
+     * @param tripID
      */
     public VehicleDTO(VehicleType type, int ID, String num, String fuelType,
-float fuelRate, int maxPass, int tripID) {
+float fuelRate, int maxPass, Integer tripID) {
         this.vehicleType = type;
         this.vehicleID = ID;
         this.vehicleNumber = num;
@@ -73,7 +73,7 @@ float fuelRate, int maxPass, int tripID) {
         return this.assignedTripID;
     }
     // setter for assigned trip, as the value is updated regularly
-    public void setTripID(int tripID) {
+    public void setTripID(Integer tripID) {
         this.assignedTripID = tripID;
     }
 

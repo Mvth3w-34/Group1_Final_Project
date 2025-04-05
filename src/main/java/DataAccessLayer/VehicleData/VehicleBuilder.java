@@ -15,7 +15,7 @@ public class VehicleBuilder {
     private String fuelType;
     private float fuelConsumptionRate;
     private int maxPassengers;
-    private int assignedTripID;
+    private Integer assignedTripID;
 
     /**
      * Sets the vehicle type
@@ -72,11 +72,13 @@ public class VehicleBuilder {
         return this;
     }
     /**
-     * Sets the route of the vehicle
-     * @param route
+     * Sets the current assigned trip of the vehicle.
+     * Integer used instead of int to account for null values
+     * 
+     * @param tripID The trip ID to assign, can be null
      * @return The Vehicle Builder
      */
-    public VehicleBuilder setTripID(int tripID) {
+    public VehicleBuilder setTripID(Integer tripID) {
         this.assignedTripID = tripID;
         return this;
     }

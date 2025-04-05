@@ -95,7 +95,7 @@ public class RegisterVehicle extends HttpServlet {
                             .setFuelType(fuelType)
                             .setConsumptionRate(fuelRate)
                             .setMaxPassenger(maxPassengers)
-                            .setTripID(tripID != null ? tripID : null)
+                            .setTripID(tripID)
                             .buildVehicle();
                         
                         // Initialize business logic with credentials from session

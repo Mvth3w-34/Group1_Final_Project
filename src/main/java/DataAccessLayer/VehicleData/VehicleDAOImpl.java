@@ -145,9 +145,9 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                 pstmt.setInt(5, vehicle.getMaxPassengers());
                 
                 if (vehicle.getTripID() == null) {
-                    pstmt.setNull(6, java.sql.Types.NULL);
+                    pstmt.setNull(6, java.sql.Types.INTEGER);
                 } else {
-                    pstmt.setNull(6, vehicle.getTripID());
+                    pstmt.setInt(6, vehicle.getTripID());
                 }
                 pstmt.executeUpdate();        
                 return null;        
@@ -184,9 +184,9 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                 pstmt.setInt(5, vehicle.getMaxPassengers());
                 
                 if (vehicle.getTripID() == null) {
-                    pstmt.setNull(6, java.sql.Types.NULL);
+                    pstmt.setNull(6, java.sql.Types.INTEGER);
                 } else {
-                    pstmt.setNull(6, vehicle.getTripID());
+                    pstmt.setInt(6, vehicle.getTripID());
                 }
                 pstmt.setInt(7, vehicle.getVehicleID());
                 
