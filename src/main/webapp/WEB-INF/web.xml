@@ -56,6 +56,17 @@
         <url-pattern>/RegisterVehicle-URL</url-pattern>
     </servlet-mapping>
     
+    <!-- Remove (delete) Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>RemoveVehicle</servlet-name>
+        <servlet-class>ViewLayer.RemoveVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Remove Vehicle -->
+    <servlet-mapping>
+        <servlet-name>RemoveVehicle</servlet-name>
+        <url-pattern>/RemoveVehicle-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

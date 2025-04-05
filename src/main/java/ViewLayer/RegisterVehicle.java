@@ -127,11 +127,13 @@ public class RegisterVehicle extends HttpServlet {
             
             out.println("<h1>Register New Vehicle</h1>");
             
-            // Mavigation Menu
+            // Navigation menu
             out.println("<div style='margin-bottom:20px;'>");
             out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
             out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a>");
+            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
             out.println("</div>");
             
             // Display success or error message if applicable

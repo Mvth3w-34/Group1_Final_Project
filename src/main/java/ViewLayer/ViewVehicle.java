@@ -97,12 +97,14 @@ public class ViewVehicle extends HttpServlet {
             
             out.println("<h1>Vehicle Details</h1>");
             
-            // Navigation Menu
+            // Navigation menu
             out.println("<div style='margin-bottom:20px;'>");
             out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
             out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a>");
-            out.println("</div>"); 
+            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("</div>");
             
             // Display search form
             out.println("<form action=\"ViewVehicle-URL\" method=\"get\">");

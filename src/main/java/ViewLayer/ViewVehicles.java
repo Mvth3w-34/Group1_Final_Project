@@ -80,12 +80,14 @@ public class ViewVehicles extends HttpServlet {
             
             out.println("<h1>Vehicle List</h1>");
             
-            // Navigation Menu
+            // Navigation menu
             out.println("<div style='margin-bottom:20px;'>");
             out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
             out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a>");
-            out.println("</div>");            
+            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("</div>");          
             
             // Display all vehicles if found
             if (vehicles!= null && !vehicles.isEmpty()) {
@@ -113,11 +115,18 @@ public class ViewVehicles extends HttpServlet {
                             + "<td>%.2f</td>" // fuel rate (2 decimal point float)
                             + "<td>%d</td>" // max passengers (int)
                             + "<td>%d</td>" // trip ID (int)
-                            + "<td><a href=\"ViewVehicle-URL?vehicleID=%d\">View Details</a></td>" // actions
+                            // actions column
+                            + "<td>"
+                            + "<a href=\"ViewVehicle-URL?vehicleID=%d\">View</a> | "
+                            + "<a href=\"FrontController-URL?action=update&vehicleID=%d\">Update</a> | "
+                            + "<a href=\"FrontController-URL?action=remove&vehicleID=%d\">Remove</a>"
+                            + "</td>" // end actions column
                             + "</tr>",
                         vehicle.getVehicleID(), vehicle.getVehicleType().name(),
                         vehicle.getVIN(), vehicle.getFuelType(), vehicle.getFuelRate(),
-                        vehicle.getMaxPassengers(), vehicle.getTripID(), vehicle.getVehicleID());
+                        vehicle.getMaxPassengers(), vehicle.getTripID(), 
+                        // getVehicleID for the action nav links in the table
+                        vehicle.getVehicleID(), vehicle.getVehicleID(), vehicle.getVehicleID());
                 }
                 out.println("</table>");
                 
