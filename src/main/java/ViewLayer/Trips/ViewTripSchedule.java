@@ -100,13 +100,14 @@ public class ViewTripSchedule extends HttpServlet {
             out.println("<h1>Trip Schedule Details</h1>");
             
             // Navigation menu
-            out.println("<div style='margin-bottom:20px;'>");
+            out.println("<div>");
             out.println("<a href='FrontController-URL?module=trip&action=view_all'>View All Trip Schedules</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_by_route'>View Schedules by Route</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_unassigned'>View Unassigned Trips</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=assign_vehicle'>Assign Vehicle to Trip</a> | ");
+            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");            
             out.println("<a href='FrontController-URL?module=trip&action=return_to_menu'>Return to Main Menu</a>");
-            out.println("</div>");
+            out.println("</div>");   
             
             // Display search form
             out.println("<form action=\"ViewTripSchedule-URL\" method=\"get\">");

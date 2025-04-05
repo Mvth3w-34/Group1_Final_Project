@@ -87,8 +87,9 @@ public class ViewUnassignedTrips extends HttpServlet {
             out.println("<a href='FrontController-URL?module=trip&action=view_by_route'>View Schedules by Route</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_unassigned'>View Unassigned Trips</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=assign_vehicle'>Assign Vehicle to Trip</a> | ");
+            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");            
             out.println("<a href='FrontController-URL?module=trip&action=return_to_menu'>Return to Main Menu</a>");
-            out.println("</div>");          
+            out.println("</div>");           
             
             // Display error message if any
             if (!errorMessage.isEmpty()) {

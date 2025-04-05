@@ -58,6 +58,7 @@ public class FrontController extends HttpServlet {
         
         // Route to the appropriate module controller based on the module parameter
         switch (module.toLowerCase()) {
+            // TODO update vehicle case to match trip case
             case "vehicle":
                 // Forward to VehicleFrontController with the original action
                 if (action != null && !action.isEmpty()) {
@@ -66,11 +67,32 @@ public class FrontController extends HttpServlet {
                     response.sendRedirect("VehicleFrontController-URL");
                 }
                 break;
-                
+
             case "trip":
-                // Forward to TripScheduleFrontController with the original action
                 if (action != null && !action.isEmpty()) {
-                    response.sendRedirect("TripFrontController-URL?action=" + action);
+                    // Base URL
+                    StringBuilder redirectURL = new StringBuilder("TripFrontController-URL?");
+
+                    // Get all parameter names from the request
+                    java.util.Enumeration<String> paramNames = request.getParameterNames();
+                    boolean firstParam = true;
+
+                    // Add each parameter to the redirect URL
+                    while (paramNames.hasMoreElements()) {
+                        String paramName = paramNames.nextElement();
+                        String paramValue = request.getParameter(paramName);
+
+                        if (paramValue != null && !paramValue.isEmpty()) {
+                            if (!firstParam) {
+                                redirectURL.append("&");
+                            }
+                            redirectURL.append(paramName).append("=")
+                                      .append(java.net.URLEncoder.encode(paramValue, "UTF-8"));
+                            firstParam = false;
+                        }
+                    }
+
+                    response.sendRedirect(redirectURL.toString());
                 } else {
                     response.sendRedirect("TripFrontController-URL");
                 }

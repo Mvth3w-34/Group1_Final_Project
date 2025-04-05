@@ -105,6 +105,18 @@ public class VehiclesBusinessLogic{
     }
     
     /**
+     * Removes the Assigned Trip ID of an existing vehicle.
+     * Trip ID is set to null when the vehicle does not have an assigned trip
+     * 
+     * @param vehicle The VehicleDTO to be updated
+     * @throws SQLException 
+     */
+    public void unassignVehicleFromTrip(VehicleDTO vehicle) throws SQLException {
+        vehicle.setTripID(null);
+        vehicleDAO.updateVehicleTripID(vehicle);
+    }    
+    
+    /**
      * Deletes (removes) an existing vehicle.
      * 
      * @param vehicle The VehicleDTO object to be be deleted

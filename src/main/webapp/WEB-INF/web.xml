@@ -143,6 +143,28 @@
         <url-pattern>/ViewUnassignedTrips-URL</url-pattern>
     </servlet-mapping>
     
+    <!-- Assign Vehicle to Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>AssignVehicleToTrip</servlet-name>
+        <servlet-class>ViewLayer.Trips.AssignVehicleToTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Assign Vehicle to Trip-->
+    <servlet-mapping>
+        <servlet-name>AssignVehicleToTrip</servlet-name>
+        <url-pattern>/AssignVehicleToTrip-URL</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Unassign Vehicle From Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>UnassignVehicleFromTrip</servlet-name>
+        <servlet-class>ViewLayer.Trips.UnassignVehicleFromTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for UnassignVehicleFromTrip-->
+    <servlet-mapping>
+        <servlet-name>UnassignVehicleFromTrip</servlet-name>
+        <url-pattern>/UnassignVehicleFromTrip-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

@@ -87,6 +87,7 @@ public class ViewAllTripSchedules extends HttpServlet {
             out.println("<a href='FrontController-URL?module=trip&action=view_by_route'>View Schedules by Route</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_unassigned'>View Unassigned Trips</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=assign_vehicle'>Assign Vehicle to Trip</a> | ");
+            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");            
             out.println("<a href='FrontController-URL?module=trip&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");          
             
@@ -131,9 +132,13 @@ public class ViewAllTripSchedules extends HttpServlet {
                     out.println("<td>");
                     out.println("<a href=\"ViewTripSchedule-URL?tripID=" + trip.getTripScheduleId() + "\">View</a>");
                     
-                    // Only show assign vehicle link if no vehicle is assigned
+                    // If no vehicle assigned, show assign vehicle link
                     if (!trip.hasVehicleAssigned()) {
                         out.println(" | <a href=\"FrontController-URL?module=trip&action=assign_vehicle&tripID=" + trip.getTripScheduleId() + "\">Assign Vehicle</a>");
+                    }
+                    // If a vehicle is assigned, show unassign vehicle link
+                    if (trip.hasVehicleAssigned()) {
+                        out.println(" | <a href=\"FrontController-URL?module=trip&action=unassign_vehicle&tripID=" + trip.getTripScheduleId() + "\">Unassign Vehicle</a>");
                     }
                     
                     out.println("</td>"); // end actions column

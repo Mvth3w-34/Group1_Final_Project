@@ -57,6 +57,7 @@ public class TripFrontController extends HttpServlet {
         String action = request.getParameter("action");
         String tripID = request.getParameter("tripID");
         String routeID = request.getParameter("routeID");
+        String routeName = request.getParameter("routeName");        
         
         // Determine default the action to take
         if (action == null) {
@@ -73,6 +74,10 @@ public class TripFrontController extends HttpServlet {
                 request.getRequestDispatcher("/ViewAllTripSchedules-URL").forward(request, response);
                 break;
             case "view_by_route":
+                // Set routeName as a request attribute
+                if (routeName != null) {
+                    request.setAttribute("routeName", routeName);
+                }
                 request.getRequestDispatcher("/ViewTripSchedulesByRoute-URL").forward(request, response);
                 break;
             case "view_unassigned":
@@ -81,6 +86,9 @@ public class TripFrontController extends HttpServlet {
             case "assign_vehicle":
                 request.getRequestDispatcher("/AssignVehicleToTrip-URL").forward(request, response);
                 break;
+            case "unassign_vehicle":
+                request.getRequestDispatcher("/UnassignVehicleFromTrip-URL").forward(request, response);
+                break;                
             case "return_to_menu":
                 response.sendRedirect("LandingServlet-URL");
                 break;

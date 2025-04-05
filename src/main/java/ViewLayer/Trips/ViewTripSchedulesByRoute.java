@@ -58,7 +58,18 @@ public class ViewTripSchedulesByRoute extends HttpServlet {
         // Initialize variables
         List<TripScheduleDTO> trips = null;
         String errorMessage = "";
+        
+        // Check for routeName in request parameters and attributes
         String routeName = request.getParameter("routeName");
+        if (routeName == null || routeName.isEmpty()) {
+            // If not in parameters, check attributes
+            Object routeNameAttr = request.getAttribute("routeName");
+            if (routeNameAttr != null) {
+                routeName = routeNameAttr.toString();
+            } else {
+                routeName = "";
+            }
+        }        
         
         try {
             // Initialize business logic with credentials from session
@@ -94,16 +105,19 @@ public class ViewTripSchedulesByRoute extends HttpServlet {
             out.println("<a href='FrontController-URL?module=trip&action=view_by_route'>View Schedules by Route</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_unassigned'>View Unassigned Trips</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=assign_vehicle'>Assign Vehicle to Trip</a> | ");
+            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");            
             out.println("<a href='FrontController-URL?module=trip&action=return_to_menu'>Return to Main Menu</a>");
-            out.println("</div>");
+            out.println("</div>");   
             
-            // Add search form for filtering by route
+            // Search form for filtering by route
             out.println("<div style='margin-top: 20px; margin-bottom: 20px;'>");
             out.println("<form action='FrontController-URL' method='get'>");
             out.println("<input type='hidden' name='module' value='trip'>");
             out.println("<input type='hidden' name='action' value='view_by_route'>");
             out.println("<label for='routeName'>Route Name:</label>");
-            out.println("<input type='text' id='routeName' name='routeName' value='" + routeName + "'>");
+            // Escape the routeName to prevent XSS vulnerabilities
+            String escapedRouteName = routeName != null ? routeName.replace("\"", "&quot;") : "";
+            out.println("<input type='text' id='routeName' name='routeName' value='" + escapedRouteName + "'>");
             out.println("<input type='submit' value='Filter'>");
             out.println("</form>");
             out.println("</div>");
@@ -159,9 +173,13 @@ public class ViewTripSchedulesByRoute extends HttpServlet {
                     out.println("<td>");
                     out.println("<a href=\"ViewTripSchedule-URL?tripID=" + trip.getTripScheduleId() + "\">View</a>");
                     
-                    // Only show assign vehicle link if no vehicle is assigned
+                    // If no vehicle assigned, show assign vehicle link
                     if (!trip.hasVehicleAssigned()) {
                         out.println(" | <a href=\"FrontController-URL?module=trip&action=assign_vehicle&tripID=" + trip.getTripScheduleId() + "\">Assign Vehicle</a>");
+                    }
+                    // If a vehicle is assigned, show unassign vehicle link
+                    if (trip.hasVehicleAssigned()) {
+                        out.println(" | <a href=\"FrontController-URL?module=trip&action=unassign_vehicle&tripID=" + trip.getTripScheduleId() + "\">Unassign Vehicle</a>");
                     }
                     
                     out.println("</td>"); // end actions column
