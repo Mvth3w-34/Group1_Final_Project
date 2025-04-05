@@ -80,6 +80,7 @@ public class AddMaintenanceRequest extends HttpServlet
                 out.println("<!DOCTYPE html>");
                 out.println("<html>");
                 out.println("<head>");
+                out.println("<link rel='stylesheet' href='style.css'>");
                 out.println("<title>Servlet MaintenanceRequest</title>");
                 out.println("</head>");
                 out.println("<body>");

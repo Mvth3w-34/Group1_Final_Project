@@ -35,34 +35,7 @@ public class MaintenanceRequest extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter())
-        {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet MaintenanceRequest</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<center>");
-            out.println("<form action=\"/Group1_Final_Project_v1/MaintenanceRequest\" method=\"post\">");
-            out.println("<h1>Please fill out the form to submit a MaintenanceRequest</h1>");
-            out.println("<br>");
-            out.println("<br>");
-            out.println("<label for=\"vtypes\">Vehicle type<label>");
-            out.println("<select name=\"vtypes\">");
-                out.println("<option name=\"vtype\">Bus<option>");
-                out.println("<option name=\"vtype\">Electric Train<option>");
-                out.println("<option name=\"vtype\">Diesel Train<option>");
-            out.println("</select>");
-            out.println("<br>");
-            out.println("<input type= submit>");
-            out.println("</form>");
-            out.println("</center>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -85,6 +58,7 @@ public class MaintenanceRequest extends HttpServlet
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+            out.println("<link rel='stylesheet' href='style.css'>");
             out.println("<title>Servlet MaintenanceRequest</title>");
             out.println("</head>");
             out.println("<body>");
