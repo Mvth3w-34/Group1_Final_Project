@@ -1,5 +1,5 @@
 /* filename: RegisterVehicle.java
- * date: Apr. 4th, 2025
+ * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -24,6 +24,8 @@ import TransferObjects.VehicleDTO;
  * Servlet for registering a new vehicle using session-based authentication
  * 
  * @author Stephanie Prystupa-Maule
+ * @version 2.0
+ * @since 04/05/2025
  */
 public class RegisterVehicle extends HttpServlet {
     /**
@@ -98,8 +100,13 @@ public class RegisterVehicle extends HttpServlet {
                             .setTripID(tripID)
                             .buildVehicle();
                         
-                        // Initialize business logic with credentials from session
-                        VehiclesBusinessLogic vehiclesLogic = new VehiclesBusinessLogic(credentials);
+                        // Check for business logic from request attribute first (passed from VehicleFrontController)
+                        VehiclesBusinessLogic vehiclesLogic = (VehiclesBusinessLogic) request.getAttribute("vehiclesLogic");
+                        
+                        // If not available, instantiate a new one
+                        if (vehiclesLogic == null) {
+                            vehiclesLogic = new VehiclesBusinessLogic(credentials);
+                        }
                         
                         // Register the vehicle
                         vehiclesLogic.registerVehicle(vehicle);
@@ -127,13 +134,14 @@ public class RegisterVehicle extends HttpServlet {
             
             out.println("<h1>Register New Vehicle</h1>");
             
-            // Navigation menu
+            // Navigation menu - updated with module parameter
             out.println("<div style='margin-bottom:20px;'>");
-            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=update'>Update Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=remove'>Remove Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");
             
             // Display success or error message if applicable
@@ -188,6 +196,9 @@ public class RegisterVehicle extends HttpServlet {
             
             out.println("</table>");
             out.println("</form>");
+            
+            // Add link back to view all vehicles
+            out.println("<p><a href=\"FrontController-URL?module=vehicle&action=view_all\">Back to All Vehicles</a></p>");
             
             out.println("</body>");
             out.println("</html>");

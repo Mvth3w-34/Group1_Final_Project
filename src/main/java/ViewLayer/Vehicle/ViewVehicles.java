@@ -1,5 +1,5 @@
 /* filename: ViewVehicles.java
- * date: Apr. 4th, 2025
+ * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule, John Tieu
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -27,6 +27,8 @@ import TransferObjects.VehicleDTO;
  * 
  * @author johnt
  * @author Stephanie Prystupa-Maule
+ * @version 2.0
+ * @since 04/05/2025
  */
 public class ViewVehicles extends HttpServlet {
     /**
@@ -59,8 +61,13 @@ public class ViewVehicles extends HttpServlet {
         String errorMessage = "";
         
         try {
-            // Initialize business logic with credentials from session
-            VehiclesBusinessLogic vehiclesLogic = new VehiclesBusinessLogic(credentials);
+            // Check for business logic from request attribute first (passed from VehicleFrontController)
+            VehiclesBusinessLogic vehiclesLogic = (VehiclesBusinessLogic) request.getAttribute("vehiclesLogic");
+            
+            // If not available, instantiate a new one
+            if (vehiclesLogic == null) {
+                vehiclesLogic = new VehiclesBusinessLogic(credentials);
+            }
             
             // Get all vehicles
             vehicles = vehiclesLogic.getAllVehicles();
@@ -70,7 +77,7 @@ public class ViewVehicles extends HttpServlet {
             errorMessage = "An error occurred while retrieving vehicles: " + e.getMessage();
         }
         
-            try {
+        try {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -80,13 +87,14 @@ public class ViewVehicles extends HttpServlet {
             
             out.println("<h1>Vehicle List</h1>");
             
-            // Navigation menu
+            // Navigation menu - updated with module parameter
             out.println("<div style='margin-bottom:20px;'>");
-            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=update'>Update Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=remove'>Remove Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");          
             
             // Display all vehicles if found
@@ -114,17 +122,18 @@ public class ViewVehicles extends HttpServlet {
                             + "<td>%s</td>" // fuel type (String)
                             + "<td>%.2f</td>" // fuel rate (2 decimal point float)
                             + "<td>%d</td>" // max passengers (int)
-                            + "<td>%d</td>" // trip ID (int)
+                            + "<td>%s</td>" // trip ID (int or "None")
                             // actions column
                             + "<td>"
                             + "<a href=\"ViewVehicle-URL?vehicleID=%d\">View</a> | "
-                            + "<a href=\"FrontController-URL?action=update&vehicleID=%d\">Update</a> | "
-                            + "<a href=\"FrontController-URL?action=remove&vehicleID=%d\">Remove</a>"
+                            + "<a href=\"FrontController-URL?module=vehicle&action=update&vehicleID=%d\">Update</a> | "
+                            + "<a href=\"FrontController-URL?module=vehicle&action=remove&vehicleID=%d\">Remove</a>"
                             + "</td>" // end actions column
                             + "</tr>",
                         vehicle.getVehicleID(), vehicle.getVehicleType().name(),
                         vehicle.getVIN(), vehicle.getFuelType(), vehicle.getFuelRate(),
-                        vehicle.getMaxPassengers(), vehicle.getTripID(), 
+                        vehicle.getMaxPassengers(), 
+                        (vehicle.getTripID() == null ? "None" : vehicle.getTripID().toString()),
                         // getVehicleID for the action nav links in the table
                         vehicle.getVehicleID(), vehicle.getVehicleID(), vehicle.getVehicleID());
                 }

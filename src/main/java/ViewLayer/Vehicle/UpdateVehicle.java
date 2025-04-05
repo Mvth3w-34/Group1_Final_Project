@@ -1,5 +1,5 @@
 /* filename: UpdateVehicle.java
- * date: Apr. 4th, 2025
+ * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -24,6 +24,8 @@ import TransferObjects.VehicleDTO;
  * Servlet for updating a vehicle using session-based authentication
  * 
  * @author Stephanie Prystupa-Maule
+ * @version 2.0
+ * @since 04/05/2025
  */
 public class UpdateVehicle extends HttpServlet {
     /**
@@ -56,8 +58,15 @@ public class UpdateVehicle extends HttpServlet {
         String successMessage = "";
         String errorMessage = "";
         
-        // Get the vehicleID parameter
+        // Get the vehicleID parameter (from request or from attribute)
         String vehicleIDParam = request.getParameter("vehicleID");
+        
+        // Check if vehicleID was set as an attribute by the VehicleFrontController
+        Object vehicleIDAttr = request.getAttribute("vehicleID");
+        if (vehicleIDAttr != null) {
+            vehicleIDParam = vehicleIDAttr.toString();
+        }
+        
         Integer vehicleID = null;
         
         // Check if vehicleID was provided
@@ -70,8 +79,13 @@ public class UpdateVehicle extends HttpServlet {
         }
         
         try {
-            // Initialize business logic with credentials from session
-            VehiclesBusinessLogic vehiclesLogic = new VehiclesBusinessLogic(credentials);
+            // Check for business logic from request attribute first (passed from VehicleFrontController)
+            VehiclesBusinessLogic vehiclesLogic = (VehiclesBusinessLogic) request.getAttribute("vehiclesLogic");
+            
+            // If not available, instantiate a new one
+            if (vehiclesLogic == null) {
+                vehiclesLogic = new VehiclesBusinessLogic(credentials);
+            }
             
             // Process form submission for update
             if ("POST".equalsIgnoreCase(request.getMethod()) && vehicleID != null) {
@@ -151,13 +165,14 @@ public class UpdateVehicle extends HttpServlet {
             
             out.println("<h1>Update Vehicle</h1>");
             
-            // Navigation menu
+            // Navigation menu - updated with module parameter
             out.println("<div style='margin-bottom:20px;'>");
-            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=update'>Update Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=remove'>Remove Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");   
             
             // Display success or error messages
@@ -171,7 +186,9 @@ public class UpdateVehicle extends HttpServlet {
             // If no vehicle is selected or not found, show search form
             if (vehicleID == null || vehicle == null) {
                 out.println("<h3>Enter Vehicle ID to Update:</h3>");
-                out.println("<form action='UpdateVehicle-URL' method='get'>");
+                out.println("<form action='FrontController-URL' method='get'>");
+                out.println("<input type='hidden' name='module' value='vehicle'>");
+                out.println("<input type='hidden' name='action' value='update'>");
                 out.println("<label for='vehicleID'>Vehicle ID: </label>");
                 out.println("<input type='text' name='vehicleID' id='vehicleID' required>");
                 out.println("<input type='submit' value='Search'>");
@@ -240,6 +257,9 @@ public class UpdateVehicle extends HttpServlet {
                 out.println("</table>");
                 out.println("</form>");
             }
+            
+            // Add link back to view all vehicles
+            out.println("<p><a href=\"FrontController-URL?module=vehicle&action=view_all\">Back to All Vehicles</a></p>");
             
             out.println("</body>");
             out.println("</html>");

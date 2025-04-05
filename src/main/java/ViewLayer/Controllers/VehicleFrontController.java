@@ -22,7 +22,7 @@ import TransferObjects.CredentialsDTO;
  * Processes all incoming vehicle-related requests and delegates to appropriate handlers.
  *
  * @author Stephanie Prystupa-Maule
- * @version 1.0
+ * @version 2.0
  * @since 04/05/2025
  */
 public class VehicleFrontController extends HttpServlet {
@@ -69,15 +69,24 @@ public class VehicleFrontController extends HttpServlet {
         // Dispatch to appropriate handler based on action
         switch (action) {
             case "view":
+                if (vehicleID != null && !vehicleID.isEmpty()) {
+                    request.setAttribute("vehicleID", vehicleID);
+                }
                 request.getRequestDispatcher("/ViewVehicle-URL").forward(request, response);
                 break;
             case "update":
+                if (vehicleID != null && !vehicleID.isEmpty()) {
+                    request.setAttribute("vehicleID", vehicleID);
+                }
                 request.getRequestDispatcher("/UpdateVehicle-URL").forward(request, response);
                 break;
             case "register":
                 request.getRequestDispatcher("/RegisterVehicle-URL").forward(request, response);
                 break;
             case "remove":
+                if (vehicleID != null && !vehicleID.isEmpty()) {
+                    request.setAttribute("vehicleID", vehicleID);
+                }
                 request.getRequestDispatcher("/RemoveVehicle-URL").forward(request, response);
                 break;
             case "view_all":

@@ -1,5 +1,5 @@
 /* filename: ViewVehicle.java
- * date: Apr. 4th, 2025
+ * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -24,6 +24,8 @@ import TransferObjects.VehicleDTO;
  * Servlet for viewing a single vehicle by ID using session-based authentication
  * 
  * @author Stephanie Prystupa-Maule
+ * @version 2.0
+ * @since 04/05/2025
  */
 public class ViewVehicle extends HttpServlet {
     /**
@@ -55,8 +57,15 @@ public class ViewVehicle extends HttpServlet {
         VehicleDTO vehicle = null;
         String errorMessage = "";
         
-        // Get the vehicleID parameter (either from the request or from a form submission)
+        // Get the vehicleID parameter (either from the request or from attribute set by VehicleFrontController)
         String vehicleIDParam = request.getParameter("vehicleID");
+        
+        // Check if vehicleID was set as an attribute by the VehicleFrontController
+        Object vehicleIDAttr = request.getAttribute("vehicleID");
+        if (vehicleIDAttr != null) {
+            vehicleIDParam = vehicleIDAttr.toString();
+        }
+        
         Integer vehicleID = null;
         
         // Check if vehicleID was provided
@@ -71,8 +80,13 @@ public class ViewVehicle extends HttpServlet {
         // Only query the database if we have a valid vehicleID
         if (vehicleID != null) {
             try {
-                // Initialize business logic with credentials from session
-                VehiclesBusinessLogic vehiclesLogic = new VehiclesBusinessLogic(credentials);
+                // Check for business logic from request attribute first (passed from VehicleFrontController)
+                VehiclesBusinessLogic vehiclesLogic = (VehiclesBusinessLogic) request.getAttribute("vehiclesLogic");
+                
+                // If not available, instantiate a new one
+                if (vehiclesLogic == null) {
+                    vehiclesLogic = new VehiclesBusinessLogic(credentials);
+                }
                 
                 // Get the specific vehicle
                 vehicle = vehiclesLogic.getVehicle(vehicleID);
@@ -97,13 +111,14 @@ public class ViewVehicle extends HttpServlet {
             
             out.println("<h1>Vehicle Details</h1>");
             
-            // Navigation menu
+            // Navigation menu - updated with module parameter
             out.println("<div style='margin-bottom:20px;'>");
-            out.println("<a href='FrontController-URL?action=view_all'>View All Vehicles</a> | ");
-            out.println("<a href='FrontController-URL?action=view'>Search Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=update'>Update Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=register'>Register Vehicle</a> | ");
-            out.println("<a href='FrontController-URL?action=remove'>Remove Vehicle</a>");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view_all'>View All Vehicles</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=view'>Search Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=update'>Update Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=register'>Register Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=remove'>Remove Vehicle</a> | ");
+            out.println("<a href='FrontController-URL?module=vehicle&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");
             
             // Display search form
@@ -131,10 +146,16 @@ public class ViewVehicle extends HttpServlet {
                 out.println("<tr><td>Maximum Passengers</td><td>" + vehicle.getMaxPassengers() + "</td></tr>");
                 out.println("<tr><td>Current Assigned Trip</td><td>" + (vehicle.getTripID() == null ? "None" : vehicle.getTripID()) + "</td></tr>");
                 out.println("</table>");
+                
+                // Additional action links
+                out.println("<div style='margin-top:20px;'>");
+                out.println("<a href=\"FrontController-URL?module=vehicle&action=update&vehicleID=" + vehicle.getVehicleID() + "\">Update This Vehicle</a> | ");
+                out.println("<a href=\"FrontController-URL?module=vehicle&action=remove&vehicleID=" + vehicle.getVehicleID() + "\">Remove This Vehicle</a>");
+                out.println("</div>");
             }
             
             // Add link back to view all vehicles
-            out.println("<p><a href=\"FrontController-URL?action=view_all\">Back to All Vehicles</a></p>");
+            out.println("<p><a href=\"FrontController-URL?module=vehicle&action=view_all\">Back to All Vehicles</a></p>");
             
             out.println("</body>");
             out.println("</html>");
