@@ -14,6 +14,7 @@ import DataAccessLayer.VehicleData.VehicleDAOImpl;
 import java.sql.SQLException;
 import java.util.List;
 import TransferObjects.CredentialsDTO;
+import TransferObjects.TripScheduleDTO;
 
 /**
  * Business logic layer for managing Vehicles data operations.
@@ -112,6 +113,42 @@ public class VehiclesBusinessLogic{
     public void removeVehicle(VehicleDTO vehicle) throws SQLException {
         vehicleDAO.removeVehicle(vehicle);
     }
+    
+    /**
+     * Filters vehicles based on whether they have a trip schedule assigned.
+     * 
+     * @param vehicles List of VehicleDTO objects to filter
+     * @param tripAssigned true to filter for vehicles with trip assigned, 
+     *                        false for vehicles without trip assigned
+     * @return List of filtered VehicleDTO objects
+     */
+    public List<VehicleDTO> filterByTripAssignment(List<VehicleDTO> vehicles, boolean tripAssigned) {
+        return vehicles.stream()
+                .filter(vehicle -> vehicle.hasTripAssigned() == tripAssigned)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Gets vehicles that already have a trip assigned
+     * 
+     * @return List of VehicleDTO objects with assigned trips
+     * @throws SQLException 
+     */
+    public List<VehicleDTO> getAssignedVehicles() throws SQLException {
+        List<VehicleDTO> allVehicles = getAllVehicles();
+        return filterByTripAssignment(allVehicles, true);
+    }
+
+    /**
+     * Gets vehicles that don't already have a trip assigned
+     * 
+     * @return List of VehicleDTO objects without assigned trips
+     * @throws SQLException 
+     */
+    public List<VehicleDTO> getUnassignedVehicles() throws SQLException {
+        List<VehicleDTO> allVehicles = getAllVehicles();
+        return filterByTripAssignment(allVehicles, false);
+    }       
     
     // TODO add validation?
 }

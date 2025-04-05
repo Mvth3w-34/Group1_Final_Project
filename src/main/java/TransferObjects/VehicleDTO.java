@@ -76,5 +76,14 @@ float fuelRate, int maxPass, Integer tripID) {
     public void setTripID(Integer tripID) {
         this.assignedTripID = tripID;
     }
+    
+    /**
+     * Determines if a trip schedule is already assigned to this vehicle
+     * 
+     * @return true if a trip schedule is assigned, false otherwise
+     */
+    public boolean hasTripAssigned() {
+        return (assignedTripID != null);
+    }
 
 }
