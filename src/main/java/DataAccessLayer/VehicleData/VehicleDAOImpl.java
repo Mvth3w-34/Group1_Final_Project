@@ -53,7 +53,11 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                 pstmt.setInt(1, vehicleID);
                 rs = pstmt.executeQuery();
 
-                if (rs.next()) {
+                if (rs.next()) {                   
+                    // Check if current assigned trip is null before setting it to an int or null 
+                    Integer tripID = rs.getObject("CURRENT_ASSIGNED_TRIP") != null ? 
+                                     rs.getInt("CURRENT_ASSIGNED_TRIP") : null;
+
                     vehicle = VehicleDTO.setupVehicle()
                             .setID(rs.getInt("VEHICLE_ID"))
                             .setVehicleType(VehicleDTO.VehicleType.valueOf(rs.getString("VEHICLE_TYPE")))
@@ -61,8 +65,8 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                             .setFuelType(rs.getString("FUEL_TYPE"))
                             .setConsumptionRate(rs.getFloat("FUEL_CONSUMPTION_RATE"))
                             .setMaxPassenger(rs.getInt("MAX_PASSENGERS"))
-                            .setTripID(rs.getInt("CURRENT_ASSIGNED_TRIP"))
-                            .buildVehicle();   
+                            .setTripID(tripID)
+                            .buildVehicle();
                 }
                 return vehicle;
             }
@@ -97,6 +101,10 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                 rs = pstmt.executeQuery();
             
                 while (rs.next()) {
+                    // Check if current assigned trip is null before setting it to an int or null 
+                    Integer tripID = rs.getObject("CURRENT_ASSIGNED_TRIP") != null ? 
+                                     rs.getInt("CURRENT_ASSIGNED_TRIP") : null;
+                    
                     VehicleDTO vehicle = VehicleDTO.setupVehicle()
                         .setID(rs.getInt("VEHICLE_ID"))
                         .setVehicleType(VehicleDTO.VehicleType.valueOf(rs.getString("VEHICLE_TYPE")))
@@ -104,9 +112,9 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                         .setFuelType(rs.getString("FUEL_TYPE"))
                         .setConsumptionRate(rs.getFloat("FUEL_CONSUMPTION_RATE"))
                         .setMaxPassenger(rs.getInt("MAX_PASSENGERS"))
-                        .setTripID(rs.getInt("CURRENT_ASSIGNED_TRIP"))
+                        .setTripID(tripID)
                         .buildVehicle();
-                
+
                     vehicles.add(vehicle);
                 }
             
@@ -183,6 +191,7 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                 pstmt.setFloat(4, vehicle.getFuelRate());
                 pstmt.setInt(5, vehicle.getMaxPassengers());
                 
+                // Check if tripID is null
                 if (vehicle.getTripID() == null) {
                     pstmt.setNull(6, java.sql.Types.INTEGER);
                 } else {
@@ -246,7 +255,13 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
                          "UPDATE vehicles SET current_assigned_trip = ? "
                         +"WHERE vehicle_id = ?");
                 
-                pstmt.setInt(1, vehicle.getTripID());
+                // Check if the tripID is null
+                if (vehicle.getTripID() == null) {
+                    pstmt.setNull(1, java.sql.Types.INTEGER);
+                } else {
+                    pstmt.setInt(1, vehicle.getTripID());
+                }
+
                 pstmt.setInt(2, vehicle.getVehicleID());
               
                 pstmt.executeUpdate();        
