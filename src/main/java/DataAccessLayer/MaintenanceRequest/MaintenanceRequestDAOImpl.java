@@ -70,41 +70,30 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     }
     
     /**
-     * This method returns a list of all of the incomplete maintenance requests.
+     * This method returns a result set of all of the incomplete maintenance requests.
      * 
-     * @return requests, an array list of maintenance requests
+     * @return results, a ResultSet of incomplete maintenance requests
      */
     @Override
-    public List<MaintenanceRequestTicketDTO> getAllIncompleteMaintenanceRequests(){
+    public ResultSet getAllIncompleteMaintenanceRequests(){
         
-        ArrayList<MaintenanceRequestTicketDTO> requests =new ArrayList<>();
-        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE IS_COMPLETE = FALSE";
-        ResultSet  results;
+        String query = "SELECT MR.REQUEST_ID, MR.REQUEST_DATE, MR.OPERATOR_ID,"
+                + "VC.VEHICLE_ID, MR.SERVICE_DESCRIPTION"
+                + "FROM MAINTENANCE_REQUESTS MR "
+                + "INNER JOIN VEHICLE_COMPONENTS VC "
+                + "ON MR.VEHICLE_COMPONENT_ID = VC.VEHICLE_COMPONENT_ID "
+                + "WHERE IS_COMPLETE = FALSE";
+        ResultSet results = null;
+        
         try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
             results = statement.executeQuery();
-            while (results.next()) {
-                try {
-                    MaintenanceRequestTicketDTO request = new MaintenanceRequestTicketDTO();
-                    
-                    request.setRequestID(results.getInt("REQUEST_ID"));
-                    request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
-                    request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
-                    request.setOperatorID(results.getInt("OPERATOR_ID"));
-                    request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
-                    request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
-                    request.setIsComplete(results.getBoolean("IS_COMPLETED"));
-                    
-                    requests.add(request);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                }
-            }
+       
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        return requests;
+        return results;
     }
     
     /**
@@ -144,25 +133,27 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
     @Override
     public MaintenanceRequestTicketDTO getMaintenanceRequestById(int id){
         MaintenanceRequestTicketDTO request = null;
-        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE REQUEST_ID = ? AND IS_COMPLETE=FALSE";
+        String query = "SELECT * FROM MAINTENANCE_REQUESTS WHERE REQUEST_ID = ? AND IS_COMPLETED = FALSE";
         ResultSet results;
         try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
+            statement.setInt(1, id);
             results = statement.executeQuery();
             while (results.next()) {
                 try {
-                    statement.setInt(1, id);
+                    
                     request = new MaintenanceRequestTicketDTO();
                     
+                    request.setRequestID(results.getInt("REQUEST_ID"));
                     request.setRequestDate(results.getDate("REQUEST_DATE").toLocalDate().atStartOfDay());
-                    request.setQuotedCost(results.getDouble("QUOTED_PRICE"));
+                    request.setQuotedCost(results.getDouble("QUOTED_COST"));
                     request.setOperatorID(results.getInt("OPERATOR_ID"));
                     request.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
                     request.setServiceDescription(results.getString("SERVICE_DESCRIPTION"));
                     request.setIsComplete(results.getBoolean("IS_COMPLETED"));
                     
                 } catch (IllegalArgumentException e) {
-                    // Skip the operator with an invalid user type
+                    e.printStackTrace();
                 }
             }
         } catch (SQLException e) {
@@ -179,7 +170,7 @@ public class MaintenanceRequestDAOImpl implements MaintenanceRequestDAO
      */
     @Override
     public void updateMaintenanceRequest(MaintenanceRequestTicketDTO request){
-        String query = "UPDATE MAINTENANCE_REQUESTS SET IS_COMPLETED = FALSE WHERE REQUEST_ID = ? ";
+        String query = "UPDATE MAINTENANCE_REQUESTS SET IS_COMPLETED = TRUE WHERE REQUEST_ID = ? ";
         
         try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setInt(1, request.getRequestID());

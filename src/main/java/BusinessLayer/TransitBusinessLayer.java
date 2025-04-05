@@ -25,6 +25,7 @@ import DataAccessLayer.VehicleComponents.VehicleComponentDAO;
 import DataAccessLayer.VehicleComponents.VehicleComponentDAOImpl;
 import TransferObjects.MaintenanceRequestTicketDTO;
 import TransferObjects.VehicleComponentDTO;
+import java.sql.ResultSet;
 
 /**
  *
@@ -143,10 +144,10 @@ public class TransitBusinessLayer {
     /**
      * This method will retrieve all of the incomplete maintenance requests.
      * 
-     * @return maintenanceRequestDao.getAllIncomplete MaintenanceRequests(), 
+     * @return maintenanceRequestDao.getAllIncompleteMaintenanceRequests(), 
      *  an array list of MaintenanceRequestTicketDTO objects
      */
-    public List<MaintenanceRequestTicketDTO> getAllIncompleteMaintenanceRequests(){
+    public ResultSet getAllIncompleteMaintenanceRequests(){
         return maintenanceRequestDao.getAllIncompleteMaintenanceRequests();
     }
     

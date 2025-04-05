@@ -190,6 +190,7 @@ public class AddMaintenanceRequest extends HttpServlet
                 response.sendRedirect("MaintenanceRequest");
             }
             
+            out.println("<a href=\"/Group1_Final_Project_v1/TransitMenuView\"><button>Return to Main Menu</button></a>");
             if (request.getParameter("exists").equals("false") && request.getParameter("exists") != null){
               out.println("<h2>Error! Either the vehicle or the component for that vehicle does not exist!</h2>");  
               out.println("<h2>Please you fill all of the required fields with valid entries</h2>");  
@@ -232,13 +233,14 @@ public class AddMaintenanceRequest extends HttpServlet
                 ticket.setQuotedCost(cost);
                 ticket.setOperatorID(operator.getOperatorID());
                 ticket.setVehicleComponentID(vehicleComponent.getVehicleComponentID());
-                ticket.setServiceDescription(description);
+                ticket.setServiceDescription(description.toUpperCase());
                 ticket.setIsComplete(false);
 
                 logic.addMaintenanceRequest(ticket);
+                request.getRequestDispatcher("succesfulAction.html").forward(request, response);
             }          
             else {
-                response.sendRedirect("AddMaintenanceRequest?valid=false&type="+request.getParameter("type"));
+                response.sendRedirect("AddMaintenanceRequest?exists=false&type="+request.getParameter("type"));
             }
         } catch (NullPointerException | NumberFormatException | SQLException e) {
             response.sendRedirect("AddMaintenanceRequest?exists=false&type="+request.getParameter("type"));
