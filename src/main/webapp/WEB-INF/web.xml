@@ -54,7 +54,7 @@
     <!-- View Vehicles (all) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewVehicles</servlet-name>
-        <servlet-class>ViewLayer.Vehicles.ViewVehicles</servlet-class>
+        <servlet-class>ViewLayer.Vehicle.ViewVehicles</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Vehicles -->
     <servlet-mapping>
@@ -64,7 +64,7 @@
     <!-- View Vehicle (single) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewVehicle</servlet-name>
-        <servlet-class>ViewLayer.Vehicles.ViewVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicle.ViewVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Vehicle -->
     <servlet-mapping>
@@ -74,7 +74,7 @@
     <!-- Register (add) Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>RegisterVehicle</servlet-name>
-        <servlet-class>ViewLayer.Vehicles.RegisterVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicle.RegisterVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Register Vehicle -->
     <servlet-mapping>
@@ -84,7 +84,7 @@
     <!-- Remove (delete) Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>RemoveVehicle</servlet-name>
-        <servlet-class>ViewLayer.Vehicles.RemoveVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicle.RemoveVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Remove Vehicle -->
     <servlet-mapping>
@@ -94,7 +94,7 @@
     <!-- Update Vehicle Servlet Configuration -->
     <servlet>
         <servlet-name>UpdateVehicle</servlet-name>
-        <servlet-class>ViewLayer.Vehicles.UpdateVehicle</servlet-class>
+        <servlet-class>ViewLayer.Vehicle.UpdateVehicle</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Update Vehicle -->
     <servlet-mapping>
@@ -104,7 +104,7 @@
     <!-- View All Trip Schedules Servlet Configuration -->
     <servlet>
         <servlet-name>ViewAllTripSchedules</servlet-name>
-        <servlet-class>ViewLayer.Trips.ViewAllTripSchedules</servlet-class>
+        <servlet-class>ViewLayer.Trip.ViewAllTripSchedules</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View All Trip Schedules -->
     <servlet-mapping>
@@ -114,7 +114,7 @@
     <!-- View Trip Schedule (single) Servlet Configuration -->
     <servlet>
         <servlet-name>ViewTripSchedule</servlet-name>
-        <servlet-class>ViewLayer.Trips.ViewTripSchedule</servlet-class>
+        <servlet-class>ViewLayer.Trip.ViewTripSchedule</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Trip Schedule -->
     <servlet-mapping>
@@ -124,47 +124,43 @@
     <!-- View Trip Schedules by Route Servlet Configuration -->
     <servlet>
         <servlet-name>ViewTripSchedulesByRoute</servlet-name>
-        <servlet-class>ViewLayer.Trips.ViewTripSchedulesByRoute</servlet-class>
+        <servlet-class>ViewLayer.Trip.ViewTripSchedulesByRoute</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Trip Schedules by Route-->
     <servlet-mapping>
         <servlet-name>ViewTripSchedulesByRoute</servlet-name>
         <url-pattern>/ViewTripSchedulesByRoute-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- View Unassigned Trips Servlet Configuration -->
     <servlet>
         <servlet-name>ViewUnassignedTrips</servlet-name>
-        <servlet-class>ViewLayer.Trips.ViewUnassignedTrips</servlet-class>
+        <servlet-class>ViewLayer.Trip.ViewUnassignedTrips</servlet-class>
     </servlet>
     <!-- Servlet Mapping for View Unassigned Trips-->
     <servlet-mapping>
         <servlet-name>ViewUnassignedTrips</servlet-name>
         <url-pattern>/ViewUnassignedTrips-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Assign Vehicle to Trip Servlet Configuration -->
     <servlet>
         <servlet-name>AssignVehicleToTrip</servlet-name>
-        <servlet-class>ViewLayer.Trips.AssignVehicleToTrip</servlet-class>
+        <servlet-class>ViewLayer.Trip.AssignVehicleToTrip</servlet-class>
     </servlet>
     <!-- Servlet Mapping for Assign Vehicle to Trip-->
     <servlet-mapping>
         <servlet-name>AssignVehicleToTrip</servlet-name>
         <url-pattern>/AssignVehicleToTrip-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Unassign Vehicle From Trip Servlet Configuration -->
     <servlet>
         <servlet-name>UnassignVehicleFromTrip</servlet-name>
-        <servlet-class>ViewLayer.Trips.UnassignVehicleFromTrip</servlet-class>
+        <servlet-class>ViewLayer.Trip.UnassignVehicleFromTrip</servlet-class>
     </servlet>
     <!-- Servlet Mapping for UnassignVehicleFromTrip-->
     <servlet-mapping>
         <servlet-name>UnassignVehicleFromTrip</servlet-name>
         <url-pattern>/UnassignVehicleFromTrip-URL</url-pattern>
     </servlet-mapping>
-    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

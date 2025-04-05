@@ -5,7 +5,7 @@
  * professor: Samira Ouaaz
  * coursework: Final Project - Public Transit Management System
  */
-package ViewLayer.Trips;
+package ViewLayer.Trip;
         
 import BusinessLayer.TripScheduleBusinessLogic;
 import java.io.IOException;

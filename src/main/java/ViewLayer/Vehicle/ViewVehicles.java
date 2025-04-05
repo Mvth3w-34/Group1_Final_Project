@@ -6,7 +6,7 @@
  * coursework: Final Project - Public Transit Management System
  */
 
-package ViewLayer.Vehicles;
+package ViewLayer.Vehicle;
         
 import BusinessLayer.VehiclesBusinessLogic;
 import java.io.IOException;
