@@ -1,7 +1,7 @@
 /* filename: TransitDtb_TableCreation.sql
  * authors: Stephanie Prystupa-Maule, John Tieu, Mathew Chebet
  * description: SQL script for Transit Dtb creation
- * last modified: 04/04/2025
+ * last modified: 04/06/2025
  */
 
 DROP DATABASE IF EXISTS TRANSIT;
@@ -320,6 +320,8 @@ CREATE TABLE ACTUAL_TRIPS (
     VEHICLE_ID INT NOT NULL,
     TRIP_DATE DATE NOT NULL,
     TRIP_STATUS ENUM('COMPLETED', 'CANCELLED', 'PARTIAL', 'IN_PROGRESS') NOT NULL,
+    TOTAL_TIME INT, -- the total time of the trip
+    TOTAL_DISTANCE INT, -- the total distanc of the trip
     FOREIGN KEY (SCHEDULED_TRIP_ID) REFERENCES TRIP_SCHEDULES(ID),
     FOREIGN KEY (OPERATOR_ID) REFERENCES OPERATORS(OPERATOR_ID),
     FOREIGN KEY (VEHICLE_ID) REFERENCES VEHICLES(VEHICLE_ID),
@@ -346,6 +348,85 @@ CREATE TABLE ACTUAL_STOP_TIMES (
 
 /* Helper procedures for inserting Actual Trip Data */
 DELIMITER //
+
+-- Procedure to calculate and update total time during a trip
+CREATE PROCEDURE UPDATE_TRIP_TOTAL_TIME(
+    IN p_actual_trip_id INT
+)
+BEGIN
+    DECLARE v_first_arrival TIME;
+    DECLARE v_last_arrival TIME;
+    DECLARE v_total_seconds INT;
+    
+    -- Get the first arrival time (first stop in sequence)
+    SELECT 
+        ast.ACTUAL_ARRIVAL INTO v_first_arrival
+    FROM 
+        ACTUAL_STOP_TIMES ast
+    JOIN 
+        ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+    WHERE 
+        ast.ACTUAL_TRIP_ID = p_actual_trip_id
+    ORDER BY 
+        rs.STOP_SEQUENCE ASC
+    LIMIT 1;
+    
+    -- Get the last arrival time (last stop in sequence)
+    SELECT 
+        ast.ACTUAL_ARRIVAL INTO v_last_arrival
+    FROM 
+        ACTUAL_STOP_TIMES ast
+    JOIN 
+        ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+    WHERE 
+        ast.ACTUAL_TRIP_ID = p_actual_trip_id
+    ORDER BY 
+        rs.STOP_SEQUENCE DESC
+    LIMIT 1;
+    
+    -- Calculate the time difference in seconds
+    IF v_first_arrival IS NOT NULL AND v_last_arrival IS NOT NULL THEN
+        SET v_total_seconds = TIME_TO_SEC(TIMEDIFF(v_last_arrival, v_first_arrival));
+        
+        -- Update the ACTUAL_TRIPS table
+        UPDATE ACTUAL_TRIPS
+        SET total_time = v_total_seconds
+        WHERE ID = p_actual_trip_id;
+    END IF;
+END //
+
+-- Create a trigger to automatically update total_time when a trip is completed
+CREATE TRIGGER after_actual_trip_status_update
+AFTER UPDATE ON ACTUAL_TRIPS
+FOR EACH ROW
+BEGIN
+    -- Only update if:
+    -- 1. Status changed to COMPLETED
+    -- 2. Not already being updated (check via total_time IS NULL)
+    -- 3. Previous status wasn't already COMPLETED (to prevent recursion)
+    IF NEW.TRIP_STATUS = 'COMPLETED' AND NEW.total_time IS NULL AND OLD.TRIP_STATUS != 'COMPLETED' THEN
+        -- Direct update rather than calling procedure to avoid recursion
+        UPDATE ACTUAL_TRIPS 
+        SET total_time = (
+            SELECT TIME_TO_SEC(TIMEDIFF(
+                (SELECT ast.ACTUAL_ARRIVAL
+                 FROM ACTUAL_STOP_TIMES ast
+                 JOIN ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+                 WHERE ast.ACTUAL_TRIP_ID = NEW.ID
+                 ORDER BY rs.STOP_SEQUENCE DESC
+                 LIMIT 1),
+                (SELECT ast.ACTUAL_ARRIVAL
+                 FROM ACTUAL_STOP_TIMES ast
+                 JOIN ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+                 WHERE ast.ACTUAL_TRIP_ID = NEW.ID
+                 ORDER BY rs.STOP_SEQUENCE ASC
+                 LIMIT 1)
+            ))
+        )
+        WHERE ID = NEW.ID;
+    END IF;
+END //
+
 -- Actual Trip helper procedure
 -- does not include individual stops, returns new actual_trip_id for use by other procedures
 CREATE PROCEDURE INSERT_ACTUAL_TRIP(
@@ -357,20 +438,29 @@ CREATE PROCEDURE INSERT_ACTUAL_TRIP(
 )
 BEGIN
     DECLARE v_actual_trip_id INT;
+    DECLARE v_route_distance INT;
     
-    -- Insert the actual trip
+    -- Get the total_distance from the associated ROUTES table
+    SELECT r.TOTAL_DISTANCE INTO v_route_distance
+    FROM TRIP_SCHEDULES ts
+    JOIN ROUTES r ON ts.ROUTE_ID = r.ID
+    WHERE ts.ID = p_scheduled_trip_id;
+    
+    -- Insert the actual trip with total_distance
     INSERT INTO ACTUAL_TRIPS (
         SCHEDULED_TRIP_ID,
         OPERATOR_ID,
         VEHICLE_ID,
         TRIP_DATE,
-        TRIP_STATUS
+        TRIP_STATUS,
+        total_distance
     ) VALUES (
         p_scheduled_trip_id,
         p_operator_id,
         p_vehicle_id,
         p_trip_date,
-        p_trip_status
+        p_trip_status,
+        v_route_distance
     );
     
     -- Get the newly inserted trip ID
@@ -394,6 +484,9 @@ BEGIN
     DECLARE v_arrival_variance INT;
     DECLARE v_departure_variance INT;
     DECLARE v_scheduled_trip_id INT;
+    DECLARE v_stop_sequence INT;
+    DECLARE v_total_stops INT;
+    DECLARE v_is_last_stop BOOLEAN DEFAULT FALSE;
     
     -- Get the scheduled trip ID associated with this actual trip
     SELECT SCHEDULED_TRIP_ID INTO v_scheduled_trip_id 
@@ -437,6 +530,50 @@ BEGIN
         v_arrival_variance,
         v_departure_variance
     );
+    
+    -- Get the current stop sequence and total number of stops for this route
+    SELECT 
+        rs.STOP_SEQUENCE, 
+        (SELECT COUNT(*) FROM ROUTE_STOPS WHERE ROUTE_ID = rs2.ROUTE_ID) 
+    INTO 
+        v_stop_sequence, 
+        v_total_stops
+    FROM 
+        ROUTE_STOPS rs
+    JOIN 
+        ACTUAL_TRIPS at ON at.ID = p_actual_trip_id
+    JOIN 
+        TRIP_SCHEDULES ts ON ts.ID = at.SCHEDULED_TRIP_ID
+    JOIN 
+        ROUTE_STOPS rs2 ON rs2.ID = p_seq_stop_id
+    WHERE 
+        rs.ID = p_seq_stop_id
+        AND rs.ROUTE_ID = ts.ROUTE_ID;
+    
+    -- Check if this is the last stop
+    SET v_is_last_stop = (v_stop_sequence = v_total_stops);
+    
+    -- If this is the last stop, update total_time
+    IF v_is_last_stop THEN
+        UPDATE ACTUAL_TRIPS 
+        SET total_time = (
+            SELECT TIME_TO_SEC(TIMEDIFF(
+                (SELECT ast.ACTUAL_ARRIVAL
+                 FROM ACTUAL_STOP_TIMES ast
+                 JOIN ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+                 WHERE ast.ACTUAL_TRIP_ID = p_actual_trip_id
+                 ORDER BY rs.STOP_SEQUENCE DESC
+                 LIMIT 1),
+                (SELECT ast.ACTUAL_ARRIVAL
+                 FROM ACTUAL_STOP_TIMES ast
+                 JOIN ROUTE_STOPS rs ON ast.SEQ_STOP_ID = rs.ID
+                 WHERE ast.ACTUAL_TRIP_ID = p_actual_trip_id
+                 ORDER BY rs.STOP_SEQUENCE ASC
+                 LIMIT 1)
+            ))
+        )
+        WHERE ID = p_actual_trip_id;
+    END IF;
 END //
 
 -- Generate Test Data procedure
@@ -526,10 +663,6 @@ BEGIN
     
     CLOSE v_stop_cursor;
     
-    /* don't need return value yet
-    -- Return the new actual trip ID
-    SELECT v_actual_trip_id AS actual_trip_id;
-    */
 END //
 
 DELIMITER ;
