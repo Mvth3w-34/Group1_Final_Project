@@ -80,6 +80,26 @@ public interface ActualTripDAO {
             Integer vehicleId, 
             Date tripDate, 
             String tripStatus) throws SQLException;    
+
+    /**
+     * Generates test trip data with random variances using the GENERATE_TEST_TRIP stored procedure.
+     * This is primarily for testing and simulation purposes.
+     * 
+     * @param scheduledTripId The ID of the scheduled trip to base the test data on
+     * @param operatorId The ID of the operator to associate with the trip
+     * @param vehicleId The ID of the vehicle to associate with the trip
+     * @param tripDate The date for the generated trip
+     * @param minVariance The minimum variance in seconds (can be negative for early arrivals/departures)
+     * @param maxVariance The maximum variance in seconds (positive for late arrivals/departures)
+     * @throws SQLException If there is an error accessing the database
+     */
+    void generateTestTrip(
+        Integer scheduledTripId,
+        Integer operatorId,
+        Integer vehicleId,
+        Date tripDate,
+        Integer minVariance,
+        Integer maxVariance) throws SQLException;
     
     /**
      * Retrieves a list of actual trips that match the specified filter criteria.

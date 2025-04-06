@@ -308,7 +308,55 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
         } finally {
             closeResources(null, cstmt, conn);
         }
-    }    
+    }  
+    
+    /**
+     * Generates test trip data with random variances using the GENERATE_TEST_TRIP stored procedure.
+     * This is primarily for testing and simulation purposes.
+     * 
+     * @param scheduledTripId The ID of the scheduled trip to base the test data on
+     * @param operatorId The ID of the operator to associate with the trip
+     * @param vehicleId The ID of the vehicle to associate with the trip
+     * @param tripDate The date for the generated trip
+     * @param minVariance The minimum variance in seconds (can be negative for early arrivals/departures)
+     * @param maxVariance The maximum variance in seconds (positive for late arrivals/departures)
+     * @throws SQLException If there is an error accessing the database
+     */
+    @Override
+    public void generateTestTrip(
+        Integer scheduledTripId,
+        Integer operatorId,
+        Integer vehicleId,
+        Date tripDate,
+        Integer minVariance,
+        Integer maxVariance) throws SQLException {
+
+        Connection conn = null;
+        CallableStatement cstmt = null;
+
+        try {
+            conn = getConnection();
+
+            // Call the stored procedure
+            cstmt = conn.prepareCall("{CALL GENERATE_TEST_TRIP(?, ?, ?, ?, ?, ?)}");
+
+            // Set input parameters
+            cstmt.setInt(1, scheduledTripId);
+            cstmt.setInt(2, operatorId);
+            cstmt.setInt(3, vehicleId);
+            cstmt.setDate(4, tripDate);
+            cstmt.setInt(5, minVariance);
+            cstmt.setInt(6, maxVariance);
+
+            // Execute the procedure
+            cstmt.execute();
+
+        } catch (SQLException ex) {
+            handleSQLException(ex, "generateTestTrip", true);
+        } finally {
+            closeResources(null, cstmt, conn);
+        }
+    }
     
     /**
      * Retrieves a list of actual trips that match the specified filter criteria.
