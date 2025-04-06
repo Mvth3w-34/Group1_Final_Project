@@ -1,5 +1,5 @@
 /* filename: ActualTripDAOImpl.java
- * date: Apr. 5th, 2025
+ * date: Apr. 6th, 2025
  * authors: Stephanie Prystupa-Maule, John Tieu
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -34,8 +34,8 @@ import java.util.logging.Logger;
  * Extends BaseDAOImpl to leverage common database functionality.
  * 
  * @author Stephanie Prystupa-Maule
- * @version 1.0
- * @since 04/05/2025
+ * @version 1.1
+ * @since 04/06/2025
  * @see BaseDAOImpl
  * @see ActualTripDAO
  */
@@ -77,7 +77,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
             public ActualTripDTO execute(Connection conn, PreparedStatement pstmt, ResultSet rs) throws SQLException {
                 ActualTripDTO actualTrip = null;
                 pstmt = conn.prepareStatement(
-                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status " +
+                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status, " +
+                        "total_time, total_distance " +
                         "FROM actual_trips WHERE id = ?");
                 pstmt.setInt(1, actualTripId);
                 rs = pstmt.executeQuery();
@@ -87,7 +88,7 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                     Integer vehicleId = rs.getInt("vehicle_id");
                     VehicleDTO vehicle = vehicleDAO.getVehicleByID(vehicleId);
                     
-                    // Build the ActualTripDTO using the Builder pattern
+                    // Build the ActualTripDTO
                     actualTrip = ActualTripDTO.builder()
                             .setActualTripId(rs.getInt("id"))
                             .setScheduledTripId(rs.getInt("scheduled_trip_id"))
@@ -95,6 +96,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                             .setVehicle(vehicle)
                             .setTripDate(rs.getDate("trip_date"))
                             .setTripStatus(rs.getString("trip_status"))
+                            .setTotalTime(rs.getObject("total_time") != null ? rs.getInt("total_time") : null)
+                            .setTotalDistance(rs.getObject("total_distance") != null ? rs.getInt("total_distance") : null)
                             .build();
                 }
                 return actualTrip;
@@ -124,7 +127,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                 List<ActualTripDTO> actualTrips = new ArrayList<>();
                 
                 pstmt = conn.prepareStatement(
-                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status " +
+                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status, " +
+                        "total_time, total_distance " +
                         "FROM actual_trips ORDER BY trip_date DESC, id");
                 
                 rs = pstmt.executeQuery();
@@ -142,6 +146,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                             .setVehicle(vehicle)
                             .setTripDate(rs.getDate("trip_date"))
                             .setTripStatus(rs.getString("trip_status"))
+                            .setTotalTime(rs.getObject("total_time") != null ? rs.getInt("total_time") : null)
+                            .setTotalDistance(rs.getObject("total_distance") != null ? rs.getInt("total_distance") : null)
                             .build();
                     
                     actualTrips.add(actualTrip);
@@ -218,14 +224,29 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
             public Void execute(Connection conn, PreparedStatement pstmt, ResultSet rs) throws SQLException {
                 pstmt = conn.prepareStatement(
                         "UPDATE actual_trips SET scheduled_trip_id = ?, operator_id = ?, " +
-                        "vehicle_id = ?, trip_date = ?, trip_status = ? WHERE id = ?");
+                        "vehicle_id = ?, trip_date = ?, trip_status = ?, " +
+                        "total_time = ?, total_distance = ? WHERE id = ?");
                 
                 pstmt.setInt(1, actualTrip.getTripScheduleId());
                 pstmt.setInt(2, actualTrip.getOperatorId());
                 pstmt.setInt(3, actualTrip.getVehicleId());
                 pstmt.setDate(4, actualTrip.getTripDate());
                 pstmt.setString(5, actualTrip.getTripStatus());
-                pstmt.setInt(6, actualTrip.getActualTripId());
+                
+                // Handle potentially null values for total_time and total_distance
+                if (actualTrip.getTotalTime() != null) {
+                    pstmt.setInt(6, actualTrip.getTotalTime());
+                } else {
+                    pstmt.setNull(6, Types.INTEGER);
+                }
+                
+                if (actualTrip.getTotalDistance() != null) {
+                    pstmt.setInt(7, actualTrip.getTotalDistance());
+                } else {
+                    pstmt.setNull(7, Types.INTEGER);
+                }
+                
+                pstmt.setInt(8, actualTrip.getActualTripId());
                 
                 pstmt.executeUpdate();
                 
@@ -376,7 +397,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                 
                 // Build the SQL query dynamically based on filters
                 StringBuilder sql = new StringBuilder(
-                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status " +
+                        "SELECT id, scheduled_trip_id, operator_id, vehicle_id, trip_date, trip_status, " +
+                        "total_time, total_distance " +
                         "FROM actual_trips WHERE 1=1");
                 
                 // Map to hold the parameter values in order
@@ -413,6 +435,12 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                                 break;
                             case "tripStatus":
                                 columnName = "trip_status";
+                                break;
+                            case "totalTime":
+                                columnName = "total_time";
+                                break;
+                            case "totalDistance":
+                                columnName = "total_distance";
                                 break;
                             default:
                                 // Skip unknown filter keys
@@ -462,6 +490,8 @@ public class ActualTripDAOImpl extends BaseDAOImpl implements ActualTripDAO {
                             .setVehicle(vehicle)
                             .setTripDate(rs.getDate("trip_date"))
                             .setTripStatus(rs.getString("trip_status"))
+                            .setTotalTime(rs.getObject("total_time") != null ? rs.getInt("total_time") : null)
+                            .setTotalDistance(rs.getObject("total_distance") != null ? rs.getInt("total_distance") : null)
                             .build();
                     
                     actualTrips.add(actualTrip);

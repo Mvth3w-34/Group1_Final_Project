@@ -1,5 +1,5 @@
 /* filename: ActualTripDTO.java
- * date: Apr. 5th, 2025
+ * date: Apr. 6th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -18,8 +18,8 @@ import java.sql.Date;
  * operator, and vehicle data.
  * 
  * @author Stephanie Prystupa-Maule
- * @version 1.0
- * @since 04/05/2025
+ * @version 1.1
+ * @since 04/06/2025
  */
 public class ActualTripDTO {
     
@@ -29,6 +29,8 @@ public class ActualTripDTO {
     private VehicleDTO vehicle;  // reference to vehicle object, never null
     private Date tripDate;
     private String tripStatus; // COMPLETED, CANCELLED, PARTIAL, IN_PROGRESS
+    private Integer totalTime;
+    private Integer totalDistance;
 
     /**
      * Parameterized constructor for ActualTripDTO
@@ -40,15 +42,20 @@ public class ActualTripDTO {
      * @param vehicle The vehicle used for the trip
      * @param tripDate The date when the trip was executed
      * @param tripStatus The status of the trip (COMPLETED, CANCELLED, PARTIAL, IN_PROGRESS)
+     * @param totalTime The total time of the trip in seconds
+     * @param totalDistance The total distance of the trip in km
      */
     private ActualTripDTO(Integer actualTripId, Integer scheduledTripId, Integer operatorId, 
-                        VehicleDTO vehicle, Date tripDate, String tripStatus) {
+                        VehicleDTO vehicle, Date tripDate, String tripStatus,
+                        Integer totalTime, Integer totalDistance) {
         this.actualTripId = actualTripId;
         this.tripScheduleId = scheduledTripId;
         this.operatorId = operatorId;
         this.vehicle = vehicle;
         this.tripDate = tripDate;
         this.tripStatus = tripStatus;
+        this.totalTime = totalTime;
+        this.totalDistance = totalDistance;
     }
     
     /**
@@ -178,6 +185,42 @@ public class ActualTripDTO {
     }
     
     /**
+     * Gets the total time of the trip in seconds
+     * 
+     * @return The total time in seconds
+     */
+    public Integer getTotalTime() {
+        return totalTime;
+    }
+    
+    /**
+     * Sets the total time of the trip in seconds
+     * 
+     * @param totalTime The total time to set in seconds
+     */
+    public void setTotalTime(Integer totalTime) {
+        this.totalTime = totalTime;
+    }
+    
+    /**
+     * Gets the total distance of the trip in km
+     * 
+     * @return The total distance in km
+     */
+    public Integer getTotalDistance() {
+        return totalDistance;
+    }
+    
+    /**
+     * Sets the total distance of the trip in km
+     * 
+     * @param totalDistance The total distance to set in km
+     */
+    public void setTotalDistance(Integer totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+    
+    /**
      * Checks if the trip is completed
      * 
      * @return true if the trip is completed, false otherwise
@@ -216,6 +259,8 @@ public class ActualTripDTO {
         private VehicleDTO vehicle;
         private Date tripDate;
         private String tripStatus;
+        private Integer totalTime;
+        private Integer totalDistance;
         
         public Builder() {
             // Initialize with default values
@@ -256,9 +301,20 @@ public class ActualTripDTO {
             return this;
         }
         
+        public Builder setTotalTime(Integer totalTime) {
+            this.totalTime = totalTime;
+            return this;
+        }
+        
+        public Builder setTotalDistance(Integer totalDistance) {
+            this.totalDistance = totalDistance;
+            return this;
+        }
+        
         public ActualTripDTO build() {
             return new ActualTripDTO(actualTripId, scheduledTripId, operatorId, 
-                                   vehicle, tripDate, tripStatus);
+                                   vehicle, tripDate, tripStatus,
+                                   totalTime, totalDistance);
         }
     }
     
