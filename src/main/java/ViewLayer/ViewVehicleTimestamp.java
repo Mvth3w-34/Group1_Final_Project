@@ -5,21 +5,24 @@
 package ViewLayer;
 
 import BusinessLayer.TransitBusinessLayer;
-import TransferObjects.VehicleDTO;
+import TransferObjects.VehicleStationTimetable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  *
  * @author johnt
  */
-public class ViewVehicles extends HttpServlet {
+public class ViewVehicleTimestamp extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,23 +35,22 @@ public class ViewVehicles extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        if(request.getSession().getAttribute("user") == null && request.getSession().getAttribute("pass") == null) {
-            request.getSession().setAttribute("user", request.getParameter("username"));
-            request.getSession().setAttribute("pass", request.getParameter("password"));
-        }
         TransitBusinessLayer logicLayer;
-        List<VehicleDTO> vehiclesList;
+        List<VehicleStationTimetable> vehicleTimetables;
+        int vehicleID = Integer.parseInt(request.getParameter("vehicleID") == null ? "1": request.getParameter("vehicleID")) > 0 
+                ? Integer.parseInt(request.getParameter("vehicleID")) : 1;
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Transit Fleet</title>");
+            out.println("<title>Servlet ViewVehicleTimestamp</title>");
             out.append("<link rel='stylesheet' href='vehicleStyle.css'>");
             out.println("</head>");
             out.println("<body><center>");
-            out.println("<h1>Viewing Transit Fleet</h1>");
+            out
+                .append("<h1>Viewing Details of Vehicle " + request.getParameter("vehicleID") + "</h1>");
             try {
                 if(request.getSession().getAttribute("businessLayer") == null) {
                     logicLayer = new TransitBusinessLayer();
@@ -56,42 +58,46 @@ public class ViewVehicles extends HttpServlet {
                 } else {
                     logicLayer = (TransitBusinessLayer) request.getSession().getAttribute("businessLayer");
                 }
-                vehiclesList = logicLayer.getVehicles();
-                if (vehiclesList.isEmpty()) {
-                    out.append("<p>Please register a vehicle</p>");
+                vehicleTimetables = logicLayer.getRoutes(vehicleID);
+                if (vehicleTimetables.isEmpty()) {
+                    out.append("<p>No timetable available for the vehicle</p>");
                 } else {
                     out.append("<table><tr>");
-                    // Print table headers
-                    // TODO: Need to include arrival/departure times
-                    for (int i = 0; i < logicLayer.getHeaders("vehicle").size(); i++) {
+                    for (int i = 1; i < logicLayer.getHeaders("vehicleroutes").size(); i++) {
+                        if (i == 0 || i == 2) {
+                            continue;
+                        } else {
                         out.append("<th");
-                        if (i > 0 && i < logicLayer.getHeaders("vehicle").size()) {
-                            out.append(" class='middle'");
+                            if (i > 1 && i < logicLayer.getHeaders("vehicleroutes").size()) {
+                                out.append(" class='middle'");
+                            }
+                            out.append(">" + logicLayer.getHeaders("vehicleroutes").get(i) + "</th>");
                         }
-                        out.append(">" + logicLayer.getHeaders("vehicle").get(i) + "</th>");
                     }
                     out.append("</tr>");
-                    for (int i = 0; i < vehiclesList.size(); i++) {
-                        out.append("<tr><td><form action='/Group1_Final_Project_v1/ViewVehicleTimestamp' method='GET'>"
-                                + "<input type='submit' class='reportlink' value='" + vehiclesList.get(i).getVehicleID()  
-                                + "'><input type='hidden' name='vehicleID' value='" + vehiclesList.get(i).getVehicleID()
-                                + "'></form></td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getVehicleType().name() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getVIN() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getFuelType() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getFuelRate() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getMaxPassengers() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getRoute() + "</td>")
-                        .append("</tr>");
+                    for (int i = 0; i < vehicleTimetables.size(); i++) {
+                        String arrivalDT = vehicleTimetables.get(i)
+                                .getArrivalTime()
+                                .toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_TIME);
+                        out.append("<tr><td>" + vehicleTimetables.get(i).getStationName() + "</td>")
+                            .append("<td class='middle'>" + arrivalDT + "</td>");
+                        if (vehicleTimetables.get(i).getDepartureTime() != null) {
+                            String departDT = vehicleTimetables.get(i)
+                                .getDepartureTime()
+                                .toLocalDateTime().format(DateTimeFormatter.ISO_LOCAL_TIME);
+                            out.append("<td class='middle'>" + departDT + "</td>");
+                        } else {
+                            out.append("<td class='middle'>N/A</td>");
+                        }
+                        out
+                            .append("</tr>");
                     }
                     out.append("</table>");
                 }
-                out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
             } catch (SQLException e) {
-                out.append("<h1>Database Error</h1>")
-                    .append("<p>Unable to connect to the database</p>")
-                    .append("   <a href='/Group1_Final_Project_v1/TransitFrontController'><button>Return to Login</button></a>");
+                e.printStackTrace();
             }
+            out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
             out.println("</center></body>");
             out.println("</html>");
         }
@@ -124,7 +130,6 @@ public class ViewVehicles extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
     }
 
     /**

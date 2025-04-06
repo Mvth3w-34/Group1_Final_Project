@@ -25,6 +25,14 @@
         <servlet-class>ViewLayer.ViewVehicles</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UserRegistration</servlet-name>
+        <servlet-class>ViewLayer.UserRegistration</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewVehicleTimestamp</servlet-name>
+        <servlet-class>ViewLayer.ViewVehicleTimestamp</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>MaintenanceRequest</servlet-name>
         <servlet-class>ViewLayer.MaintenanceRequest</servlet-class>
     </servlet>
@@ -35,6 +43,18 @@
     <servlet>
         <servlet-name>UpdateMaintenanceRequest</servlet-name>
         <servlet-class>ViewLayer.UpdateMaintenanceRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestDashboard</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestCostReport</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestCostReport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
+        <servlet-class>ViewLayer.MaintenanceRequestCompletionReport</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
@@ -61,6 +81,14 @@
         <url-pattern>/ViewVehicles</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>UserRegistration</servlet-name>
+        <url-pattern>/UserRegistration</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewVehicleTimestamp</servlet-name>
+        <url-pattern>/ViewVehicleTimestamp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>MaintenanceRequest</servlet-name>
         <url-pattern>/MaintenanceRequest</url-pattern>
     </servlet-mapping>
@@ -71,6 +99,18 @@
     <servlet-mapping>
         <servlet-name>UpdateMaintenanceRequest</servlet-name>
         <url-pattern>/UpdateMaintenanceRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestDashboard</servlet-name>
+        <url-pattern>/MaintenanceRequestDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestCostReport</servlet-name>
+        <url-pattern>/MaintenanceRequestCostReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
+        <url-pattern>/MaintenanceRequestCompletionReport</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

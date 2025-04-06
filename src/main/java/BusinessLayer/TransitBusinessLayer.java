@@ -4,15 +4,27 @@
  */
 package BusinessLayer;
 
+import DataAccessLayer.MaintenanceRequest.MaintenanceRequestDAO;
+import DataAccessLayer.MaintenanceRequest.MaintenanceRequestDAOImpl;
+import DataAccessLayer.Routes.RoutesTripsDAO;
+import DataAccessLayer.Routes.RoutesTripsDAOImpl;
+import DataAccessLayer.TimestampData.TimestampDAO;
+import DataAccessLayer.TimestampData.TimestampDAOImpl;
 import DataAccessLayer.VehicleData.*;
-//import DataAccessLayer.LoginData.*;
+import TransferObjects.LoginDTO;
+import TransferObjects.OperatorDTO;
+import TransferObjects.TimeStamp;
+import TransferObjects.VehicleDTO;
+import TransferObjects.VehicleStationTimetable;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.List;
 import DataAccessLayer.OperatorData.*;
-import DataAccessLayer.TimestampData.*;
-import TransferObjects.*;
-//import TransferObjects.*;
-import java.sql.*;
-import java.util.*;
-import java.time.*;
+import DataAccessLayer.VehicleComponents.VehicleComponentDAO;
+import DataAccessLayer.VehicleComponents.VehicleComponentDAOImpl;
+import TransferObjects.MaintenanceRequestTicketDTO;
+import TransferObjects.VehicleComponentDTO;
 
 /**
  *
@@ -22,11 +34,17 @@ public class TransitBusinessLayer {
     private final VehicleDAO vehicleDao;
     private final OperatorDao operatorDao;
     private final TimestampDAO timestampDao;
+    private final RoutesTripsDAO routesTripsDao;
+    private final VehicleComponentDAO vehicleComponentDao;
+    private final MaintenanceRequestDAO maintenanceRequestDao;
     
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
         operatorDao = new OperatorDaoImpl();
         timestampDao = new TimestampDAOImpl();
+        routesTripsDao = new RoutesTripsDAOImpl();
+        vehicleComponentDao = new VehicleComponentDAOImpl();
+        maintenanceRequestDao = new MaintenanceRequestDAOImpl();
     }
     /**
      * Verifies if the credentials entered exists in the DB system
@@ -60,14 +78,25 @@ public class TransitBusinessLayer {
         );
 //        VehicleDTO vehicle = new ;
     }
+    
+    public List<String> getHeaders(String tblName) throws SQLException {
+        if (tblName.toLowerCase().equals("vehicle")) {
+            return vehicleDao.getVehicleHeaders();
+        } else if (tblName.toLowerCase().equals("vehicleroutes")) {
+            return routesTripsDao.getHeaders();
+        }
+        throw new SQLException();
+    }
+    
+    public List<Integer> getRoutes() throws SQLException {
+        return routesTripsDao.getRoutes();
+    }
+    
     public void updateVehicle(String fuel, String route, VehicleDTO vehicle) throws SQLException {
         vehicleDao.updateVehicle(fuel, route, vehicle);
     }
     public List<VehicleDTO> getVehicles() throws SQLException {
         return vehicleDao.getAllVehicles();
-    }
-    public List<String> getVehicleHeaders() throws SQLException {
-        return vehicleDao.getVehicleHeaders();
     }
     public void logTime(int opId, String start, String end, String type) throws SQLException {
         TimeStamp time = new TimeStamp();
@@ -77,5 +106,112 @@ public class TransitBusinessLayer {
         time.setEndTime(Timestamp.valueOf(date.toString() + " " + end + ":00"));
         time.setTimestampType(type);
         timestampDao.addTimestamp(time);
+    }
+    public void registerAccount(String name, String email, String username, String password, String userType) throws SQLException, IllegalArgumentException {
+        LoginDTO login = new LoginDTO();
+        login.setUsername(username);
+        login.setPassword(password);
+        
+        try {
+            OperatorDTO operator = new OperatorDTO();
+            operator.setName(name);
+            operator.setEmail(email);
+            operator.setUserType(OperatorDTO.UserType.valueOf(userType));
+            operator.assignLogin(login);
+            operatorDao.registerOperator(operator);
+        } catch (IllegalArgumentException | SQLException e) {
+            throw e;
+        }
+    }
+    public List<VehicleStationTimetable> getRoutes(int vehicleID) throws SQLException {
+        return routesTripsDao.getAllVehicleStationTimes(vehicleID);
+
+    }
+    
+    //The following code was written by Mathew Chebet
+    
+    /**
+     * This method will retrieve all of the maintenance requests.
+     * 
+     * @return maintenanceRequestDao.getAllMaintenanceRequests(), 
+     *  a list of objects representing rows of data needed for a maintenance request dashboard
+     */
+    public List<Object[]> getAllMaintenanceRequests(){
+        return maintenanceRequestDao.getAllMaintenanceRequests();
+    }
+    
+    /**
+     * This method will retrieve all of maintenance requests based on their completion status.
+     * 
+     * @return maintenanceRequestDao.getMaintenanceRequestsByCompletion(complete), 
+     *  a list of objects representing rows of data needed for a maintenance request dashboard
+     */
+    public List<Object[]> getMaintenanceRequestsByCompletion(){
+        return maintenanceRequestDao.getMaintenanceRequestsByCompletion();
+    }
+    
+    /**
+     * This method will retrieve all of the incomplete maintenance requests.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public void addMaintenanceRequest(MaintenanceRequestTicketDTO request){
+        maintenanceRequestDao.addMaintenanceRequest(request);
+    }
+    
+    /**
+     * This method will retrieve all of the incomplete maintenance requests.
+     * 
+     * @param id, a maintenance request id
+     */
+    public MaintenanceRequestTicketDTO getMaintenanceRequestById(int id){
+        return maintenanceRequestDao.getMaintenanceRequestById(id);
+    }
+    
+    /**
+     * This method will update the status of an incomplete request to complete.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public void updateMaintenanceRequest(MaintenanceRequestTicketDTO request){
+        maintenanceRequestDao.updateMaintenanceRequest(request);
+    }
+    
+    /**
+     * This method returns a list of all of the known vehicle components for a specific vehicle.
+     * 
+     * @param request, a MaintenanceRequestTicketDTO object
+     */
+    public List<VehicleComponentDTO> getComponentsByVehicleID(int id){
+        return vehicleComponentDao.getComponentsByVehicleID(id);
+    }
+    
+    /**
+     * This method returns a vehicle component based on the vehicle ID and component ID.
+     * 
+     * @param vehicleID, a vehicleID
+     * @param componentID, a componentID
+     * @return vehicleComponentDao.getComponentByIDs(vehicleID, componentID), a VehicleComponentDTO object
+     */
+    public VehicleComponentDTO getComponentByIDs(int vehicleID, int componentID){
+        return vehicleComponentDao.getComponentByIDs(vehicleID, componentID);
+    }
+    
+    /**
+     * This method will add a vehicle component to the database.
+     * 
+     * @param component, a VehicleComponentDTO object
+     */
+    public void addVehicleComponent(VehicleComponentDTO component){
+        vehicleComponentDao.addVehicleComponent(component);
+    }
+    
+    /**
+     * This method will update the hours used for a vehicle component.
+     * 
+     * @param component, a VehicleComponentDTO object
+     */
+    public void updateVehicleComponent(VehicleComponentDTO component){
+        vehicleComponentDao.updateVehicleComponent(component);
     }
 }

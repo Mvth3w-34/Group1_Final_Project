@@ -44,12 +44,14 @@ public class TransitFrontController extends HttpServlet {
             out.println("</head>");
             out.println("<body><center>");
             out.println("<h1>Enter Login Credentials for Transit DB</h1>"
-                    + "<div class='form-container'><form method='POST'>"
+                    + "<div class='form-container'><form action = '/Group1_Final_Project_v1/TransitMenuView' method='POST'>"
                     + "<label for='username'>Username</label><br>"
                     + "<input type='text' id='username' name='username'><br>"
                     + "<label for='password'>Password</label><br>"
                     + "<input type='text' id='password' name='password'><br>"
-                    + "<input type='submit' value='Login'></form></div>");
+                    + "<input type='submit' value='Login'></form>"
+                    + "<a href='/Group1_Final_Project_v1/UserRegistration'><button>Register</button></a>"
+                    + "</div>");
             out.println("</center></body>");
             out.println("</html>");
         }
@@ -82,12 +84,9 @@ public class TransitFrontController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getSession().getAttribute("user") == null && request.getSession().getAttribute("pass") == null) {
-            request.getSession().setAttribute("user", request.getParameter("username"));
-            request.getSession().setAttribute("pass", request.getParameter("password"));
-        }
-        request.getRequestDispatcher("/TransitMenuView").forward(request, response);
-//        processRequest(request, response);
+//        request.getRequestDispatcher("/TransitMenuView");
+        processRequest(request, response);
+
     }
 
     /**

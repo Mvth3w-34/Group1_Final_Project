@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DataAccessLayer;
-import TransferObjects.LoginDTO;
 import java.sql.*;
+import java.io.*;
+import java.util.Properties;
 
 /**
  *
@@ -35,19 +36,31 @@ public class TransitDataSource {
      * @throws SQLException 
      */
     public synchronized Connection getConnection() throws SQLException {
+        Properties prop = new Properties();
+        String url, dbUser, dbPass;
         // Store the database property information to log into the database server
-        String url = "jdbc:mysql://localhost:3306/transit";
-        String dbUser = "root";
-        String dbPass = "tieu0012";
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("database.properties")){
+            prop.load(in);
+            in.close();
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+        }
+        url = prop.getProperty("jdbc.url");
+        dbUser = prop.getProperty("jdbc.username");
+        dbPass = prop.getProperty("jdbc.password");
 
         // Create a connection to the database with the saved login information
         try {
             if (connection == null || connection.isClosed()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(url, dbUser, dbPass);
 //                connection = DriverManager.getConnection(url, login.getUsername(), login.getPassword());
             }
         } catch (SQLException e) {
             throw e;
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
         }
         return connection;
     }

@@ -21,27 +21,64 @@ import java.util.List;
  */
 public class VehicleComponentDAOImpl implements VehicleComponentDAO
 {
-    private final TransitDataSource connection;
+    private final TransitDataSource instance;
     
     /**
-     * A single argument constructor. 
+     * A no argument constructor. 
      * 
      */
-    public VehicleComponentDAOImpl(TransitDataSource connection){
-        this.connection = connection;
+    public VehicleComponentDAOImpl (){
+        instance = TransitDataSource.getDataInstance();
+    }
+    
+    /**
+     * This method returns a vehicle component based on the vehicle id and component id.
+     * 
+     * @param vehicleID, a vehicle ID
+     * @param componentID, a componentID
+     * @return component, a VehicleComponentDTO object
+     */
+    @Override
+    public VehicleComponentDTO getComponentByIDs(int vehicleID,int componentID){
+        VehicleComponentDTO component = new VehicleComponentDTO();
+        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ? AND COMPONENT_ID = ?";
+        ResultSet results;
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
+        {
+            statement.setInt(1, vehicleID);
+            statement.setInt(2, componentID);
+            
+            results = statement.executeQuery();
+            while (results.next()) {
+                try {
+                    component.setVehicleComponentID(results.getInt("VEHICLE_COMPONENT_ID"));
+                    component.setHoursUsed(results.getInt("HOURS_USED"));
+                    component.setVehicleID(results.getInt("VEHICLE_ID"));
+                    component.setComponentID(results.getInt("COMPONENT_ID"));
+                    
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return component;
     }
     
     /**
      * This method returns a list of all of the known vehicle components for a specific vehicle.
      * 
+     * @param id, a vehicle ID
      * @return components, an array list of components
      */
     @Override
     public List<VehicleComponentDTO> getComponentsByVehicleID(int id){
         ArrayList<VehicleComponentDTO> components =new ArrayList<>();
-        String query = "SELECT * FROM VEHICLE_COMPONENT WHERE VEHICLE_ID = ?";
+        String query = "SELECT * FROM VEHICLE_COMPONENTS WHERE VEHICLE_ID = ? ";
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query))
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query))
         {
             statement.setInt(1, id);
             
@@ -73,11 +110,11 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
      */
     @Override
     public void addVehicleComponent(VehicleComponentDTO component){
-        String query = "INSERT INTO VEHICLE_COMPONENT(HOURS_USED,VEHICLE_ID,COMPONENT_ID,VEHICLE_COMPONENT_ID)"
+        String query = "INSERT INTO VEHICLE_COMPONENTS(HOURS_USED,VEHICLE_ID,COMPONENT_ID,VEHICLE_COMPONENT_ID)"
                 + "VALUES(?,?,?)";
         
         ResultSet results;
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setDouble(1, component.getHoursUsed());
             statement.setInt(2, component.getVehicleID());
             statement.setInt(3, component.getComponentID());
@@ -96,9 +133,9 @@ public class VehicleComponentDAOImpl implements VehicleComponentDAO
      */
     @Override
     public void updateVehicleComponent(VehicleComponentDTO component){
-        String query = "UPDATE VEHICLE_COMPONENT SET HOURS_USED = ? WHERE VEHICLE_COMPONENT_ID = ?";
+        String query = "UPDATE VEHICLE_COMPONENTS SET HOURS_USED = ? WHERE VEHICLE_COMPONENT_ID = ?";
         
-        try (PreparedStatement statement = connection.getConnection().prepareStatement(query)){
+        try (PreparedStatement statement = instance.getConnection().prepareStatement(query)){
             statement.setDouble(1, component.getHoursUsed());
             statement.setInt(2, component.getVehicleComponentID());
             statement.executeUpdate();

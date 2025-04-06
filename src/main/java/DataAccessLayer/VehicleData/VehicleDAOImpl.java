@@ -63,8 +63,8 @@ public class VehicleDAOImpl implements VehicleDAO {
                                 .setVehicleNum(set.getString("VEHICLE_NUMBER"))
                                 .setFuelType(set.getString("FUEL_TYPE"))
                                 .setConsumptionRate(set.getFloat("FUEL_CONSUMPTION_RATE"))
-                                .setMaxPassenger(set.getInt("MAXIMUM_PASSENGERS"))
-                                .setRoute(set.getString("CURRENT_ROUTE"))
+                                .setMaxPassenger(set.getInt("MAX_PASSENGERS"))
+                                .setRoute(set.getString("CURRENT_ASSIGNED_TRIP"))
                                 .registerVehicle();
                         vehiclesList.add(vehicle);
                     } catch (IllegalArgumentException e) {
@@ -74,6 +74,7 @@ public class VehicleDAOImpl implements VehicleDAO {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw e;
         }
         return vehiclesList;
@@ -86,7 +87,7 @@ public class VehicleDAOImpl implements VehicleDAO {
     @Override
     public void registerVehicle(VehicleDTO vehicle) throws SQLException {
         String insertQuery = "INSERT INTO VEHICLES (VEHICLE_TYPE, VEHICLE_NUMBER, FUEL_TYPE, "
-                + "FUEL_CONSUMPTION_RATE, MAXIMUM_PASSENGERS, CURRENT_ROUTE)"
+                + "FUEL_CONSUMPTION_RATE, MAX_PASSENGERS, CURRENT_ASSIGNED_TRIP)"
                 + " VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(insertQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
             statement.setString(1, vehicle.getVehicleType().name());
@@ -113,12 +114,18 @@ public class VehicleDAOImpl implements VehicleDAO {
      */
     @Override
     public void updateVehicle(String newFuel, String newRoute, VehicleDTO vehicle) throws SQLException {
-        String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ROUTE = ? WHERE VEHICLE_ID = ?";
+        String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ASSIGNED_TRIP = ? WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(updateQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            statement.setString(1, newFuel);
+            if (newFuel.equals("")) {
+                statement.setString(1, "N/A");
+            } else {
+                statement.setString(1, newFuel);
+            }
             statement.setString(2, newRoute);
             statement.setInt(3, vehicle.getVehicleID());
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
         }
     }
     /**
@@ -146,12 +153,13 @@ public class VehicleDAOImpl implements VehicleDAO {
      */
     @Override
     public List<String> getVehicleHeaders() throws SQLException {
+        String query = "SELECT * FROM VEHICLE_FORMATTED";
         List<String> vHeaders = new ArrayList<>();
         ResultSet set;
         ResultSetMetaData sqlHeaders;
         try (
             PreparedStatement statement = instance.getConnection().prepareStatement(
-                "SELECT * FROM VEHICLES", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
+                query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY
             );
         ) {
             set = statement.executeQuery();

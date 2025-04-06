@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface VehicleComponentDAO
 {
+    VehicleComponentDTO getComponentByIDs(int vehicleID,int componentID);
     List<VehicleComponentDTO> getComponentsByVehicleID(int id);
     void addVehicleComponent(VehicleComponentDTO component);
     void updateVehicleComponent(VehicleComponentDTO component);
