@@ -134,7 +134,6 @@ public class ViewVehicles extends HttpServlet {
                         vehicle.getVIN(), vehicle.getFuelType(), vehicle.getFuelRate(),
                         vehicle.getMaxPassengers(), 
                         (vehicle.getTripID() == null ? "None" : vehicle.getTripID().toString()),
-                        // getVehicleID for the action nav links in the table
                         vehicle.getVehicleID(), vehicle.getVehicleID(), vehicle.getVehicleID());
                 }
                 out.println("</table>");

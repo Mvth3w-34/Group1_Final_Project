@@ -130,6 +130,7 @@ ORDER BY
 /* All vehicle details are included, so that a query on this view could fully populate
  * a VehicleDTO without needing to requery a database. A report in the presentation layer likely
  * will not show all columns */
+ 
 CREATE OR REPLACE VIEW VW_TRIP_SCHEDULES AS
 SELECT 
     ts.ID AS TRIP_SCHEDULE_ID,
@@ -155,3 +156,28 @@ ORDER BY
 
 -- example filter by route
 -- SELECT * FROM VW_TRIP_SCHEDULES WHERE ROUTE_NAME = 'Route 5';
+
+-- author Stephanie Prystupa-Maule
+-- View to of complete actual_stop_times with related route and stop data
+CREATE OR REPLACE VIEW VW_ACTUAL_STOP_TIMES AS
+SELECT 
+    ast.id,
+    ast.actual_trip_id,
+    ast.seq_stop_id,
+    ast.scheduled_arrival,
+    ast.scheduled_departure,
+    ast.actual_arrival,
+    ast.actual_departure,
+    ast.arrival_variance,
+    ast.departure_variance,
+    rs.stop_id,
+    rs.stop_sequence,
+    s.stop_name,
+    s.is_station
+FROM 
+    actual_stop_times ast
+JOIN 
+    route_stops rs ON ast.seq_stop_id = rs.id
+JOIN 
+    stops s ON rs.stop_id = s.id;
+
