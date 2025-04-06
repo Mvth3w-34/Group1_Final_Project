@@ -1,4 +1,4 @@
-/* filename: TripScheduleFrontController.java
+/* filename: TripFrontController.java
  * date: Apr. 5th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
@@ -88,7 +88,10 @@ public class TripFrontController extends HttpServlet {
                 break;
             case "unassign_vehicle":
                 request.getRequestDispatcher("/UnassignVehicleFromTrip-URL").forward(request, response);
-                break;                
+                break;
+            case "simulate_trip":
+                request.getRequestDispatcher("/SimulateTrip-URL").forward(request, response);
+                break;
             case "return_to_menu":
                 response.sendRedirect("LandingServlet-URL");
                 break;

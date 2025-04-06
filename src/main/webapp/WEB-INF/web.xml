@@ -156,11 +156,23 @@
         <servlet-name>UnassignVehicleFromTrip</servlet-name>
         <servlet-class>ViewLayer.Trip.UnassignVehicleFromTrip</servlet-class>
     </servlet>
-    <!-- Servlet Mapping for UnassignVehicleFromTrip-->
+    <!-- Servlet Mapping for Unassign Vehicle From Trip-->
     <servlet-mapping>
         <servlet-name>UnassignVehicleFromTrip</servlet-name>
         <url-pattern>/UnassignVehicleFromTrip-URL</url-pattern>
     </servlet-mapping>
+    
+    <!-- Simulate Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>SimulateTrip</servlet-name>
+        <servlet-class>ViewLayer.Trip.SimulateTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Simulate Trip-->
+    <servlet-mapping>
+        <servlet-name>SimulateTrip</servlet-name>
+        <url-pattern>/SimulateTrip-URL</url-pattern>
+    </servlet-mapping>
+    
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

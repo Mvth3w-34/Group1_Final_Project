@@ -1,5 +1,5 @@
 /* filename: ViewAllTripSchedules.java
- * date: Apr. 5th, 2025
+ * date: Apr. 6th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
@@ -26,8 +26,8 @@ import TransferObjects.TripScheduleDTO;
  * Servlet for listing all trip schedules using session-based authentication
  * 
  * @author Stephanie Prystupa-Maule
- * @version 1.0
- * @since 04/05/2025
+ * @version 1.1
+ * @since 04/06/2025
  */
 public class ViewAllTripSchedules extends HttpServlet {
     /**
@@ -87,7 +87,8 @@ public class ViewAllTripSchedules extends HttpServlet {
             out.println("<a href='FrontController-URL?module=trip&action=view_by_route'>View Schedules by Route</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=view_unassigned'>View Unassigned Trips</a> | ");
             out.println("<a href='FrontController-URL?module=trip&action=assign_vehicle'>Assign Vehicle to Trip</a> | ");
-            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");            
+            out.println("<a href='FrontController-URL?module=trip&action=unassign_vehicle'>Unassign Vehicle From Trip</a> | ");
+            out.println("<a href='FrontController-URL?module=trip&action=simulate_trip'>Simulate Trip</a> | ");            
             out.println("<a href='FrontController-URL?module=trip&action=return_to_menu'>Return to Main Menu</a>");
             out.println("</div>");          
             
@@ -139,6 +140,11 @@ public class ViewAllTripSchedules extends HttpServlet {
                     // If a vehicle is assigned, show unassign vehicle link
                     if (trip.hasVehicleAssigned()) {
                         out.println(" | <a href=\"FrontController-URL?module=trip&action=unassign_vehicle&tripID=" + trip.getTripScheduleId() + "\">Unassign Vehicle</a>");
+                        
+                        // Add simulate trip link only if vehicle is assigned
+                        out.println(" | <a href=\"FrontController-URL?module=trip&action=simulate_trip&scheduledTripId=" + 
+                                   trip.getTripScheduleId() + "&vehicleId=" + trip.getVehicle().getVehicleID() + 
+                                   "\">Simulate Trip</a>");
                     }
                     
                     out.println("</td>"); // end actions column

@@ -122,6 +122,7 @@ public class LandingServlet extends HttpServlet {
             out.println("<li><a href=\"FrontController-URL?module=trip&action=view_by_route\">View Schedules by Route</a></li>");
             out.println("<li><a href=\"FrontController-URL?module=trip&action=view_unassigned\">View Unassigned Trips</a></li>");
             out.println("<li><a href=\"FrontController-URL?module=trip&action=assign_vehicle\">Assign Vehicle to Trip</a></li>");
+            out.println("<li><a href=\"FrontController-URL?module=trip&action=simulate_trip\">Simulate Trip</a></li>");
             out.println("</ul>");
             out.println("</div>");
             
