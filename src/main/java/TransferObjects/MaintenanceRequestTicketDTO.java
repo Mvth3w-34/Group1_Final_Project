@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
  * This class will act as a DTO for a maintenance request 
  * 
  * @author Mathew Chebet
+ * @version 1.0
+ * @since 21
  */
 public class MaintenanceRequestTicketDTO
 {

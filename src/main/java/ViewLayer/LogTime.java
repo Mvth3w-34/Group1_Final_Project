@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: LogTime.java
+ * date: Apr. 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 
@@ -17,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * The webpage for operators to log their times
  * @author John Tieu
+ * @version 1.0
+ * @since 21
  */
 public class LogTime extends HttpServlet {
 
@@ -44,7 +49,7 @@ public class LogTime extends HttpServlet {
             out.println("<h1>Servlet LogTime at " + request.getContextPath() + "</h1>");
             out.append("<form method='POST'>")
                 .append("<label for='operatorid'>Operator ID</label><br>")
-                .append("<input type='number' readonly id='operatorid' style='background-color: lightgray;' name='operatorid' value='" + operator.getOperatorID() + "'><br>")
+                .append("<input type='number' readonly id='operatorid' style='background-color: lightgray;' name='operatorid' value='" + operator.getOperatorId()+ "'><br>")
                 .append("<label for='starttime'>Start Time</label><br>")
                 .append("<input type='time' id='starttime' name='starttime'><br>")
                 .append("<label for='endtime'>End Time</label><br>")

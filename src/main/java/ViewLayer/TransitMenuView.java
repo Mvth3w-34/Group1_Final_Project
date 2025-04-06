@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: TransitMenuView.java 
+ * date: April 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 
@@ -18,7 +21,9 @@ import javax.servlet.http.HttpSession;
 /**
  * The webpage for the main menu
  * @author John Tieu
- */
+ * @version 1.0
+ * @since 21
+ */ 
 public class TransitMenuView extends HttpServlet {
 
     /**
@@ -64,9 +69,9 @@ public class TransitMenuView extends HttpServlet {
                     // credentials matches the entered login credentials
                     session.setAttribute("operator", op);
                     out.append( "<h1>Transit Application Menu</h1>"
-                            +   "<p>Welcome " + op.getName() + "</p>");
+                            +   "<p>Welcome " + op.getOperatorName()+ "</p>");
                     // Buttons that only managers can see
-                    if (op.getOperatorType().name().equals(OperatorDTO.UserType.MANAGER.name())) {
+                    if (op.getUserType().name().equals(OperatorDTO.UserType.MANAGER.name())) {
                         out.append("<a href='/Group1_Final_Project_v1/MaintenanceRequestDashboard'><button>View Maintenance Request Dashboard</button></a><br>")
                             .append("<a href='/Group1_Final_Project_v1/MaintenanceRequest'><button>Perform Maintenance Request</button></a><br>")
                             .append("<a href='/Group1_Final_Project_v1/RegisterVehicle'><button>Register Vehicle</button></a><br>")

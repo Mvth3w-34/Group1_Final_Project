@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <display-name>Public Transit Fleet Management System</display-name>
+    <!-- Front Controller Servlet Configuration -->
+   
     <servlet>
         <servlet-name>TransitFrontController</servlet-name>
         <servlet-class>ViewLayer.TransitFrontController</servlet-class>
@@ -112,9 +115,8 @@
         <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
         <url-pattern>/MaintenanceRequestCompletionReport</url-pattern>
     </servlet-mapping>
+
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 </web-app>

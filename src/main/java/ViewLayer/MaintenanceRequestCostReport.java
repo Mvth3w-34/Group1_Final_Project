@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: MaintenanceRequestCostReport.java 
+ * date: April 6th, 2025
+ * authors: Mathew Chebet
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 

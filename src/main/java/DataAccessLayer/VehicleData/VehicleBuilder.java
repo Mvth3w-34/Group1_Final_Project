@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package DataAccessLayer.VehicleData;
 import TransferObjects.VehicleDTO;
 
@@ -9,14 +6,16 @@ import TransferObjects.VehicleDTO;
  *
  * @author johnt
  */
+
+// steph's version
 public class VehicleBuilder {
     private VehicleDTO.VehicleType vehicleType;
-    private int vehicleId;
+    private int vehicleID;
     private String vehicleNumber; // VIN
     private String fuelType;
     private float fuelConsumptionRate;
     private int maxPassengers;
-    private String assignedRoute;
+    private Integer assignedTripID;
 
     /**
      * Sets the vehicle type
@@ -29,11 +28,11 @@ public class VehicleBuilder {
     }
     /**
      * Sets the vehicle ID (for DB purposes)
-     * @param id
+     * @param ID
      * @return The Vehicle Builder
      */
-    public VehicleBuilder setID(int id) {
-        this.vehicleId = id;
+    public VehicleBuilder setID(int ID) {
+        this.vehicleID = ID;
         return this;
     }
     /**
@@ -73,22 +72,42 @@ public class VehicleBuilder {
         return this;
     }
     /**
-     * Sets the route of the vehicle
-     * @param route
+     * Sets the current assigned trip of the vehicle.
+     * Integer used instead of int to account for null values
+     * 
+     * @param tripID The trip ID to assign, can be null
      * @return The Vehicle Builder
      */
-    public VehicleBuilder setRoute(String route) {
-        this.assignedRoute = route;
+    public VehicleBuilder setTripID(Integer tripID) {
+        this.assignedTripID = tripID;
         return this;
     }
+    
+    /* 
+     * TODO review name change
+     * build vehicle instead of register vehicle, because a VehicleDTO may be
+     * used in a variety of ways (e.g. viewing list of vehicles), not just in
+     * registering new vehicles
+     */ 
+       
     /**
-     * Registers the vehicle
+     * Builds the vehicle
      * @return The vehicle
      */
-    public VehicleDTO registerVehicle() {
-        return new VehicleDTO(vehicleType, vehicleId, vehicleNumber,
+    public VehicleDTO buildVehicle() {
+        return new VehicleDTO(vehicleType, vehicleID, vehicleNumber,
             fuelType, fuelConsumptionRate, 
-                maxPassengers, assignedRoute);
+                maxPassengers, assignedTripID);
     }
+    
+//    /**
+//     * Registers the vehicle
+//     * @return The vehicle
+//     */
+//    public VehicleDTO registerVehicle() {
+//        return new VehicleDTO(vehicleType, vehicleID, vehicleNumber,
+//            fuelType, fuelConsumptionRate, 
+//                maxPassengers, assignedTripID);
+//    }
     
 }

@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: AddMaintenanceRequest.java
+ * date: Apr. 6th, 2025
+ * authors: Mathew Chebet
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 
@@ -92,31 +95,30 @@ public class AddMaintenanceRequest extends HttpServlet
                 out.println("<h1>Please fill out the form to submit a MaintenanceRequest</h1>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"vID\">Vehicle ID<label>");
-                out.println("<input type=\"text\" name=\"vID\"");
+                out.println("<label for=\"vID\">Vehicle ID</label>");
+                out.println("<input type=\"text\" name=\"vID\">");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"comps\">Vehicle Component<label>");
+                out.println("<label for=\"comps\">Vehicle Component</label>");
                 out.println("<select name=\"comps\">");
-                    out.println("<option value=\"1\">Rear Brakes<option>");
-                    out.println("<option value=\"2\">Front Brakes<option>");
-                    out.println("<option value=\"3\">Left Rear Tire<option>");
-                    out.println("<option value=\"4\">Left Front Tire<option>");
-                    out.println("<option value=\"5\">Right Front Tire<option>");
-                    out.println("<option value=\"6\">Right Rear Tire<option>");
-                    out.println("<option value=\"7\">Rear Axel Bearings<option>");
-                    out.println("<option value=\"8\">Rear Axel Bearings<option>");
-                    out.println("<option value=\"12\">Diesel Engine<option>");
+                    out.println("<option value=\"1\">Rear Brakes</option>");
+                    out.println("<option value=\"2\">Front Brakes</option>");
+                    out.println("<option value=\"3\">Left Rear Tire</option>");
+                    out.println("<option value=\"4\">Left Front Tire</option>");
+                    out.println("<option value=\"5\">Right Front Tire</option>");
+                    out.println("<option value=\"6\">Right Rear Tire</option>");
+                    out.println("<option value=\"7\">Rear Axel Bearings</option>");
+                    out.println("<option value=\"8\">Rear Axel Bearings</option>");
+                    out.println("<option value=\"12\">Diesel Engine</option>");
                 out.println("</select>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"sDesc\">Service Description<label>");
+                out.println("<label for=\"sDesc\">Service Description</label>");
                 out.println("<input type=\"text\" name=\"sDesc\">");
                 out.println("<br>");
                 out.println("<br>");
                 out.println("<button type=\"submit\" name=\"rType\" value=\"new\">Submit New Request</button>");
                 out.println("<input type=\"hidden\" name=\"type\" value=\"bus\">");
-                out.println("</form>");
             }
             else if (request.getParameter("type")!= null && request.getParameter("type").equals("eTrain")){
                 //If the vehicle type is an electric train
@@ -131,28 +133,27 @@ public class AddMaintenanceRequest extends HttpServlet
                 out.println("<h1>Please fill out the form to submit a MaintenanceRequest</h1>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"vID\">Vehicle ID<label>");
-                out.println("<input type=\"text\" name=\"vID\"");
+                out.println("<label for=\"vID\">Vehicle ID</label>");
+                out.println("<input type=\"text\" name=\"vID\">");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"comps\">Vehicle Component<label>");
+                out.println("<label for=\"comps\">Vehicle Component</label>");
                 out.println("<select name=\"comps\">");
-                    out.println("<option value=\"1\">Rear Brakes<option>");
-                    out.println("<option value=\"2\">Front Brakes<option>");
-                    out.println("<option value=\"9\">Canternary<option>");
-                    out.println("<option value=\"10\">Circuit Breaker<option>");
-                    out.println("<option value=\"11\">Pantograph<option>");
-                    out.println("<option value=\"13\">Electric Engine<option>");
+                    out.println("<option value=\"1\">Rear Brakes</option>");
+                    out.println("<option value=\"2\">Front Brakes</option>");
+                    out.println("<option value=\"9\">Canternary</option>");
+                    out.println("<option value=\"10\">Circuit Breaker</option>");
+                    out.println("<option value=\"11\">Pantograph</option>");
+                    out.println("<option value=\"13\">Electric Engine</option>");
                 out.println("</select>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"sDesc\">Service Description<label>");
+                out.println("<label for=\"sDesc\">Service Description</label>");
                 out.println("<input type=\"text\" name=\"sDesc\">");
                 out.println("<br>");
                 out.println("<br>");
                 out.println("<button type=\"submit\" name=\"rType\" value=\"new\">Submit New Request</button>");
                 out.println("<input type=\"hidden\" name=\"type\" value=\"eTrain\">");
-                out.println("</form>");
             }
             else if (request.getParameter("type")!= null && request.getParameter("type").equals("dTrain")){
                 //If the vehicle type is a diesel train
@@ -167,35 +168,35 @@ public class AddMaintenanceRequest extends HttpServlet
                 out.println("<h1>Please fill out the form to submit a MaintenanceRequest</h1>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"vID\">Vehicle ID<label>");
-                out.println("<input type=\"text\" name=\"vID\"");
+                out.println("<label for=\"vID\">Vehicle ID</label>");
+                out.println("<input type=\"text\" name=\"vID\">");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"comps\">Vehicle Component<label>");
+                out.println("<label for=\"comps\">Vehicle Component</label>");
                 out.println("<select name=\"comps\">");
-                    out.println("<option value=\"1\">Rear Brakes<option>");
-                    out.println("<option value=\"2\">Front Brakes<option>");
-                    out.println("<option value=\"9\">Canternary<option>");
-                    out.println("<option value=\"10\">Circuit Breaker<option>");
-                    out.println("<option value=\"11\">Pantograph<option>");
-                    out.println("<option value=\"12\">Diesel Engine<option>");
+                    out.println("<option value=\"1\">Rear Brakes</option>");
+                    out.println("<option value=\"2\">Front Brakes</option>");
+                    out.println("<option value=\"9\">Canternary</option>");
+                    out.println("<option value=\"10\">Circuit Breaker</option>");
+                    out.println("<option value=\"11\">Pantograph</option>");
+                    out.println("<option value=\"12\">Diesel Engine</option>");
                 out.println("</select>");
                 out.println("<br>");
                 out.println("<br>");
-                out.println("<label for=\"sDesc\">Service Description<label>");
+                out.println("<label for=\"sDesc\">Service Description</label>");
                 out.println("<input type=\"text\" name=\"sDesc\">");
                 out.println("<br>");
                 out.println("<br>");
                 out.println("<button type=\"submit\" name=\"rType\" value=\"new\">Submit New Request</button>");
                 out.println("<input type=\"hidden\" name=\"type\" value=\"dTrain\">");
-                out.println("</form>");
+                
             }
             else{
                 response.sendRedirect("MaintenanceRequest");
             }
-            
+            out.println("</form>");
             out.println("<a href=\"/Group1_Final_Project_v1/TransitMenuView\"><button>Return to Main Menu</button></a>");
-            if (request.getParameter("exists").equals("false") && request.getParameter("exists") != null){
+            if (request.getParameter("exists") != null && request.getParameter("exists").equals("false")){
               out.println("<h2>Error! Either the vehicle or the component for that vehicle does not exist!</h2>");  
               out.println("<h2>Please you fill all of the required fields with valid entries</h2>");  
             }
@@ -235,7 +236,7 @@ public class AddMaintenanceRequest extends HttpServlet
 
                 ticket.setRequestDate(LocalDateTime.now());
                 ticket.setQuotedCost(cost);
-                ticket.setOperatorID(operator.getOperatorID());
+                ticket.setOperatorID(operator.getOperatorId());
                 ticket.setVehicleComponentID(vehicleComponent.getVehicleComponentID());
                 ticket.setServiceDescription(description.toUpperCase());
                 ticket.setIsComplete(false);

@@ -1,7 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: ViewVehicles.java
+ * date: April 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
+
 package ViewLayer;
 
 import BusinessLayer.TransitBusinessLayer;
@@ -18,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * The webpage for viewing list of registered vehicles
  * @author John Tieu
+ * @version 1.0
+ * @since 21
  */
 public class ViewVehicles extends HttpServlet {
 
@@ -81,7 +87,7 @@ public class ViewVehicles extends HttpServlet {
                         .append("<td class='middle'>" + vehiclesList.get(i).getFuelType() + "</td>")
                         .append("<td class='middle'>" + vehiclesList.get(i).getFuelRate() + "</td>")
                         .append("<td class='middle'>" + vehiclesList.get(i).getMaxPassengers() + "</td>")
-                        .append("<td class='middle'>" + vehiclesList.get(i).getRoute() + "</td>")
+                        .append("<td class='middle'>" + vehiclesList.get(i).getTripID()+ "</td>")
                         .append("</tr>");
                     }
                     out.append("</table>");

@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/* filename: ActualTripDAOImpl.java
+ * date: Apr. 6th, 2025
+ * authors: John Tieu, Mathew Chebet
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package BusinessLayer;
 
@@ -28,11 +31,11 @@ import TransferObjects.VehicleComponentDTO;
 
 /**
  * The business layer used to handle the logic for the Transit web app
- * @author John Tieu
+ * @author John Tieu, Mathew Chebet
  */
 public class TransitBusinessLayer {
     private final VehicleDAO vehicleDao;
-    private final OperatorDao operatorDao;
+    private final OperatorDAO operatorDao;
     private final TimestampDAO timestampDao;
     private final RoutesTripsDAO routesTripsDao;
     private final VehicleComponentDAO vehicleComponentDao;
@@ -44,7 +47,7 @@ public class TransitBusinessLayer {
      */
     public TransitBusinessLayer() throws SQLException {
         vehicleDao = new VehicleDAOImpl();
-        operatorDao = new OperatorDaoImpl();
+        operatorDao = new OperatorDAOImpl();
         timestampDao = new TimestampDAOImpl();
         routesTripsDao = new RoutesTripsDAOImpl();
         vehicleComponentDao = new VehicleComponentDAOImpl();
@@ -61,8 +64,10 @@ public class TransitBusinessLayer {
     public OperatorDTO validateCredentials(String userInput, String passInput) throws SQLException {
         // To be modified to select credentials being referenced in operators table
         for (int i = 0; i < operatorDao.getAllOperators().size(); i++) {
-            if (userInput.equals(operatorDao.getAllOperators().get(i).getLogin().getUsername()) && 
-                    passInput.equals(operatorDao.getAllOperators().get(i).getLogin().getPassword())) {
+            String value =operatorDao.getAllOperators().get(i).getLogin().getUsername();
+            String value2 = operatorDao.getAllOperators().get(i).getLogin().getPassword();
+            if (userInput.equals(value) && 
+                    passInput.equals(value2)) {
                 return operatorDao.getAllOperators().get(i);
             }
         }
@@ -87,8 +92,8 @@ public class TransitBusinessLayer {
                 .setFuelType(fuelType)
                 .setConsumptionRate(fuelRate)
                 .setMaxPassenger(maxPass)
-                .setRoute(null)
-                .registerVehicle()
+                .setTripID(null)
+                .buildVehicle()
         );
 //        VehicleDTO vehicle = new ;
     }
@@ -150,7 +155,7 @@ public class TransitBusinessLayer {
             int vehicleID = Integer.parseInt(id);
             for (int i = 0; i < getVehicles().size(); i++) {
                 if (getVehicles().get(i).getVehicleID() == vehicleID) {
-                    vehicleDao.updateVehicle(newFuel, routeUpdate, getVehicles().get(i));
+                    vehicleDao.updateVehicle(newFuel, routeUpdate, vehicleID);
                 }
             }
         }
@@ -199,11 +204,11 @@ public class TransitBusinessLayer {
         
         try {
             OperatorDTO operator = new OperatorDTO();
-            operator.setName(name);
+            operator.setOperatorName(name);
             operator.setEmail(email);
             operator.setUserType(OperatorDTO.UserType.valueOf(userType));
             operator.assignLogin(login);
-            operatorDao.registerOperator(operator);
+            operatorDao.addOperator(operator);
         } catch (IllegalArgumentException | SQLException e) {
             throw e;
         }

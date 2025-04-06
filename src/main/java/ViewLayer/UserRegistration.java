@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: UserRegistration.java
+ * date: April 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 
@@ -16,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * The webpage for registering a new operator
  * @author John Tieu
+ * @version 1.0
+ * @since 21
  */
 public class UserRegistration extends HttpServlet {
 

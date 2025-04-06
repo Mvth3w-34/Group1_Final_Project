@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: UpdateMaintenanceRequest.java 
+ * date: April 6th, 2025
+ * authors: Mathew Chebet
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package ViewLayer;
 
@@ -89,7 +92,7 @@ public class UpdateMaintenanceRequest extends HttpServlet
             out.println("<br>");
             out.println("<br>");
             
-            out.println("<label for=\"vTypes\">Request ID<label>");
+            out.println("<label for=\"vTypes\">Request ID</label>");
             out.println("<input type=\"text\" name=\"rID\"/>");
             
             out.println("<br>");

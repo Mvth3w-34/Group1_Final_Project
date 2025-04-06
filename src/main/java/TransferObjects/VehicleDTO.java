@@ -1,6 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/* filename: VehichleDTO.java
+ * date: Apr. 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
 package TransferObjects;
 
@@ -8,7 +11,9 @@ import DataAccessLayer.VehicleData.VehicleBuilder;
 
 /**
  *
- * @author johnt
+ * @author John Tieu
+ * @version 1.0
+ * @since 21
  */
 public class VehicleDTO {
 
@@ -18,12 +23,12 @@ public class VehicleDTO {
         DIESEL_TRAIN
     }
     private VehicleType vehicleType;
-    private int vehicleId;
+    private int vehicleID;
     private String vehicleNumber; // VIN
     private String fuelType;
     private float fuelConsumptionRate;
     private int maxPassengers;
-    private String assignedRoute;
+    private Integer assignedTripID = null; // null default value
     
     /**
      * Creates the vehicles
@@ -33,17 +38,17 @@ public class VehicleDTO {
      * @param fuelType
      * @param fuelRate
      * @param maxPass
-     * @param route 
+     * @param tripID
      */
     public VehicleDTO(VehicleType type, int ID, String num, String fuelType,
-float fuelRate, int maxPass, String route) {
+float fuelRate, int maxPass, Integer tripID) {
         this.vehicleType = type;
-        this.vehicleId = ID;
+        this.vehicleID = ID;
         this.vehicleNumber = num;
         this.fuelType = fuelType;
         this.fuelConsumptionRate = fuelRate;
         this.maxPassengers = maxPass;
-        this.assignedRoute = route;
+        this.assignedTripID = tripID;
     }
     public static VehicleBuilder setupVehicle() {
         return new VehicleBuilder();
@@ -52,7 +57,7 @@ float fuelRate, int maxPass, String route) {
         return this.vehicleType;
     }
     public int getVehicleID() {
-        return this.vehicleId;
+        return this.vehicleID;
     }
     public String getVIN() {
         return this.vehicleNumber;
@@ -63,13 +68,28 @@ float fuelRate, int maxPass, String route) {
     public float getFuelRate() {
         return this.fuelConsumptionRate;
     }
+    // setter for fuel rate, as the value is updated regularly
+    public void setFuelRate(float fuelRate) {
+        this.fuelConsumptionRate = fuelRate;
+    }
     public int getMaxPassengers() {
         return this.maxPassengers;
     }
-    public String getRoute() {
-        return this.assignedRoute;
+    public Integer getTripID() {
+        return this.assignedTripID;
     }
-    public void setRoute(String route) {
-        this.assignedRoute = route;
+    // setter for assigned trip, as the value is updated regularly
+    public void setTripID(Integer tripID) {
+        this.assignedTripID = tripID;
     }
+    
+    /**
+     * Determines if a trip schedule is already assigned to this vehicle
+     * 
+     * @return true if a trip schedule is assigned, false otherwise
+     */
+    public boolean hasTripAssigned() {
+        return (assignedTripID != null);
+    }
+
 }

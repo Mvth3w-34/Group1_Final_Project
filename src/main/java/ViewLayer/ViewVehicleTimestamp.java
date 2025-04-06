@@ -1,7 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+/* filename: ViewVehicleTimestamp.java
+ * date: April 6th, 2025
+ * authors: John Tieu
+ * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
+ * professor: Samira Ouaaz
+ * coursework: Final Project - Public Transit Management System
  */
+
 package ViewLayer;
 
 import BusinessLayer.TransitBusinessLayer;
@@ -21,6 +25,8 @@ import java.util.*;
 /**
  * The webpage for viewing the vehicle's timestamps of each station
  * @author John Tieu
+ * @version 1.0
+ * @since 21
  */
 public class ViewVehicleTimestamp extends HttpServlet {
 
