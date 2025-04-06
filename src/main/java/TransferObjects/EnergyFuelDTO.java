@@ -84,4 +84,20 @@ public class EnergyFuelDTO {
     public void setEnergyThreshold(float energyThreshold) {
         this.energyThreshold = energyThreshold;
     }
+private Float fuelLevelRemaining;
+private Float energyLevelRemaining;
+
+public Float getFuelLevelRemaining() {
+    return fuelLevelRemaining;
+}
+public void setFuelLevelRemaining(Float fuelLevelRemaining) {
+    this.fuelLevelRemaining = fuelLevelRemaining;
+}
+public Float getEnergyLevelRemaining() {
+    return energyLevelRemaining;
+}
+public void setEnergyLevelRemaining(Float energyLevelRemaining) {
+    this.energyLevelRemaining = energyLevelRemaining;
+}
+
 }

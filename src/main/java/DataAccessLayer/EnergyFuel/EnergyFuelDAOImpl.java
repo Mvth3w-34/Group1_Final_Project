@@ -92,6 +92,9 @@ public class EnergyFuelDAOImpl implements EnergyFuelDAO {
         dto.setEnergyConsumed(rs.getFloat("energy_consumed"));
         dto.setFuelThreshold(rs.getFloat("fuel_threshold"));
         dto.setEnergyThreshold(rs.getFloat("energy_threshold"));
+        dto.setFuelLevelRemaining(rs.getFloat("fuel_level_remaining"));
+        dto.setEnergyLevelRemaining(rs.getFloat("energy_level_remaining"));
+
         return dto;
     }
 }

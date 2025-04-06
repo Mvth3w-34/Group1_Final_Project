@@ -38,13 +38,15 @@ public class EnergyFuel extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             List<EnergyFuelDTO> alerts = logicLayer.getEnergyFuelAlerts();
+            List<EnergyFuelDTO> lowLevelAlerts = logicLayer.getLowFuelOrEnergyAlerts();
+
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
 
             out.println("<html><head><title>Fuel Alerts</title></head><body>");
             out.println("<h1>Vehicles with Fuel/Energy Consumption Above Threshold</h1>");
             if (alerts.isEmpty()) {
-                out.println("<p>No alerts at the moment.</p>");
+                out.println("<p>No high consumption alerts at the moment.</p>");
             } else {
                 out.println("<table border='1'><tr><th>Vehicle ID</th><th>Date</th><th>Fuel (L)</th><th>Energy (kWh)</th></tr>");
                 for (EnergyFuelDTO dto : alerts) {
@@ -57,6 +59,23 @@ public class EnergyFuel extends HttpServlet {
                 }
                 out.println("</table>");
             }
+
+            out.println("<h2>Low Fuel / Energy Level Alerts</h2>");
+            if (lowLevelAlerts.isEmpty()) {
+                out.println("<p>No low fuel or energy alerts.</p>");
+            } else {
+                out.println("<table border='1'><tr><th>Vehicle ID</th><th>Date</th><th>Fuel Remaining (%)</th><th>Energy Remaining (%)</th></tr>");
+                for (EnergyFuelDTO dto : lowLevelAlerts) {
+                    out.printf("<tr><td>%s</td><td>%s</td><td>%.2f</td><td>%.2f</td></tr>",
+                            dto.getVehicleId(),
+                            dto.getLogDate(),
+                            dto.getFuelLevelRemaining() != null ? dto.getFuelLevelRemaining() : 0,
+                            dto.getEnergyLevelRemaining() != null ? dto.getEnergyLevelRemaining() : 0
+                    );
+                }
+                out.println("</table>");
+            }
+
             out.println("<br><a href='index.html'>Back to Home</a>");
             out.println("</body></html>");
         } catch (SQLException e) {
@@ -72,6 +91,8 @@ public class EnergyFuel extends HttpServlet {
             float energy = Float.parseFloat(request.getParameter("energy"));
             float fuelThreshold = Float.parseFloat(request.getParameter("fuelThreshold"));
             float energyThreshold = Float.parseFloat(request.getParameter("energyThreshold"));
+            float fuelLevel = Float.parseFloat(request.getParameter("fuelLevelRemaining"));
+            float energyLevel = Float.parseFloat(request.getParameter("energyLevelRemaining"));
             String dateStr = request.getParameter("logDate");
 
             Date logDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
@@ -83,6 +104,8 @@ public class EnergyFuel extends HttpServlet {
             record.setEnergyConsumed(energy);
             record.setFuelThreshold(fuelThreshold);
             record.setEnergyThreshold(energyThreshold);
+            record.setFuelLevelRemaining(fuelLevel);
+            record.setEnergyLevelRemaining(energyLevel);
 
             logicLayer.logEnergyFuelConsumption(record);
 
@@ -92,4 +115,5 @@ public class EnergyFuel extends HttpServlet {
         }
     }
 }
+
 

@@ -230,3 +230,10 @@ CREATE TABLE EnergyFuelLog (
     energy_threshold FLOAT DEFAULT 100,    -- Threshold to trigger alerts
     FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_num)
 );
+ALTER TABLE EnergyFuelLog(
+ADD COLUMN fuel_level_remaining FLOAT DEFAULT NULL,
+ADD COLUMN energy_level_remaining FLOAT DEFAULT NULL
+);
+
+
+

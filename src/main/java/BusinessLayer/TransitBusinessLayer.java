@@ -28,6 +28,7 @@ import TransferObjects.VehicleComponentDTO;
 import DataAccessLayer.EnergyFuel.EnergyFuelDAO;
 import DataAccessLayer.EnergyFuel.EnergyFuelDAOImpl;
 import TransferObjects.EnergyFuelDTO;
+import java.util.ArrayList;
 
 /**
  *
@@ -261,6 +262,26 @@ public class TransitBusinessLayer {
      */
     public List<EnergyFuelDTO> getEnergyFuelAlerts() throws SQLException {
         return energyFuelDao.getOverThresholdLogs();
+    }
+    /**
+     * Returns a list of logs where the fuel or energy remaining is critically low.
+     * Defined as less than 15% remaining.
+     *
+     * @return a list of EnergyFuelDTO records with low levels
+     * @throws SQLException if database operation fails
+     */
+    public List<EnergyFuelDTO> getLowFuelOrEnergyAlerts() throws SQLException {
+        List<EnergyFuelDTO> allLogs = energyFuelDao.getAllLogs();
+        List<EnergyFuelDTO> lowLevelAlerts = new ArrayList<>();
+
+        for (EnergyFuelDTO dto : allLogs) {
+            if ((dto.getFuelLevelRemaining() != null && dto.getFuelLevelRemaining() < 15) ||
+                (dto.getEnergyLevelRemaining() != null && dto.getEnergyLevelRemaining() < 15)) {
+                lowLevelAlerts.add(dto);
+            }
+        }
+
+        return lowLevelAlerts;
     }
 
 }
