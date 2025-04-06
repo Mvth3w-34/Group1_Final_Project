@@ -63,7 +63,7 @@ public class AssignRoutes extends HttpServlet {
                 out.append("<select id='route' name='route'>")
                     .append("<option value='0'>Select a Route</option>")
                 ;
-                routesSchedules = transitLayer.getRoutes();
+                routesSchedules = transitLayer.getRoutesID();
                 for(int i = 0; i < routesSchedules.size(); i++) {
                     out.println("<option value='" + routesSchedules.get(i) + "'>" + routesSchedules.get(i) + "</option>");
                 }

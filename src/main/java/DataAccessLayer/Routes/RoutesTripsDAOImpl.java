@@ -10,17 +10,25 @@ import java.sql.*;
 import java.util.*;
 
 /**
- *
- * @author johnt
+  The implementation of the Route Trips DAO
+ * @author John Tieu
  */
 public class RoutesTripsDAOImpl implements RoutesTripsDAO {
 
     private final TransitDataSource instance;
-    
+    /**
+     * Gets the data source instance
+     * @throws SQLException 
+     */
     public RoutesTripsDAOImpl() throws SQLException {
         instance = TransitDataSource.getDataInstance();
     }
-    
+    /**
+     * Gets a list of the vehicle's timestamps from each station
+     * @param vehicleID
+     * @return The list of timestamps
+     * @throws SQLException 
+     */
     @Override
     public List<VehicleStationTimetable> getAllVehicleStationTimes(int vehicleID) throws SQLException {
         String query = "SELECT VEHICLES.VEHICLE_ID, STOPS.STOP_NAME, STOPS.IS_STATION, SCHEDULED_STOP_TIMES.ARRIVAL, SCHEDULED_STOP_TIMES.DEPARTURE "
@@ -55,6 +63,11 @@ public class RoutesTripsDAOImpl implements RoutesTripsDAO {
         }
         return vehicleTimetableList;
     }
+    /**
+     * Get list of headers from timestamp table
+     * @return Header data
+     * @throws SQLException 
+     */
     @Override
     public List<String> getHeaders() throws SQLException {
         String query = "SELECT * FROM VEHICLE_TIMETABLES";
@@ -72,7 +85,11 @@ public class RoutesTripsDAOImpl implements RoutesTripsDAO {
         }
         return headers;
     }
-    
+    /**
+     * Get a list of route IDs
+     * @return
+     * @throws SQLException 
+     */
     @Override
     public List<Integer> getRoutes() throws SQLException {
         List<Integer> routesList = new ArrayList<>();

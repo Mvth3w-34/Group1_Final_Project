@@ -41,7 +41,12 @@ public class VehicleDAOImpl implements VehicleDAO {
         }
         return vehiclesList;
     }
-
+    /**
+     * Gets a list of vehicles 
+     * @param query The query for the vehicles table
+     * @return The lits of vehicles
+     * @throws SQLException 
+     */
     private List<VehicleDTO> getVehiclesQuery(String query) throws SQLException {
         List<VehicleDTO> vehiclesList = new ArrayList<>();
         ResultSet set;
@@ -145,7 +150,9 @@ public class VehicleDAOImpl implements VehicleDAO {
             statement.executeUpdate();
         }
     }
-
+    /**
+     * Closes the DB connection
+     */
     @Override
     public void closeConnection() {
         instance.closeConnection();

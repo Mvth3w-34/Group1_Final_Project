@@ -12,19 +12,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author johnt
+ * The implementation of the Operator DAO methods
+ * @author John Tieu
  */
 public class OperatorDaoImpl implements OperatorDao {
 
     private final TransitDataSource instance;
     
+    /**
+     * Creates a singleton instance
+     * @throws SQLException 
+     */
     public OperatorDaoImpl() throws SQLException {
         instance = TransitDataSource.getDataInstance();
         // Test to see if login is successful upon login
 //        instance.getConnection();
     }
     
+    /**
+     * Gets a list of operators
+     * @return List of operators
+     * @throws SQLException 
+     */
     @Override
     public List<OperatorDTO> getAllOperators() throws SQLException {
         List<OperatorDTO> operatorList = new ArrayList<>();
@@ -64,6 +73,11 @@ public class OperatorDaoImpl implements OperatorDao {
         return operatorList;
     }
     
+    /**
+     * Registers a new operator
+     * @param operator The operator to be added
+     * @throws SQLException 
+     */
     @Override
     public void registerOperator(OperatorDTO operator) throws SQLException {
         int id = registerCredentials(operator); // Adds new credentials to DB first
@@ -81,7 +95,12 @@ public class OperatorDaoImpl implements OperatorDao {
             statement.executeUpdate();
         }
     }
-
+    /**
+     * Add a new login credential to the DB
+     * @param operator
+     * @return
+     * @throws SQLException 
+     */
     private int registerCredentials(OperatorDTO operator) throws SQLException {
         String insertLoginQuery = "INSERT INTO CREDENTIALS (USERNAME, PASSWORD) VALUES (?, ?)";
         int id;
@@ -99,7 +118,9 @@ public class OperatorDaoImpl implements OperatorDao {
             return 0;
         }   
     }
-    
+    /**
+     * Closes the connection
+     */
     @Override
     public void closeConnection() {
         instance.closeConnection();

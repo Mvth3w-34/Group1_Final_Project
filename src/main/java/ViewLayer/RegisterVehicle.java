@@ -16,8 +16,8 @@ import TransferObjects.*;
 import java.sql.SQLException;
 
 /**
- *
- * @author johnt
+ * The webpage for registering a vehicle
+ * @author John Tieu
  */
 public class RegisterVehicle extends HttpServlet {
 

@@ -9,8 +9,8 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- *
- * @author johnt
+ * Establishes a single connection to the database used for the Transit app
+ * @author John Tieu
  */
 public class TransitDataSource {
     private static Connection connection = null;
@@ -53,14 +53,12 @@ public class TransitDataSource {
         // Create a connection to the database with the saved login information
         try {
             if (connection == null || connection.isClosed()) {
-                Class.forName("com.mysql.cj.jdbc.Driver");
+//                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(url, dbUser, dbPass);
 //                connection = DriverManager.getConnection(url, login.getUsername(), login.getPassword());
             }
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            
         }
         return connection;
     }

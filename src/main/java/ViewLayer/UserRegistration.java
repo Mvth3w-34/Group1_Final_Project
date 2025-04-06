@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author johnt
+ * The webpage for registering a new operator
+ * @author John Tieu
  */
 public class UserRegistration extends HttpServlet {
 

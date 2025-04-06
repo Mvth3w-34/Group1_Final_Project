@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author johnt
+ * The webpage for operators to log their times
+ * @author John Tieu
  */
 public class LogTime extends HttpServlet {
 
@@ -34,7 +34,6 @@ public class LogTime extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         OperatorDTO operator = (OperatorDTO) request.getSession().getAttribute("operator");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
