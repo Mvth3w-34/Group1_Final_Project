@@ -8,8 +8,8 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- *
- * @author johnt
+ * Establishes a single connection to the database used for the Transit app
+ * @author John Tieu
  */
 public class TransitDataSource {
     private static Connection connection = null;

@@ -41,7 +41,12 @@ public class VehicleDAOImpl implements VehicleDAO {
         }
         return vehiclesList;
     }
-
+    /**
+     * Gets a list of vehicles 
+     * @param query The query for the vehicles table
+     * @return The lits of vehicles
+     * @throws SQLException 
+     */
     private List<VehicleDTO> getVehiclesQuery(String query) throws SQLException {
         List<VehicleDTO> vehiclesList = new ArrayList<>();
         ResultSet set;
@@ -74,7 +79,7 @@ public class VehicleDAOImpl implements VehicleDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             throw e;
         }
         return vehiclesList;
@@ -116,12 +121,16 @@ public class VehicleDAOImpl implements VehicleDAO {
     public void updateVehicle(String newFuel, String newRoute, VehicleDTO vehicle) throws SQLException {
         String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ASSIGNED_TRIP = ? WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(updateQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
-            if (newFuel.equals("")) {
+            if (newFuel == null) {
                 statement.setString(1, "N/A");
             } else {
                 statement.setString(1, newFuel);
             }
-            statement.setString(2, newRoute);
+            if (newRoute == null) {
+                statement.setNull(2, java.sql.Types.NULL);
+            } else {
+                statement.setInt(2, Integer.parseInt(newRoute));
+            }
             statement.setInt(3, vehicle.getVehicleID());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -141,7 +150,9 @@ public class VehicleDAOImpl implements VehicleDAO {
             statement.executeUpdate();
         }
     }
-
+    /**
+     * Closes the DB connection
+     */
     @Override
     public void closeConnection() {
         instance.closeConnection();

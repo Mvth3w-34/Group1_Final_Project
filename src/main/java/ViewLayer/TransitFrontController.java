@@ -16,8 +16,8 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author johnt
+ * The webpage for logging in
+ * @author John Tieu
  */
 public class TransitFrontController extends HttpServlet {
 

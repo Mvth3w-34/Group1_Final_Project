@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- *
- * @author johnt
+ * The webpage for the main menu
+ * @author John Tieu
  */
 public class TransitMenuView extends HttpServlet {
 

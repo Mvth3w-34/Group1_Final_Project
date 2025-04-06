@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- *
- * @author johnt
+ * The webpage for viewing the vehicle's timestamps of each station
+ * @author John Tieu
  */
 public class ViewVehicleTimestamp extends HttpServlet {
 

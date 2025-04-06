@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author johnt
+ * The webpage for viewing list of registered vehicles
+ * @author John Tieu
  */
 public class ViewVehicles extends HttpServlet {
 

@@ -16,8 +16,8 @@ import TransferObjects.*;
 import java.sql.SQLException;
 
 /**
- *
- * @author johnt
+ * The webpage for registering a vehicle
+ * @author John Tieu
  */
 public class RegisterVehicle extends HttpServlet {
 
@@ -109,8 +109,9 @@ public class RegisterVehicle extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Transit Vehicle Registration</title>");
+            out.append("<link rel='stylesheet' href='style.css'>");
             out.println("</head>");
-            out.println("<body>");
+            out.println("<body><center>");
             try {
                 if(request.getSession().getAttribute("businessLayer") == null) {
                     transitLayer = new TransitBusinessLayer();
@@ -130,7 +131,7 @@ public class RegisterVehicle extends HttpServlet {
                     +   "<p>Invalid vehicle details</p>");
             }
             out.println("<a href='/Group1_Final_Project_v1/TransitMenuView'><button>Return to Menu</button></a>");
-            out.println("</body>");
+            out.println("</center></body>");
             out.println("</html>");
         }
     }
