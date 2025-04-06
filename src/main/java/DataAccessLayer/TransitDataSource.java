@@ -15,6 +15,10 @@ public class TransitDataSource {
     private static Connection connection = null;
 //    private static LoginDTO login;
     private static TransitDataSource ds = null;
+
+    public static Object getInstance() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     private TransitDataSource() {
 //        this.login = login;
