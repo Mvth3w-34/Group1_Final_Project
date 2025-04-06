@@ -21,7 +21,6 @@ import java.util.List;
 @author: mario
 */
 
-@WebServlet("/EnergyFuel")
 public class EnergyFuel extends HttpServlet {
     private TransitBusinessLayer logicLayer;
 

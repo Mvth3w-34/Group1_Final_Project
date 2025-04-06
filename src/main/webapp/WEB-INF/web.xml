@@ -63,6 +63,7 @@
         <servlet-name>EnergyFuel</servlet-name>
         <servlet-class>ViewLayer.EnergyFuel</servlet-class>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
