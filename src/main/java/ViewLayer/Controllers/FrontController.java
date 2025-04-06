@@ -1,6 +1,6 @@
 /* filename: FrontController.java
- * date: Apr. 5th, 2025
- * authors: Stephanie Prystupa-Maule, John Tieu
+ * date: Apr. 6th, 2025
+ * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
  * coursework: Final Project - Public Transit Management System
@@ -21,8 +21,8 @@ import TransferObjects.CredentialsDTO;
  * Routes incoming requests to the appropriate module controller.
  *
  * @author Stephanie Prystupa-Maule
- * @version 2.0
- * @since 04/05/2025
+ * @version 2.1
+ * @since 04/06/2025
  */
 public class FrontController extends HttpServlet {
 
@@ -115,6 +115,36 @@ public class FrontController extends HttpServlet {
                     response.sendRedirect(redirectURL.toString());
                 } else {
                     response.sendRedirect("TripFrontController-URL");
+                }
+                break;
+                
+            case "dashboard":
+                if (action != null && !action.isEmpty()) {
+                    // Base URL
+                    StringBuilder redirectURL = new StringBuilder("DashboardFrontController-URL?");
+
+                    // Get all parameter names from the request
+                    java.util.Enumeration<String> paramNames = request.getParameterNames();
+                    boolean firstParam = true;
+
+                    // Add each parameter to the redirect URL
+                    while (paramNames.hasMoreElements()) {
+                        String paramName = paramNames.nextElement();
+                        String paramValue = request.getParameter(paramName);
+
+                        if (paramValue != null && !paramValue.isEmpty()) {
+                            if (!firstParam) {
+                                redirectURL.append("&");
+                            }
+                            redirectURL.append(paramName).append("=")
+                                      .append(java.net.URLEncoder.encode(paramValue, "UTF-8"));
+                            firstParam = false;
+                        }
+                    }
+
+                    response.sendRedirect(redirectURL.toString());
+                } else {
+                    response.sendRedirect("DashboardFrontController-URL");
                 }
                 break;
                 

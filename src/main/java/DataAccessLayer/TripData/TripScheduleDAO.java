@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Data Access Object interface for Trip Schedules 
- * Defines the contract for retrieving data from the vw-trip_schedules view
+ * Defines the contract for retrieving data from the vw_trip_schedules view
  * that collects trip schedules and related data.
  * 
  * @author johnt
@@ -34,7 +34,7 @@ public interface TripScheduleDAO {
     /**
      * Retrieves all trip schedules and their details from the database.
      * 
-     * @return List of TripScheduleDTO object matching the scheduleID
+     * @return List of TripScheduleDTO objects
      * @throws SQLException 
      */ 
     List<TripScheduleDTO> getAllTripScheds() throws SQLException;

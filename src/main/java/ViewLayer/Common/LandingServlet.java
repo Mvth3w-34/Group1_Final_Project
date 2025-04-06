@@ -1,11 +1,10 @@
 /* filename: LandingServlet.java
- * date: Apr. 5th, 2025
+ * date: Apr. 6th, 2025
  * authors: Stephanie Prystupa-Maule
  * course: CST8288 O.O.P. with Design Patterns - Lab Section 023 
  * professor: Samira Ouaaz
  * coursework: Final Project - Public Transit Management System
  */
-
 package ViewLayer.Common;
 
 import java.io.IOException;
@@ -25,8 +24,8 @@ import TransferObjects.CredentialsDTO;
  * Provides navigation to different modules of the Transit Management System.
  * 
  * @author Stephanie Prystupa-Maule
- * @version 1.0
- * @since 04/05/2025
+ * @version 1.1
+ * @since 04/06/2025
  */
 public class LandingServlet extends HttpServlet {
 
@@ -87,7 +86,7 @@ public class LandingServlet extends HttpServlet {
             out.println("<body>");
             // Header section with title and logout
             out.println("<h1>Public Transit Management System</h1>");
-            out.println("<div><a href=\"LogoutServlet\">Logout</a></div>");
+            out.println("<div><a href=\"LogoutServlet-URL\">Logout</a></div>");
             
             // Check for error messages
             if (request.getAttribute("errorMessage") != null) {
@@ -123,6 +122,14 @@ public class LandingServlet extends HttpServlet {
             out.println("<li><a href=\"FrontController-URL?module=trip&action=view_unassigned\">View Unassigned Trips</a></li>");
             out.println("<li><a href=\"FrontController-URL?module=trip&action=assign_vehicle\">Assign Vehicle to Trip</a></li>");
             out.println("<li><a href=\"FrontController-URL?module=trip&action=simulate_trip\">Simulate Trip</a></li>");
+            out.println("</ul>");
+            out.println("</div>");
+            
+            // Performance Dashboard Module
+            out.println("<div class=\"module-card\">");
+            out.println("<div class=\"module-title\">Performance Dashboards</div>");
+            out.println("<ul>");
+            out.println("<li><a href=\"FrontController-URL?module=dashboard&action=operator_performance\">Operator Performance Dashboard</a></li>");
             out.println("</ul>");
             out.println("</div>");
             
