@@ -9,7 +9,6 @@ package BusinessLayer;
 
 import DataAccessLayer.OperatorData.OperatorDAO;
 import DataAccessLayer.OperatorData.OperatorDAOImpl;
-import DataAccessLayer.TransitDataSource;
 import TransferObjects.CredentialsDTO;
 import TransferObjects.OperatorDTO;
 import java.sql.SQLException;
@@ -35,7 +34,12 @@ public class OperatorBusinessLogic {
      * @param creds The CredentialsDTO containing the user login credentials
      */
     public OperatorBusinessLogic(CredentialsDTO creds) {
-        operatorDAO = new OperatorDAOImpl();
+        try{
+            operatorDAO = new OperatorDAOImpl();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
     
     /**

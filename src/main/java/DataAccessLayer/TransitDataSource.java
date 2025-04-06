@@ -29,10 +29,11 @@ public class TransitDataSource {
 
     private static TransitDataSource ds = null;
     private static Connection connection = null;
-/*
+
     /**
      * Private constructor to prevent instantiation.
      */
+
     private TransitDataSource() {
     }
     

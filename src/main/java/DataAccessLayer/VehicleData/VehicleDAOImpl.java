@@ -34,8 +34,6 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
     private final TransitDataSource instance;
     
     /**
-<<<<<<< HEAD
-     * Establishes an initial login to the DB.
      * @throws java.sql.SQLException If bad login credentials are provided
      */
     public VehicleDAOImpl() throws SQLException {

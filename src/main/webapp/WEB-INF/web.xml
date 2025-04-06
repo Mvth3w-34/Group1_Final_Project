@@ -59,6 +59,10 @@
         <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
         <servlet-class>ViewLayer.MaintenanceRequestCompletionReport</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EnergyFuel</servlet-name>
+        <servlet-class>ViewLayer.EnergyFuel</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransitFrontController</servlet-name>
         <url-pattern>/TransitFrontController</url-pattern>
@@ -115,7 +119,10 @@
         <servlet-name>MaintenanceRequestCompletionReport</servlet-name>
         <url-pattern>/MaintenanceRequestCompletionReport</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>EnergyFuel</servlet-name>
+        <url-pattern>/EnergyFuel</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

@@ -218,3 +218,22 @@ CREATE TABLE VEHICLE_COMPONENT (
 --INSERT INTO OPERATOR_TIMESTAMP (PUNCH_TIME_START, PUNCH_TIME_STOP, PUNCH_TYPE, OPERATOR_ID) VALUES ('2025-01-29 12:00:00', '2025-01-29 15:00:00', 'START', 4);
 --INSERT INTO OPERATOR_TIMESTAMP (PUNCH_TIME_START, PUNCH_TIME_STOP, PUNCH_TYPE, OPERATOR_ID) VALUES ('2025-01-30 08:00:00', '2025-01-30 14:00:00', 'START', 4);
 
+--Written by Mario
+-- Table to log daily energy and fuel consumption per vehicle
+CREATE TABLE EnergyFuelLog (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    vehicle_id VARCHAR(20), -- References the VIN of the vehicle
+    log_date DATE NOT NULL,
+    fuel_consumed FLOAT DEFAULT 0,         -- In liters
+    energy_consumed FLOAT DEFAULT 0,       -- In kWh
+    fuel_threshold FLOAT DEFAULT 50,       -- Threshold to trigger alerts
+    energy_threshold FLOAT DEFAULT 100,    -- Threshold to trigger alerts
+    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_num)
+);
+ALTER TABLE EnergyFuelLog(
+ADD COLUMN fuel_level_remaining FLOAT DEFAULT NULL,
+ADD COLUMN energy_level_remaining FLOAT DEFAULT NULL
+);
+
+
+

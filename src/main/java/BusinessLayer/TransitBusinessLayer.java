@@ -23,11 +23,16 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
-import DataAccessLayer.OperatorData.*;
 import DataAccessLayer.VehicleComponents.VehicleComponentDAO;
 import DataAccessLayer.VehicleComponents.VehicleComponentDAOImpl;
 import TransferObjects.MaintenanceRequestTicketDTO;
 import TransferObjects.VehicleComponentDTO;
+import DataAccessLayer.EnergyFuel.EnergyFuelDAO;
+import DataAccessLayer.EnergyFuel.EnergyFuelDAOImpl;
+import DataAccessLayer.OperatorData.OperatorDAO;
+import DataAccessLayer.OperatorData.OperatorDAOImpl;
+import TransferObjects.EnergyFuelDTO;
+import java.util.ArrayList;
 
 /**
  * The business layer used to handle the logic for the Transit web app
@@ -40,6 +45,7 @@ public class TransitBusinessLayer {
     private final RoutesTripsDAO routesTripsDao;
     private final VehicleComponentDAO vehicleComponentDao;
     private final MaintenanceRequestDAO maintenanceRequestDao;
+    private final EnergyFuelDAO energyFuelDao;
     
     /**
      * The constructor for the business logic
@@ -52,6 +58,7 @@ public class TransitBusinessLayer {
         routesTripsDao = new RoutesTripsDAOImpl();
         vehicleComponentDao = new VehicleComponentDAOImpl();
         maintenanceRequestDao = new MaintenanceRequestDAOImpl();
+        energyFuelDao = new EnergyFuelDAOImpl(); //added for fuelAlerts
 
     }
     /**
@@ -310,4 +317,67 @@ public class TransitBusinessLayer {
     public void updateVehicleComponent(VehicleComponentDTO component){
         vehicleComponentDao.updateVehicleComponent(component);
     }
+    
+    //@author: Mario
+    /**
+     * Logs a new energy and fuel consumption record for a specific vehicle.
+     *
+     * @param record, an EnergyFuelDTO object containing vehicle ID, date, and consumption data
+     * @throws SQLException if database operation fails
+     */
+    public void logEnergyFuelConsumption(EnergyFuelDTO record) throws SQLException {
+        energyFuelDao.logConsumption(record);
+    }
+
+    /**
+     * Returns all energy and fuel logs stored in the database.
+     *
+     * @return a list of EnergyFuelDTO objects
+     * @throws SQLException if database operation fails
+     */
+    public List<EnergyFuelDTO> getAllEnergyFuelLogs() throws SQLException {
+        return energyFuelDao.getAllLogs();
+    }
+
+    /**
+     * Returns all energy and fuel logs for a specific vehicle.
+     *
+     * @param vehicleId the vehicle ID (VIN)
+     * @return a list of EnergyFuelDTO records
+     * @throws SQLException if database operation fails
+     */
+    public List<EnergyFuelDTO> getEnergyFuelLogsByVehicle(String vehicleId) throws SQLException {
+        return energyFuelDao.getLogsByVehicle(vehicleId);
+    }
+
+    /**
+     * Returns a list of energy/fuel logs that exceed the defined consumption thresholds.
+     *
+     * @return a list of EnergyFuelDTO records exceeding thresholds
+     * @throws SQLException if database operation fails
+     */
+    public List<EnergyFuelDTO> getEnergyFuelAlerts() throws SQLException {
+        return energyFuelDao.getOverThresholdLogs();
+    }
+    /**
+     * Returns a list of logs where the fuel or energy remaining is critically low.
+     * Defined as less than 15% remaining.
+     *
+     * @return a list of EnergyFuelDTO records with low levels
+     * @throws SQLException if database operation fails
+     */
+    public List<EnergyFuelDTO> getLowFuelOrEnergyAlerts() throws SQLException {
+        List<EnergyFuelDTO> allLogs = energyFuelDao.getAllLogs();
+        List<EnergyFuelDTO> lowLevelAlerts = new ArrayList<>();
+
+        for (EnergyFuelDTO dto : allLogs) {
+            if ((dto.getFuelLevelRemaining() != null && dto.getFuelLevelRemaining() < 15) ||
+                (dto.getEnergyLevelRemaining() != null && dto.getEnergyLevelRemaining() < 15)) {
+                lowLevelAlerts.add(dto);
+            }
+        }
+
+        return lowLevelAlerts;
+    }
+
 }

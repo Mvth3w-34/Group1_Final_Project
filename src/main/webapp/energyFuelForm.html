@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+<head>
+    <title>Log Energy & Fuel Consumption</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Register Energy and Fuel Consumption</h1>
+    <form method="POST" action="EnergyFuel">
+        <label for="vehicleId">Vehicle ID (VIN):</label><br>
+        <input type="text" id="vehicleId" name="vehicleId" required><br><br>
+
+        <label for="logDate">Date (YYYY-MM-DD):</label><br>
+        <input type="date" id="logDate" name="logDate" required><br><br>
+
+        <label for="fuel">Fuel Consumed (liters):</label><br>
+        <input type="number" id="fuel" name="fuel" step="0.01" required><br><br>
+
+        <label for="energy">Energy Consumed (kWh):</label><br>
+        <input type="number" id="energy" name="energy" step="0.01" required><br><br>
+
+        <label for="fuelThreshold">Fuel Threshold (liters):</label><br>
+        <input type="number" id="fuelThreshold" name="fuelThreshold" step="0.01" value="50"><br><br>
+
+        <label for="energyThreshold">Energy Threshold (kWh):</label><br>
+        <input type="number" id="energyThreshold" name="energyThreshold" step="0.01" value="100"><br><br>
+
+        <label for="fuelLevelRemaining">Fuel Level Remaining (%):</label><br>
+        <input type="number" id="fuelLevelRemaining" name="fuelLevelRemaining" step="0.01" min="0" max="100" required><br><br>
+
+        <label for="energyLevelRemaining">Energy Level Remaining (%):</label><br>
+        <input type="number" id="energyLevelRemaining" name="energyLevelRemaining" step="0.01" min="0" max="100" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <br>
+    <a href="EnergyFuel">View Alerts</a>
+</body>
+</html>
