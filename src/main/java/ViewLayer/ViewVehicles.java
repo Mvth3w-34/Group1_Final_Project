@@ -97,6 +97,8 @@ public class ViewVehicles extends HttpServlet {
                 out.append("<h1>Database Error</h1>")
                     .append("<p>Unable to connect to the database</p>")
                     .append("   <a href='/Group1_Final_Project_v1/TransitFrontController'><button>Return to Login</button></a>");
+                
+                e.printStackTrace();
             }
             out.println("</center></body>");
             out.println("</html>");
