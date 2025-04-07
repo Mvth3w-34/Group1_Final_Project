@@ -124,6 +124,209 @@
         <servlet-name>EnergyFuel</servlet-name>
         <url-pattern>/EnergyFuel</url-pattern>
     </servlet-mapping>
+    
+    <!-- Steph's Servlets -->
+    <!-- Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.FrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Front Controller -->
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/FrontController-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Vehicle Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>VehicleFrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.VehicleFrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Vehicle Front Controller -->
+    <servlet-mapping>
+        <servlet-name>VehicleFrontController</servlet-name>
+        <url-pattern>/VehicleFrontController-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Trip Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>TripFrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.TripFrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Trip Front Controller -->
+    <servlet-mapping>
+        <servlet-name>TripFrontController</servlet-name>
+        <url-pattern>/TripFrontController-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Dashboard Front Controller Servlet Configuration -->
+    <servlet>
+        <servlet-name>DashboardFrontController</servlet-name>
+        <servlet-class>ViewLayer.Controllers.DashboardFrontController</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Dashboard Front Controller -->
+    <servlet-mapping>
+        <servlet-name>DashboardFrontController</servlet-name>
+        <url-pattern>/DashboardFrontController-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Login Servlet Configuration -->
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>ViewLayer.Common.LoginServlet</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Login -->
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Logout Servlet Configuration -->
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ViewLayer.Common.LogoutServlet</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Logout -->
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Landing Page Servlet Configuration -->
+    <servlet>
+        <servlet-name>LandingServlet</servlet-name>
+        <servlet-class>ViewLayer.Common.LandingServlet</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Landing Page -->
+    <servlet-mapping>
+        <servlet-name>LandingServlet</servlet-name>
+        <url-pattern>/LandingServlet-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Vehicles (all) Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewVehicles</servlet-name>
+        <servlet-class>ViewLayer.Vehicle.ViewVehicles</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Vehicles -->
+    <servlet-mapping>
+        <servlet-name>ViewVehicles</servlet-name>
+        <url-pattern>/ViewVehicles-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Vehicle (single) Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewVehicle</servlet-name>
+        <servlet-class>ViewLayer.Vehicle.ViewVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Vehicle -->
+    <servlet-mapping>
+        <servlet-name>ViewVehicle</servlet-name>
+        <url-pattern>/ViewVehicle-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Register (add) Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>RegisterVehicle</servlet-name>
+        <servlet-class>ViewLayer.Vehicle.RegisterVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Register Vehicle -->
+    <servlet-mapping>
+        <servlet-name>RegisterVehicle</servlet-name>
+        <url-pattern>/RegisterVehicle-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Remove (delete) Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>RemoveVehicle</servlet-name>
+        <servlet-class>ViewLayer.Vehicle.RemoveVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Remove Vehicle -->
+    <servlet-mapping>
+        <servlet-name>RemoveVehicle</servlet-name>
+        <url-pattern>/RemoveVehicle-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Update Vehicle Servlet Configuration -->
+    <servlet>
+        <servlet-name>UpdateVehicle</servlet-name>
+        <servlet-class>ViewLayer.Vehicle.UpdateVehicle</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Update Vehicle -->
+    <servlet-mapping>
+        <servlet-name>UpdateVehicle</servlet-name>
+        <url-pattern>/UpdateVehicle-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View All Trip Schedules Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewAllTripSchedules</servlet-name>
+        <servlet-class>ViewLayer.Trip.ViewAllTripSchedules</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View All Trip Schedules -->
+    <servlet-mapping>
+        <servlet-name>ViewAllTripSchedules</servlet-name>
+        <url-pattern>/ViewAllTripSchedules-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Trip Schedule (single) Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewTripSchedule</servlet-name>
+        <servlet-class>ViewLayer.Trip.ViewTripSchedule</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Trip Schedule -->
+    <servlet-mapping>
+        <servlet-name>ViewTripSchedule</servlet-name>
+        <url-pattern>/ViewTripSchedule-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Trip Schedules by Route Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewTripSchedulesByRoute</servlet-name>
+        <servlet-class>ViewLayer.Trip.ViewTripSchedulesByRoute</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Trip Schedules by Route-->
+    <servlet-mapping>
+        <servlet-name>ViewTripSchedulesByRoute</servlet-name>
+        <url-pattern>/ViewTripSchedulesByRoute-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Unassigned Trips Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewUnassignedTrips</servlet-name>
+        <servlet-class>ViewLayer.Trip.ViewUnassignedTrips</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Unassigned Trips-->
+    <servlet-mapping>
+        <servlet-name>ViewUnassignedTrips</servlet-name>
+        <url-pattern>/ViewUnassignedTrips-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Assign Vehicle to Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>AssignVehicleToTrip</servlet-name>
+        <servlet-class>ViewLayer.Trip.AssignVehicleToTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Assign Vehicle to Trip-->
+    <servlet-mapping>
+        <servlet-name>AssignVehicleToTrip</servlet-name>
+        <url-pattern>/AssignVehicleToTrip-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Unassign Vehicle From Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>UnassignVehicleFromTrip</servlet-name>
+        <servlet-class>ViewLayer.Trip.UnassignVehicleFromTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Unassign Vehicle From Trip-->
+    <servlet-mapping>
+        <servlet-name>UnassignVehicleFromTrip</servlet-name>
+        <url-pattern>/UnassignVehicleFromTrip-URL</url-pattern>
+    </servlet-mapping>
+    <!-- Simulate Trip Servlet Configuration -->
+    <servlet>
+        <servlet-name>SimulateTrip</servlet-name>
+        <servlet-class>ViewLayer.Trip.SimulateTrip</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for Simulate Trip-->
+    <servlet-mapping>
+        <servlet-name>SimulateTrip</servlet-name>
+        <url-pattern>/SimulateTrip-URL</url-pattern>
+    </servlet-mapping>
+    <!-- View Operator Performance Servlet Configuration -->
+    <servlet>
+        <servlet-name>ViewOperatorPerformance</servlet-name>
+        <servlet-class>ViewLayer.Dashboard.OperatorPerformanceDashboard</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping for View Operator Performance-->
+    <servlet-mapping>
+        <servlet-name>ViewOperatorPerformance</servlet-name>
+        <url-pattern>/ViewOperatorPerformance-URL</url-pattern>
+    </servlet-mapping>
+    <!-- End of Steph's Servlets -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
