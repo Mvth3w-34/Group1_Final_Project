@@ -9,6 +9,7 @@
 package ViewLayer.Dashboard;
         
 import BusinessLayer.OperatorPerformanceBusinessLogic;
+import BusinessLayer.TransitBusinessLayer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -18,7 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import TransferObjects.CredentialsDTO;
+//import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 import TransferObjects.OperatorPerformanceDTO;
 import ViewLayer.Dashboard.OperatorPerformanceView;
 import ViewLayer.Dashboard.OperatorPerformancePresenter;
@@ -57,21 +59,40 @@ public class OperatorPerformanceDashboard extends HttpServlet implements Operato
         this.request = request;
         this.response = response;
         
-        // Get session and check for credentials
+        // new session handling with raw credentials and authentication in session
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("credentials") == null) {
+        if (session == null || session.getAttribute("operator") == null) {
             // If no valid session - redirect to login
-            response.sendRedirect("index.html?error=timeout");
+            response.sendRedirect("/Group1_Final_Project_v1/TransitFrontController");
             return;
         }
-        
-        // Get credentials from session
-        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
-        
+
+        // Get operator and business layer from session
+        OperatorDTO operator = (OperatorDTO) session.getAttribute("operator");
+        TransitBusinessLayer logicLayer = (TransitBusinessLayer) session.getAttribute("businessLayer");
+
         // Initialize presenter if not already done
         if (presenter == null) {
-            presenter = new OperatorPerformancePresenter(this, credentials);
-        }
+            presenter = new OperatorPerformancePresenter(this, operator, logicLayer);
+        }        
+        
+        
+          // old session handling, with encapsulation and resource management                
+//        // Get session and check for credentials
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("credentials") == null) {
+//            // If no valid session - redirect to login
+//            response.sendRedirect("index.html?error=timeout");
+//            return;
+//        }
+//        
+//        // Get credentials from session
+//        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
+//
+//        // Initialize presenter if not already done
+//        if (presenter == null) {
+//            presenter = new OperatorPerformancePresenter(this, credentials);
+//        }
         
         // Let the presenter handle the business logic
         presenter.initializeView();

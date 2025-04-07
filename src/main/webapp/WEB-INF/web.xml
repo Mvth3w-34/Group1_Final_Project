@@ -316,15 +316,15 @@
         <servlet-name>SimulateTrip</servlet-name>
         <url-pattern>/SimulateTrip-URL</url-pattern>
     </servlet-mapping>
-    <!-- View Operator Performance Servlet Configuration -->
+    <!-- Operator Performance Dashboard Servlet Configuration -->
     <servlet>
-        <servlet-name>ViewOperatorPerformance</servlet-name>
+        <servlet-name>OperatorPerformanceDashboard</servlet-name>
         <servlet-class>ViewLayer.Dashboard.OperatorPerformanceDashboard</servlet-class>
     </servlet>
-    <!-- Servlet Mapping for View Operator Performance-->
+    <!-- Servlet Mapping for Operator Performance Dashboard-->
     <servlet-mapping>
-        <servlet-name>ViewOperatorPerformance</servlet-name>
-        <url-pattern>/ViewOperatorPerformance-URL</url-pattern>
+        <servlet-name>OperatorPerformanceDashboard</servlet-name>
+        <url-pattern>/OperatorPerformanceDashboard-URL</url-pattern>
     </servlet-mapping>
     <!-- End of Steph's Servlets -->
     <session-config>

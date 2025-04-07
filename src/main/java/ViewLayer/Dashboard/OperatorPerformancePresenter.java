@@ -8,7 +8,9 @@
 package ViewLayer.Dashboard;
 
 import BusinessLayer.OperatorPerformanceBusinessLogic;
-import TransferObjects.CredentialsDTO;
+import BusinessLayer.TransitBusinessLayer;
+//import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 import TransferObjects.OperatorPerformanceDTO;
 import ViewLayer.Dashboard.OperatorPerformanceView;
 
@@ -28,17 +30,25 @@ public class OperatorPerformancePresenter {
     private final OperatorPerformanceView view;
     private final OperatorPerformanceBusinessLogic businessLogic;
 
-    /**
-     * Constructor for the OperatorPerformancePresenter
-     * 
-     * @param view The view interface implementation
-     * @param credentials The credentials for data access authorization
-     */
-    public OperatorPerformancePresenter(OperatorPerformanceView view, CredentialsDTO credentials) {
+    // new session handling with raw credentials and authentication in session
+    public OperatorPerformancePresenter(OperatorPerformanceView view, OperatorDTO operator, TransitBusinessLayer logicLayer) {
         this.view = view;
-        this.businessLogic = new OperatorPerformanceBusinessLogic(credentials);
+        this.businessLogic = new OperatorPerformanceBusinessLogic(operator, logicLayer);
         this.view.setPresenter(this);
-    }
+    }    
+    
+      // old session handling, with encapsulation and resource management       
+//    /**
+//     * Constructor for the OperatorPerformancePresenter
+//     * 
+//     * @param view The view interface implementation
+//     * @param credentials The credentials for data access authorization
+//     */
+//    public OperatorPerformancePresenter(OperatorPerformanceView view, CredentialsDTO credentials) {
+//        this.view = view;
+//        this.businessLogic = new OperatorPerformanceBusinessLogic(credentials);
+//        this.view.setPresenter(this);
+//    }
 
     /**
      * Loads and displays the operator performance data based on user filter settings

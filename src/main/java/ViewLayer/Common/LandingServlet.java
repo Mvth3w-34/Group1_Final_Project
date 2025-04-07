@@ -7,6 +7,7 @@
  */
 package ViewLayer.Common;
 
+import BusinessLayer.TransitBusinessLayer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -15,9 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import BusinessLayer.VehiclesBusinessLogic;
-import BusinessLayer.TripScheduleBusinessLogic;
-import TransferObjects.CredentialsDTO;
+//import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 
 /**
  * Central dashboard servlet that serves as the landing page after login.
@@ -41,36 +41,33 @@ public class LandingServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        // Check for valid session and credentials
+          
+        // new session handling with raw credentials and authentication in session
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("credentials") == null) {
+        if (session == null || session.getAttribute("operator") == null) {
             // If there's no valid session - redirect to login
-            response.sendRedirect("index.html?error=timeout");
+            response.sendRedirect("/Group1_Final_Project_v1/TransitFrontController");
             return;
         }
         
-        // Get credentials from session
-        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
+        TransitBusinessLayer logicLayer = (TransitBusinessLayer) session.getAttribute("businessLayer"); 
+
+        // Get operator from session
+        OperatorDTO operator = (OperatorDTO) session.getAttribute("operator");
+        
+          // old session handling, with encapsulation and resource management
+//        // Check for valid session and credentials
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("credentials") == null) {
+//            // If there's no valid session - redirect to login
+//            response.sendRedirect("index.html?error=timeout");
+//            return;
+//        }
+//        
+//        // Get credentials from session
+//        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
         
         try (PrintWriter out = response.getWriter()) {
-//            // Initialize business logic components to get summary data
-//            VehiclesBusinessLogic vehiclesLogic = new VehiclesBusinessLogic(credentials);
-//            TripScheduleBusinessLogic scheduleLogic = new TripScheduleBusinessLogic(credentials);
-            
-//            // Get summary counts for dashboard
-//            int vehicleCount = 0;
-//            int scheduleCount = 0;
-//            int unassignedTripsCount = 0;
-//            
-//            try {
-//                vehicleCount = vehiclesLogic.getAllVehicles().size();
-//                scheduleCount = scheduleLogic.getAllTripSchedules().size();
-//                unassignedTripsCount = scheduleLogic.getUnassignedTrips().size();
-//            } catch (SQLException e) {
-//                // Handle database errors gracefully
-//                request.setAttribute("errorMessage", "Database error: " + e.getMessage());
-//            }
             
             // Output HTML for the dashboard
             out.println("<!DOCTYPE html>");
@@ -129,7 +126,7 @@ public class LandingServlet extends HttpServlet {
             out.println("<div class=\"module-card\">");
             out.println("<div class=\"module-title\">Performance Dashboards</div>");
             out.println("<ul>");
-            out.println("<li><a href=\"FrontController-URL?module=dashboard&action=operator_performance\">Operator Performance Dashboard</a></li>");
+            out.println("<li><a href=\"/Group1_Final_Project_v1/FrontController-URL?module=dashboard&action=operator_performance\">Operator Performance Dashboard</a></li>");
             out.println("</ul>");
             out.println("</div>");
             

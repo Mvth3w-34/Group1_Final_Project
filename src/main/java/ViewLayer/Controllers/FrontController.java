@@ -8,6 +8,8 @@
 
 package ViewLayer.Controllers;
 
+import BusinessLayer.OperatorPerformanceBusinessLogic;
+import BusinessLayer.TransitBusinessLayer;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 
 /**
  * Main Front Controller servlet for the Transit Management application.
@@ -37,14 +40,30 @@ public class FrontController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+
+            // new session handling with raw credentials and authentication in session
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("operator") == null) {
+                // If there's no valid session - redirect to login
+                response.sendRedirect("/Group1_Final_Project_v1/TransitFrontController");
+                return;
+            }
+
+            // Get operator from session
+            OperatorDTO operator = (OperatorDTO) session.getAttribute("operator");
+            TransitBusinessLayer logicLayer = (TransitBusinessLayer) session.getAttribute("businessLayer");
+
+            // Initialize the business logic with the operator object
+            OperatorPerformanceBusinessLogic operatorPerformanceLogic = new OperatorPerformanceBusinessLogic(operator, logicLayer);
         
-        // Check for valid session and credentials
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("credentials") == null) {
-            // If there's no valid session - redirect to login
-            response.sendRedirect("index.html?error=timeout");
-            return;
-        }
+//        // Check for valid session and credentials
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("credentials") == null) {
+//            // If there's no valid session - redirect to login
+//            response.sendRedirect("index.html?error=timeout");
+//            return;
+//        }
         
         // Get module and action parameters
         String module = request.getParameter("module");

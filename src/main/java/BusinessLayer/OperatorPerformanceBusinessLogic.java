@@ -10,7 +10,8 @@ package BusinessLayer;
 import DataAccessLayer.OperatorData.OperatorPerformanceDAO;
 import DataAccessLayer.OperatorData.OperatorPerformanceDAOImpl;
 import DataAccessLayer.TransitDataSource;
-import TransferObjects.CredentialsDTO;
+//import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 import TransferObjects.OperatorPerformanceDTO;
 import java.sql.SQLException;
 import java.util.Comparator;
@@ -28,16 +29,29 @@ import java.util.stream.Collectors;
 public class OperatorPerformanceBusinessLogic {
     
     private OperatorPerformanceDAO operatorPerformanceDAO = null;
-    
+
+    // new session handling with raw credentials and authentication in session    
     /**
-     * Constructor that sets the credentials for the Data Source and initializes
-     * the OperatorPerformance DAO
+     * Constructor initializes the OperatorPerformance DAO
      * 
-     * @param creds The CredentialsDTO containing the user login credentials
+     * @param operator The OperatorDTO associated with the session
+     * @param logicLayer The TransitBusinessLayer associated with the session
      */
-    public OperatorPerformanceBusinessLogic(CredentialsDTO creds) {
+    public OperatorPerformanceBusinessLogic(OperatorDTO operator, TransitBusinessLayer logicLayer) {
         operatorPerformanceDAO = new OperatorPerformanceDAOImpl();
-    }
+    }    
+    
+    
+      // old session handling, with encapsulation and resource management         
+//    /**
+//     * Constructor that sets the credentials for the Data Source and initializes
+//     * the OperatorPerformance DAO
+//     * 
+//     * @param creds The CredentialsDTO containing the user login credentials
+//     */
+//    public OperatorPerformanceBusinessLogic(CredentialsDTO creds) {
+//        operatorPerformanceDAO = new OperatorPerformanceDAOImpl();
+//    }
     
     /**
      * Retrieves performance metrics for an operator by ID.

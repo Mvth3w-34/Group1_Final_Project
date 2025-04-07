@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import BusinessLayer.*;
-import TransferObjects.CredentialsDTO;
+//import TransferObjects.CredentialsDTO;
+import TransferObjects.OperatorDTO;
 
 /**
  * Module-specific Front Controller servlet for the Dashboard module.
@@ -38,20 +39,37 @@ public class DashboardFrontController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            
         
-        // Check for valid session and credentials
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("credentials") == null) {
-            // If there's no valid session - redirect to login
-            response.sendRedirect("index.html?error=timeout");
-            return;
-        }
+            // new session handling with raw credentials and authentication in session
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("operator") == null) {
+                // If there's no valid session - redirect to login
+                response.sendRedirect("/Group1_Final_Project_v1/TransitFrontController");
+                return;
+            }
+
+            // Get operator from session
+            OperatorDTO operator = (OperatorDTO) session.getAttribute("operator");
+            TransitBusinessLayer logicLayer = (TransitBusinessLayer) session.getAttribute("businessLayer");
+
+            // Initialize the business logic with the operator object
+            OperatorPerformanceBusinessLogic operatorPerformanceLogic = new OperatorPerformanceBusinessLogic(operator, logicLayer);
         
-        // Get credentials from session
-        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
-        
-        // Initialize the business logic with credentials from the session
-        OperatorPerformanceBusinessLogic operatorPerformanceLogic = new OperatorPerformanceBusinessLogic(credentials);
+          // old session handling, with encapsulation and resource management        
+//        // Check for valid session and credentials
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("credentials") == null) {
+//            // If there's no valid session - redirect to login
+//            response.sendRedirect("index.html?error=timeout");
+//            return;
+//        }
+//        
+//        // Get credentials from session
+//        CredentialsDTO credentials = (CredentialsDTO) session.getAttribute("credentials");
+//        
+//        // Initialize the business logic with credentials from the session
+//        OperatorPerformanceBusinessLogic operatorPerformanceLogic = new OperatorPerformanceBusinessLogic(credentials);
         
         // Get parameters from the request
         String action = request.getParameter("action");
@@ -70,7 +88,7 @@ public class DashboardFrontController extends HttpServlet {
         // Dispatch to appropriate handler based on action
         switch (action) {
             case "operator_performance":
-                request.getRequestDispatcher("/ViewOperatorPerformance-URL").forward(request, response);
+                request.getRequestDispatcher("/OperatorPerformanceDashboard-URL").forward(request, response);
                 break;
                 
             case "operator_detail":
@@ -80,31 +98,19 @@ public class DashboardFrontController extends HttpServlet {
                 }
                 request.setAttribute("operatorId", operatorId);
                 request.getRequestDispatcher("/ViewOperatorDetail-URL").forward(request, response);
-                break;
-                
-//            case "route_performance":
-//                request.getRequestDispatcher("/ViewRoutePerformance-URL").forward(request, response);
-//                break;
-//                
-//            case "route_detail":
-//                if (routeId == null || routeId.isEmpty()) {
-//                    response.sendRedirect("DashboardFrontController-URL?action=route_performance&error=missing_id");
-//                    return;
-//                }
-//                request.setAttribute("routeId", routeId);
-//                request.getRequestDispatcher("/ViewRouteDetail-URL").forward(request, response);
-//                break;
-//                
-//            case "system_overview":
-//                request.getRequestDispatcher("/ViewSystemOverview-URL").forward(request, response);
-//                break;
-                
+                break;             
+
             case "return_to_menu":
-                response.sendRedirect("LandingServlet-URL");
+                response.sendRedirect("/Group1_Final_Project_v1/TransitMenuView");
                 break;
+              
+              // old version
+//            case "return_to_menu":
+//                response.sendRedirect("LandingServlet-URL");
+//                break;
                 
             default:
-                request.getRequestDispatcher("/ViewOperatorPerformance").forward(request, response);
+                request.getRequestDispatcher("/OperatorPerformanceDashboard-URL").forward(request, response);
                 break;
         }
     }
