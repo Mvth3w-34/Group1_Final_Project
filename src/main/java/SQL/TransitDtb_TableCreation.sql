@@ -1,7 +1,7 @@
 /* filename: TransitDtb_TableCreation.sql
  * authors: Stephanie Prystupa-Maule, John Tieu, Mathew Chebet
  * description: SQL script for Transit Dtb creation
- * last modified: 04/02/2025
+ * last modified: 04/06/2025
  */
 
 DROP DATABASE IF EXISTS TRANSIT;
