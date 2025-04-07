@@ -46,7 +46,7 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
     /**
      * Gets a list of vehicles 
      * @param query The query for the vehicles table
-     * @return The lits of vehicles
+     * @return The list of vehicles
      * @throws SQLException 
      */
     private List<VehicleDTO> getVehiclesQuery(String query) throws SQLException {
@@ -119,6 +119,7 @@ public class VehicleDAOImpl extends BaseDAOImpl implements VehicleDAO {
      * @param vehicle The selected vehicle
      * @throws SQLException on invalid login credentials
      */
+    @Override
     public void updateVehicle(String newFuel, String newRoute, int vehicleID) throws SQLException {
         String updateQuery = "UPDATE VEHICLES SET FUEL_TYPE = ?, CURRENT_ASSIGNED_TRIP = ? WHERE VEHICLE_ID = ?";
         try (PreparedStatement statement = instance.getConnection().prepareStatement(updateQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
