@@ -100,4 +100,7 @@ public void setEnergyLevelRemaining(Float energyLevelRemaining) {
     this.energyLevelRemaining = energyLevelRemaining;
 }
 
+    public String getFuelAmount() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

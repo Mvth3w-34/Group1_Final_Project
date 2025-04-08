@@ -20,6 +20,9 @@ package TransferObjects;
  * @since 04/05/2025
  */
 public class OperatorDTO {
+    public Object getFirstname() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     public enum UserType {
         OPERATOR,

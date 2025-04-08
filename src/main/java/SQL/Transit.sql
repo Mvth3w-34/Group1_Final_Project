@@ -22,8 +22,7 @@ CREATE TABLE Credentials
     Password varchar(50) NOT NULL
 );
 
-CREATE TABLE Operators
-(
+CREATE TABLE Operators (
     OperatorID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Name varchar(50),
     CredentialID int NOT NULL,
@@ -36,3 +35,7 @@ INSERT INTO Credentials (UserName, Password) VALUES ('myUser', 'myPass');
 
 INSERT INTO Operators (Name, CredentialID, Type, Email) VALUES ('Bob Smith', 1, 'MANAGER', '');
 INSERT INTO Operators (Name, CredentialID, Type, Email) VALUES ('Drew Anderson', 2, 'OPERATOR', '');
+
+INSERT INTO Credentials (UserName, Password) VALUES ('cst8288', 'cst8288');
+INSERT INTO Operators (Name, CredentialID, Type, Email)
+VALUES ('Test Admin', 3, 'MANAGER', 'admin@test.com');
