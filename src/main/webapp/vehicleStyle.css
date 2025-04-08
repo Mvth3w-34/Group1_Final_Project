@@ -1,0 +1,36 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 31, 2025, 3:36:48 PM
+    Author     : John Tieu
+*/
+@import 'style.css';
+th {
+    border-bottom: 2px solid black;
+}
+.middle {
+    border-left: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+}
+
+.reportlink {
+    background: none !important;
+    border: none !important;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    color: #069;
+}
+
+
+
+
