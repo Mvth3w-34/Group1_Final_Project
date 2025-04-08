@@ -79,11 +79,9 @@ public class TransitMenuView extends HttpServlet {
                             .append("<a href='/Group1_Final_Project_v1/ViewVehicles'><button>View Fleet</button></a><br>");
                         // Links to register fuel/energy consumption and view alerts (Monitoring module by Mario)
                         out.append("<a href='energyFuelForm.html'><button>Log Energy/Fuel Consumption</button></a><br>")
-                            .append("<a href='/Group1_Final_Project_v1/EnergyFuel'><button>View Fuel/Energy Alerts</button></a><br>");
-                        
-                        // Link to Steph's Operator Dashboard
-                        out.append("<a href='/Group1_Final_Project_v1/OperatorPerformanceDashboard-URL'><button>Operator Performance Dashboard</button></a><br>");
-                            ;
+                            .append("<a href='/Group1_Final_Project_v1/EnergyFuel'><button>View Fuel/Energy Alerts</button></a><br>")
+                            .append("<a href='/Group1_Final_Project_v1/OperatorPerformanceDashboard-URL'><button>Operator Performance Dashboard</button></a><br>");
+                            
                     }
                     // All operators can see
                     out.append("<a href='/Group1_Final_Project_v1/LogTime'><button>Log Time</button></a><br>");
