@@ -220,20 +220,58 @@ CREATE TABLE VEHICLE_COMPONENT (
 
 --Written by Mario
 -- Table to log daily energy and fuel consumption per vehicle
-CREATE TABLE EnergyFuelLog (
-    log_id INT PRIMARY KEY AUTO_INCREMENT,
-    vehicle_id VARCHAR(20), -- References the VIN of the vehicle
-    log_date DATE NOT NULL,
-    fuel_consumed FLOAT DEFAULT 0,         -- In liters
-    energy_consumed FLOAT DEFAULT 0,       -- In kWh
-    fuel_threshold FLOAT DEFAULT 50,       -- Threshold to trigger alerts
-    energy_threshold FLOAT DEFAULT 100,    -- Threshold to trigger alerts
-    FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_num)
-);
-ALTER TABLE EnergyFuelLog(
-ADD COLUMN fuel_level_remaining FLOAT DEFAULT NULL,
-ADD COLUMN energy_level_remaining FLOAT DEFAULT NULL
-);
-
-
-
+-- CREATE TABLE EnergyFuelLog (
+--     log_id INT PRIMARY KEY AUTO_INCREMENT,
+--     vehicle_id VARCHAR(20), -- References the VIN of the vehicle
+--     log_date DATE NOT NULL,
+--     fuel_consumed FLOAT DEFAULT 0,         -- In liters
+--     energy_consumed FLOAT DEFAULT 0,       -- In kWh
+--     fuel_threshold FLOAT DEFAULT 50,       -- Threshold to trigger alerts
+--     energy_threshold FLOAT DEFAULT 100,    -- Threshold to trigger alerts
+--     FOREIGN KEY (vehicle_id) REFERENCES Vehicle(vehicle_num)
+-- );
+-- ALTER TABLE EnergyFuelLog(
+-- ADD COLUMN fuel_level_remaining FLOAT DEFAULT NULL,
+-- ADD COLUMN energy_level_remaining FLOAT DEFAULT NULL
+-- );
+-- 
+-- 
+-- 
+-- ALTER TABLE Vehicles
+-- ADD fuelLevel DECIMAL(5,2);
+-- 
+-- UPDATE Vehicles
+-- SET fuelLevel = 15.1
+-- 
+-- WHERE vehicleID = 1;
+-- CREATE TABLE FuelAlerts (
+--     alertID INT PRIMARY KEY AUTO_INCREMENT,
+--     vehicleID INT,
+--     fuelLevel DECIMAL(5,2),
+--     alertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     message VARCHAR(255)
+-- );
+-- 
+-- DELIMITER //
+-- 
+-- CREATE TRIGGER trigger_low_fuel_alert
+-- AFTER UPDATE ON Vehicles
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.fuelLevel < 15.0 AND OLD.fuelLevel >= 15.0 THEN
+--         INSERT INTO FuelAlerts (vehicleID, fuelLevel, message)
+--         VALUES (
+--             NEW.vehicleID,
+--             NEW.fuelLevel,
+--             CONCAT('⚠️ Nivel crítico de combustible: ', NEW.fuelLevel, '%')
+--         );
+--     END IF;
+-- END;
+-- //
+-- 
+-- DELIMITER ;
+-- 
+-- -- Baja el nivel por debajo del umbral:
+-- UPDATE Vehicles
+-- SET fuelLevel = 14.7
+-- WHERE vehicleID = 1;

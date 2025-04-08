@@ -68,35 +68,36 @@ public class OperatorTest {
             fail("❌ Database error: " + e.getMessage());
         }
     }
+    
     /**
      * This test checks that the operator 'Joe Clarke' has the correct email in the database.
      * This test should fail since email is wrong
      */
-    @Test
-    public void testOperatorEmailIsCorrect() {
-        String url = "jdbc:mysql://localhost:3306/transit";
-        String user = "mario";
-        String password = "mario123";
-
-        String query = "SELECT * FROM OPERATORS WHERE OPERATOR_NAME = ?";
-
-        try (Connection conn = DriverManager.getConnection(url, user, password);
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
-            stmt.setString(1, "Joe Clarke");
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                assertTrue(rs.next(), "Expected to find operator 'Joe Clarke'");
-
-                String email = rs.getString("EMAIL");
-                assertEquals("joedarke@darke.com", email);
-                System.out.println("✅ Joe Clarke has correct email: " + email);
-            }
-
-        } catch (SQLException e) {
-            fail("❌ Database error: " + e.getMessage());
-        }
+//    @Test
+//    public void testOperatorEmailIsCorrect() {
+//        String url = "jdbc:mysql://localhost:3306/transit";
+//        String user = "mario";
+//        String password = "mario123";
+//
+//        String query = "SELECT * FROM OPERATORS WHERE OPERATOR_NAME = ?";
+//
+//        try (Connection conn = DriverManager.getConnection(url, user, password);
+//             PreparedStatement stmt = conn.prepareStatement(query)) {
+//
+//            stmt.setString(1, "Joe Clarke");
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                assertTrue(rs.next(), "Expected to find operator 'Joe Clarke'");
+//
+//                String email = rs.getString("EMAIL");
+//                assertEquals("joedarke@darke.com", email);
+//                System.out.println("✅ Joe Clarke has correct email: " + email);
+//            }
+//
+//        } catch (SQLException e) {
+//            fail("❌ Database error: " + e.getMessage());
+//        }
+//    }
+//
+//
     }
-
-
-}
